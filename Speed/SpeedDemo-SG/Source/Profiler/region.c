@@ -1,0 +1,83 @@
+// Automatically generated file. Do not edit if you plan to regenerate it.
+#include "region.h"
+const REGION_T RegionTable[] = {
+	{0x00000985, 0x000009b2, "LCD_24S_Write_Command"}, // 0
+	{0x000009b9, 0x000009e6, "LCD_24S_Write_Data"}, // 1
+	{0x00000c65, 0x00000cbe, "LCD_Init_Backlight"}, // 2
+	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 3
+	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 4
+	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 5
+	{0x000000e5, 0x000000e6, "SVC_Handler"}, // 6
+	{0x000000e7, 0x000000e8, "PendSV_Handler"}, // 7
+	{0x000000e9, 0x000000ea, "SysTick_Handler"}, // 8
+	{0x000000fd, 0x00000128, "__aeabi_uidivmod"}, // 9
+	{0x00000129, 0x000001ca, "__aeabi_fadd"}, // 10
+	{0x000001cb, 0x000001d2, "__aeabi_fsub"}, // 11
+	{0x000001d3, 0x000001da, "__aeabi_frsub"}, // 12
+	{0x000001dd, 0x00000324, "__aeabi_dadd"}, // 13
+	{0x00000325, 0x00000330, "__aeabi_dsub"}, // 14
+	{0x00000331, 0x0000033c, "__aeabi_drsub"}, // 15
+	{0x00000341, 0x00000362, "__aeabi_i2d"}, // 16
+	{0x00000369, 0x00000390, "__aeabi_f2d"}, // 17
+	{0x00000391, 0x000003c8, "__aeabi_d2f"}, // 18
+	{0x000003c9, 0x000003e8, "__aeabi_llsl"}, // 19
+	{0x000003e9, 0x000003f0, "Disable_Profiling"}, // 20
+	{0x000003f5, 0x000003fc, "Enable_Profiling"}, // 21
+	{0x00000411, 0x000004da, "__aeabi_dmul"}, // 22
+	{0x000004e1, 0x000005ca, "__aeabi_ddiv"}, // 23
+	{0x000005d1, 0x000005f6, "__aeabi_lasr"}, // 24
+	{0x000005f7, 0x00000606, "_float_round"}, // 25
+	{0x00000607, 0x00000678, "_float_epilogue"}, // 26
+	{0x00000679, 0x00000692, "_double_round"}, // 27
+	{0x00000693, 0x00000736, "_double_epilogue"}, // 28
+	{0x00000737, 0x00000762, "__ARM_scalbn"}, // 29
+	{0x00000765, 0x00000780, "__scatterload"}, // 30
+	{0x00000789, 0x000007aa, "__aeabi_llsr"}, // 31
+	{0x000007ad, 0x000007c4, "__aeabi_ui2d"}, // 32
+	{0x000007c9, 0x00000806, "__aeabi_d2iz"}, // 33
+	{0x00000811, 0x00000856, "Control_RGB_LEDs"}, // 34
+	{0x0000085d, 0x00000874, "Delay"}, // 35
+	{0x00000879, 0x00000892, "Init_ADC"}, // 36
+	{0x0000089d, 0x000008e6, "Init_Profiling"}, // 37
+	{0x000008f9, 0x00000974, "Init_RGB_LEDs"}, // 38
+	{0x000009ed, 0x00000a5a, "LCD_Controller_Init"}, // 39
+	{0x00000a61, 0x00000a6a, "LCD_Erase"}, // 40
+	{0x00000a71, 0x00000b02, "LCD_Fill_Buffer"}, // 41
+	{0x00000b05, 0x00000c36, "LCD_GPIO_Init"}, // 42
+	{0x00000c49, 0x00000c5e, "LCD_Init"}, // 43
+	{0x00000cd5, 0x00000da0, "LCD_Start_Rectangle"}, // 44
+	{0x00000da1, 0x00000da8, "LCD_TS_Init"}, // 45
+	{0x00000da9, 0x00000dbe, "LCD_Text_GetGlyphWidth"}, // 46
+	{0x00000dc9, 0x00000e02, "LCD_Text_Init"}, // 47
+	{0x00000e25, 0x0000104a, "LCD_Text_PrintChar"}, // 48
+	{0x00001069, 0x000010a2, "LCD_Text_PrintStr"}, // 49
+	{0x000010a9, 0x000010ec, "LCD_Write_Rectangle_Pixe"}, // 50
+	{0x000010ed, 0x0000111c, "PIT_IRQHandler"}, // 51
+	{0x00001125, 0x00001170, "PIT_Init"}, // 52
+	{0x00001189, 0x00001194, "PIT_Start"}, // 53
+	{0x00001199, 0x00001218, "PWM_Init"}, // 54
+	{0x00001229, 0x00001286, "Process_Profile_Sample"}, // 55
+	{0x00001299, 0x00001330, "Sort_Profile_Regions"}, // 56
+	{0x00001341, 0x0000144a, "SystemInit"}, // 57
+	{0x00001479, 0x00001486, "TPM0_IRQHandler"}, // 58
+	{0x0000148d, 0x000014ba, "__ARM_clz"}, // 59
+	{0x000014bb, 0x000014ec, "__ARM_common_ll_muluu"}, // 60
+	{0x000014ed, 0x00001514, "__ARM_fpclassify"}, // 61
+	{0x00001519, 0x0000185e, "__ieee754_rem_pio2"}, // 62
+	{0x000018b5, 0x00001994, "__kernel_cos"}, // 63
+	{0x000019a9, 0x00001a54, "__kernel_poly"}, // 64
+	{0x00001a55, 0x00001b32, "__kernel_sin"}, // 65
+	{0x00001b41, 0x00001b4a, "__mathlib_dbl_infnan"}, // 66
+	{0x00001b4b, 0x00001b5a, "__mathlib_dbl_invalid"}, // 67
+	{0x00001b5d, 0x00001b6a, "__mathlib_dbl_underflow"}, // 68
+	{0x00001b71, 0x00001b7e, "__scatterload_copy"}, // 69
+	{0x00001b7f, 0x00001b80, "__scatterload_null"}, // 70
+	{0x00001b81, 0x00001b8e, "__scatterload_zeroinit"}, // 71
+	{0x00001b91, 0x00001b96, "__set_errno"}, // 72
+	{0x00001b9d, 0x00001c2a, "cos"}, // 73
+	{0x00001c35, 0x00001d0a, "main"}, // 74
+	{0x00001d29, 0x00001dba, "sin"}, // 75
+}; 
+const unsigned NumProfileRegions=76;
+volatile unsigned RegionCount[76];
+unsigned SortedRegions[76];
