@@ -43,27 +43,24 @@ int main (void) {
 	
 	cur_pos_lat = TEST1_LAT;
 	cur_pos_lon = TEST1_LON;
-	
+
+	Init_RGB_LEDs();
 
 #ifdef USE_SERIAL_PORT
 	Init_UART0(115200);
 	printf("\n\r\n\rInitializing\n\r");
 #endif
-
 	
 #ifdef USE_LCD
-	Init_RGB_LEDs();
-	Init_RGB_LEDs();
 	LCD_Init();
 	LCD_Text_Init(1);
 	LCD_Erase();
-
-pt.X = COL_TO_X(0);
+	pt.X = COL_TO_X(0);
 	pt.Y = ROW_TO_Y(0);
 	LCD_Text_PrintStr(&pt, "Initializing");
 #endif
 
-	__enable_irq();
+//	__enable_irq();
 	
 #ifdef PROFILE_DEMO // ProfileDemo code from slides
 	Init_Profiling();
