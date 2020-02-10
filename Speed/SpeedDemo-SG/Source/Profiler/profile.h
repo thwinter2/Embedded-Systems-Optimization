@@ -14,7 +14,7 @@
 // #define USING_RTOS
 
 // Comment out PROFILER_SERIAL_SUPPORT if not using printf/serial port for profile output
-// #define PROFILER_SERIAL_SUPPORT
+#define PROFILER_SERIAL_SUPPORT
 
 //// End of configuration
 
@@ -64,7 +64,7 @@ extern void Display_Profile(void);
 #endif
 
 #ifdef PROFILER_SERIAL_SUPPORT
-void Serial_Print_Sorted_Profile(void);
+extern void Serial_Print_Sorted_Profile(void);
 #endif
 
 #endif
