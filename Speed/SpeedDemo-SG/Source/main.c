@@ -11,13 +11,17 @@
 #include "timers.h"
 #include "i2c.h"
 #include "mma8451.h"
+#include "UART.h"
 #include "delay.h"
 #include "profile.h"
 #include "geometry.h"
 
 extern 	void test_atan2_approx(void);
 
-#define PROFILE_DEMO (1)
+#define USE_SERIAL_PORT
+#define USE_LCD
+
+// #define PROFILE_DEMO 
 
 // Raleigh, NC
 #define TEST1_LAT (35.7796)
@@ -32,7 +36,7 @@ int main (void) {
 	char * name;
 	PT_T pt;
 
-#if PROFILE_DEMO
+#ifdef PROFILE_DEMO
 	int p;
 	float f1=1, f2=0, f3=0;
 #endif
@@ -40,19 +44,28 @@ int main (void) {
 	cur_pos_lat = TEST1_LAT;
 	cur_pos_lon = TEST1_LON;
 	
+
+#ifdef USE_SERIAL_PORT
+	Init_UART0(115200);
+	printf("\n\r\n\rInitializing\n\r");
+#endif
+
+	
+#ifdef USE_LCD
 	Init_RGB_LEDs();
 	Init_RGB_LEDs();
 	LCD_Init();
 	LCD_Text_Init(1);
 	LCD_Erase();
-	
-	pt.X = COL_TO_X(0);
+
+pt.X = COL_TO_X(0);
 	pt.Y = ROW_TO_Y(0);
 	LCD_Text_PrintStr(&pt, "Initializing");
+#endif
 
 	__enable_irq();
 	
-#if PROFILE_DEMO // ProfileDemo code from slides
+#ifdef PROFILE_DEMO // ProfileDemo code from slides
 	Init_Profiling();
 	Control_RGB_LEDs(1,0,0);
 	Enable_Profiling();
@@ -77,6 +90,14 @@ int main (void) {
 		Find_Nearest_Waypoint(cur_pos_lat, cur_pos_lon, &dist, &bearing, &name);
 		Disable_Profiling();
 		Control_RGB_LEDs(0,0,1);	// Blue: done
+		Sort_Profile_Regions(); 
+
+#ifdef USE_SERIAL_PORT
+		printf("Closest Point:\n\r%s, %f km, %8.3f degrees\n\r", name, dist, bearing);
+		Serial_Print_Sorted_Profile();	
+#endif
+
+#ifdef USE_LCD
 		LCD_Erase();
 		pt.X = COL_TO_X(0);
 		pt.Y = ROW_TO_Y(0);
@@ -94,8 +115,9 @@ int main (void) {
 		sprintf(buffer, "%8.3f deg", bearing);
 		LCD_Text_PrintStr(&pt, buffer);
 		Delay(1000);
-		Sort_Profile_Regions(); 
 		LCD_Erase();
 		Display_Profile();
+#endif
+		Delay(1000);
 	}
 }
