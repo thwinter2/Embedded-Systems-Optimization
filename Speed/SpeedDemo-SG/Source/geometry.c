@@ -1,7 +1,7 @@
 #include "geometry.h"
 #include <math.h>
 #include <string.h>
-#define PI 3.14159265f
+#define PI 3.14159265
 #define PI_OVER_180 (0.017453293f) // (3.1415927/180.0)
 
 extern const GPT_T waypoints[];
@@ -19,9 +19,9 @@ float Calc_Distance( GPT_T * p1,  const GPT_T * p2) {
 float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 // calculates bearing in degrees between locations (represented in degrees)	
 	float angle = atan2(
-		sin(p1->Lon*PI/180 - p2->Lon*PI/180)*cosf(p2->Lat*PI/180),
+		sin(p2->Lon*PI/180 - p1->Lon*PI/180)*cosf(p2->Lat*PI/180),
 		cos(p1->Lat*PI/180)*sin(p2->Lat*PI/180) - 
-		sin(p1->Lat*PI/180)*cos(p2->Lat*PI/180)*cos(p1->Lon*PI/180 - p2->Lon*PI/180)
+		sin(p1->Lat*PI/180)*cos(p2->Lat*PI/180)*cos(p2->Lon*PI/180 - p1->Lon*PI/180)
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -41,9 +41,9 @@ float Calc_Distance( GPT_T * p1,  const GPT_T * p2) {
 float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 // calculates bearing in degrees between locations (represented in degrees)	
 	float angle = atan2f(
-		sinf(p1->Lon*PI/180 - p2->Lon*PI/180)*cosf(p2->Lat*PI/180),
+		sinf(p2->Lon*PI/180 - p1->Lon*PI/180)*cosf(p2->Lat*PI/180),
 		cosf(p1->Lat*PI/180)*sinf(p2->Lat*PI/180) - 
-		sinf(p1->Lat*PI/180)*cosf(p2->Lat*PI/180)*cosf(p1->Lon*PI/180 - p2->Lon*PI/180)
+		sinf(p1->Lat*PI/180)*cosf(p2->Lat*PI/180)*cosf(p2->Lon*PI/180 - p1->Lon*PI/180)
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -64,9 +64,9 @@ float Calc_Distance( GPT_T * p1,  const GPT_T * p2) {
 float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 // calculates bearing in degrees between locations (represented in degrees)	
 	float angle = atan2f(
-		sinf(p1->Lon*(PI/180) - p2->Lon*(PI/180))*cosf(p2->Lat*(PI/180)),
+		sinf(p2->Lon*(PI/180) - p1->Lon*(PI/180))*cosf(p2->Lat*(PI/180)),
 		cosf(p1->Lat*(PI/180))*sinf(p2->Lat*(PI/180)) - 
-		sinf(p1->Lat*(PI/180))*cosf(p2->Lat*(PI/180))*cosf(p1->Lon*(PI/180) - p2->Lon*(PI/180))
+		sinf(p1->Lat*(PI/180))*cosf(p2->Lat*(PI/180))*cosf(p2->Lon*(PI/180) - p1->Lon*(PI/180))
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -86,9 +86,9 @@ float Calc_Distance( GPT_T * p1,  const GPT_T * p2) {
 float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 // calculates bearing in degrees between locations (represented in degrees)	
 	float angle = atan2f(
-		sinf(p1->Lon*(PI_OVER_180) - p2->Lon*(PI_OVER_180))*cosf(p2->Lat*(PI_OVER_180)),
+		sinf(p2->Lon*(PI_OVER_180) - p1->Lon*(PI_OVER_180))*cosf(p2->Lat*(PI_OVER_180)),
 		cosf(p1->Lat*(PI_OVER_180))*sinf(p2->Lat*(PI_OVER_180)) - 
-		sinf(p1->Lat*(PI_OVER_180))*cosf(p2->Lat*(PI_OVER_180))*cosf(p1->Lon*(PI_OVER_180) - p2->Lon*(PI_OVER_180))
+		sinf(p1->Lat*(PI_OVER_180))*cosf(p2->Lat*(PI_OVER_180))*cosf(p2->Lon*(PI_OVER_180) - p1->Lon*(PI_OVER_180))
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -123,9 +123,9 @@ float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 	p2Lat = p2->Lat;
 
 	angle = atan2f(
-		sinf(p1Lon*(PI/180) - p2Lon*(PI/180))*cosf(p2Lat*(PI/180)),
+		sinf(p2Lon*(PI/180) - p1Lon*(PI/180))*cosf(p2Lat*(PI/180)),
 		cosf(p1Lat*(PI/180))*sinf(p2Lat*(PI/180)) - 
-		sinf(p1Lat*(PI/180))*cosf(p2Lat*(PI/180))*cosf(p1Lon*(PI/180) - p2Lon*(PI/180))
+		sinf(p1Lat*(PI/180))*cosf(p2Lat*(PI/180))*cosf(p2Lon*(PI/180) - p1Lon*(PI/180))
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -161,9 +161,9 @@ float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 	p2LatRad = p2->Lat*(PI/180);
 
 	angle = atan2f(
-		sinf(p1LonRad - p2LonRad)*cosf(p2LatRad),
+		sinf(p2LonRad - p1LonRad)*cosf(p2LatRad),
 		cosf(p1LatRad)*sinf(p2LatRad) - 
-		sinf(p1LatRad)*cosf(p2LatRad)*cosf(p1LonRad - p2LonRad)
+		sinf(p1LatRad)*cosf(p2LatRad)*cosf(p2LonRad - p1LonRad)
 		) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -200,9 +200,9 @@ float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 	p1LatRad = p1->Lat*(PI/180);
 	p2LatRad = p2->Lat*(PI/180);
 
-	term1 = sinf(p1LonRad - p2LonRad)*cosf(p2LatRad);
+	term1 = sinf(p2LonRad - p1LonRad)*cosf(p2LatRad);
 	term2 = cosf(p1LatRad)*sinf(p2LatRad) - 
-					sinf(p1LatRad)*cosf(p2LatRad)*cosf(p1LonRad - p2LonRad);
+					sinf(p1LatRad)*cosf(p2LatRad)*cosf(p2LonRad - p1LonRad);
 	angle = atan2f(term1, term2) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -240,9 +240,9 @@ float Calc_Bearing( GPT_T * p1,  const GPT_T * p2){
 	p2LatRad = p2->Lat*(PI/180);
 	cosp2LatRad = cosf(p2LatRad);
 	
-	term1 = sinf(p1LonRad - p2LonRad)*cosp2LatRad;
+	term1 = sinf(p2LonRad - p1LonRad)*cosp2LatRad;
 	term2 = cosf(p1LatRad)*sinf(p2LatRad) - 
-					sinf(p1LatRad)*cosp2LatRad*cosf(p1LonRad - p2LonRad);
+					sinf(p1LatRad)*cosp2LatRad*cosf(p2LonRad - p1LonRad);
 	angle = atan2f(term1, term2) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -270,9 +270,9 @@ void Calc_Distance_Bearing(float * distance, float * bearing, GPT_T * p1,  const
 							cosf(p1LatRad)*cosf(p2LatRad)*
 							cosf(p2LonRad - p1LonRad)) * 6371;
 	
-	term1 = sinf(p1LonRad - p2LonRad)*cosp2LatRad;
+	term1 = sinf(p2LonRad - p1LonRad)*cosp2LatRad;
 	term2 = cosf(p1LatRad)*sinf(p2LatRad) - 
-					sinf(p1LatRad)*cosp2LatRad*cosf(p1LonRad - p2LonRad);
+					sinf(p1LatRad)*cosp2LatRad*cosf(p2LonRad - p1LonRad);
 	angle = atan2f(term1, term2) * (180/PI);
 	if (angle < 0.0)
 		angle += 360;
@@ -297,7 +297,7 @@ void Calc_Distance_Bearing(float * distance, float * bearing, GPT_T * p1,  const
 	p2LatRad = p2->Lat*(PI/180);
 	cosp1LatRad = cosf(p1LatRad);
 	cosp2LatRad = cosf(p2LatRad);
-	cosLonDiff = cosf(p1LonRad - p2LonRad);
+	cosLonDiff = cosf(p2LonRad - p1LonRad);
 	sinp1LatRad = sinf(p1LatRad);	
 	sinp2LatRad = sinf(p2LatRad);
 	
@@ -305,7 +305,7 @@ void Calc_Distance_Bearing(float * distance, float * bearing, GPT_T * p1,  const
 							cosp1LatRad*cosp2LatRad*
 							cosLonDiff) * 6371;
 	
-	term1 = sinf(p1LonRad - p2LonRad)*cosp2LatRad;
+	term1 = sinf(p2LonRad - p1LonRad)*cosp2LatRad;
 	term2 = cosp1LatRad*sinp2LatRad - 
 					sinp1LatRad*cosp2LatRad*cosLonDiff;
 	angle = atan2f(term1, term2) * (180/PI);
