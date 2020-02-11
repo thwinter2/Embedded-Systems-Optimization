@@ -383,19 +383,9 @@
           <GroupName>Source</GroupName>
           <Files>
             <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\debug.c</FilePath>
-            </File>
-            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\I2C.c</FilePath>
             </File>
             <File>
               <FileName>LEDs.c</FileName>
@@ -406,11 +396,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>MMA8451.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\MMA8451.c</FilePath>
             </File>
             <File>
               <FileName>timers.c</FileName>

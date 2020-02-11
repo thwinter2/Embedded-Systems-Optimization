@@ -2,7 +2,6 @@
 #define GEOMETRY_H
 // geometry 
 
-#include "config.h"
 void Find_Nearest_Waypoint(float cur_pos_lat, float cur_pos_lon, float * distance, float * bearing, 
 	char  * * name);
 

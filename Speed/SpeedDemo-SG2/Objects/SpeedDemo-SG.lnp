@@ -1,10 +1,7 @@
 --cpu Cortex-M0+
-".\objects\debug.o"
 ".\objects\delay.o"
-".\objects\i2c.o"
 ".\objects\leds.o"
 ".\objects\main.o"
-".\objects\mma8451.o"
 ".\objects\timers.o"
 ".\objects\geometry.o"
 ".\objects\cman_coords2.o"
