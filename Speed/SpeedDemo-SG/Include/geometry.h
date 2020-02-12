@@ -2,8 +2,6 @@
 #define GEOMETRY_H
 // geometry 
 
-#include "config.h"
-
 typedef struct {
 	float Lat;
 	float Lon;

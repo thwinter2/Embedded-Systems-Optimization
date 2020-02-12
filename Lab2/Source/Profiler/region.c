@@ -1,0 +1,83 @@
+// Automatically generated file. Do not edit if you plan to regenerate it.
+#include "region.h"
+const REGION_T RegionTable[] = {
+	{0x00001149, 0x000011b6, "__NVIC_SetPriority"}, // 0
+	{0x000012bd, 0x0000156c, "_printf_core"}, // 1
+	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 2
+	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 3
+	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 4
+	{0x000000e5, 0x000000e6, "SVC_Handler"}, // 5
+	{0x000000e7, 0x000000e8, "PendSV_Handler"}, // 6
+	{0x000000e9, 0x000000ea, "SysTick_Handler"}, // 7
+	{0x000000fd, 0x00000128, "__aeabi_uidivmod"}, // 8
+	{0x00000129, 0x000001ca, "__aeabi_fadd"}, // 9
+	{0x000001cb, 0x000001d2, "__aeabi_fsub"}, // 10
+	{0x000001d3, 0x000001da, "__aeabi_frsub"}, // 11
+	{0x000001db, 0x00000254, "__aeabi_fmul"}, // 12
+	{0x00000255, 0x0000039c, "__aeabi_dadd"}, // 13
+	{0x0000039d, 0x000003a8, "__aeabi_dsub"}, // 14
+	{0x000003a9, 0x000003b4, "__aeabi_drsub"}, // 15
+	{0x000003b9, 0x000003da, "__aeabi_i2d"}, // 16
+	{0x000003e1, 0x000003f8, "__aeabi_ui2d"}, // 17
+	{0x000003fd, 0x000003fe, "__scatterload_null"}, // 18
+	{0x00000411, 0x000004da, "__aeabi_dmul"}, // 19
+	{0x000004e1, 0x000005ca, "__aeabi_ddiv"}, // 20
+	{0x000005d1, 0x00000602, "__aeabi_d2uiz"}, // 21
+	{0x0000060d, 0x00000634, "__aeabi_f2d"}, // 22
+	{0x00000635, 0x0000066c, "__aeabi_d2f"}, // 23
+	{0x0000066d, 0x000006cc, "__aeabi_uldivmod"}, // 24
+	{0x000006cd, 0x000006ec, "__aeabi_llsl"}, // 25
+	{0x000006ed, 0x0000070e, "__aeabi_llsr"}, // 26
+	{0x0000070f, 0x00000734, "__aeabi_lasr"}, // 27
+	{0x00000735, 0x00000744, "_float_round"}, // 28
+	{0x00000745, 0x000007b6, "_float_epilogue"}, // 29
+	{0x000007b7, 0x000007d0, "_double_round"}, // 30
+	{0x000007d1, 0x00000874, "_double_epilogue"}, // 31
+	{0x00000875, 0x00000916, "_dsqrt"}, // 32
+	{0x00000919, 0x00000934, "__scatterload"}, // 33
+	{0x0000093d, 0x00000968, "__ARM_scalbn"}, // 34
+	{0x00000969, 0x000009ae, "Control_RGB_LEDs"}, // 35
+	{0x000009b5, 0x000009cc, "Delay"}, // 36
+	{0x000009d1, 0x00000a1c, "Init_Profiling"}, // 37
+	{0x00000a31, 0x00000aac, "Init_RGB_LEDs"}, // 38
+	{0x00000abd, 0x00000b90, "Init_UART0"}, // 39
+	{0x00000ba5, 0x00000be6, "PIT_IRQHandler"}, // 40
+	{0x00000bf1, 0x00000c6e, "PIT_Init"}, // 41
+	{0x00000c85, 0x00000c92, "PIT_Start"}, // 42
+	{0x00000c99, 0x00000cf6, "Process_Profile_Sample"}, // 43
+	{0x00000d09, 0x00000d54, "Q_Dequeue"}, // 44
+	{0x00000d55, 0x00000d64, "Q_Empty"}, // 45
+	{0x00000d65, 0x00000da8, "Q_Enqueue"}, // 46
+	{0x00000da9, 0x00000dbc, "Q_Full"}, // 47
+	{0x00000dbd, 0x00000e00, "Serial_Print_Sorted_Prof"}, // 48
+	{0x00000e55, 0x00000eec, "Sort_Profile_Regions"}, // 49
+	{0x00000efd, 0x00001006, "SystemInit"}, // 50
+	{0x00001035, 0x00001040, "TPM0_IRQHandler"}, // 51
+	{0x00001045, 0x000010be, "UART0_IRQHandler"}, // 52
+	{0x000010cd, 0x000010e4, "__0printf$5"}, // 53
+	{0x000010ed, 0x0000111a, "__ARM_clz"}, // 54
+	{0x0000111d, 0x00001144, "__ARM_fpclassify"}, // 55
+	{0x000011c1, 0x0000126c, "__kernel_poly"}, // 56
+	{0x0000126d, 0x00001276, "__mathlib_dbl_infnan"}, // 57
+	{0x00001277, 0x0000127e, "__mathlib_dbl_infnan2"}, // 58
+	{0x00001281, 0x0000128e, "__mathlib_dbl_underflow"}, // 59
+	{0x00001295, 0x000012a2, "__scatterload_copy"}, // 60
+	{0x000012a3, 0x000012b0, "__scatterload_zeroinit"}, // 61
+	{0x000012b1, 0x000012b6, "__set_errno"}, // 62
+	{0x00001599, 0x00001770, "atan"}, // 63
+	{0x000017b5, 0x00001902, "atan2"}, // 64
+	{0x0000192d, 0x00001a30, "convert_xyz_to_roll_pitc"}, // 65
+	{0x00001a55, 0x00001a74, "fputc"}, // 66
+	{0x00001a79, 0x00001b80, "i2c_busy"}, // 67
+	{0x00001b8d, 0x00001be2, "i2c_init"}, // 68
+	{0x00001bf1, 0x00001c68, "i2c_read_byte"}, // 69
+	{0x00001c6d, 0x00001cb4, "i2c_wait"}, // 70
+	{0x00001cbd, 0x00001d00, "i2c_write_byte"}, // 71
+	{0x00001d05, 0x00001d3a, "init_mma"}, // 72
+	{0x00001d3d, 0x00001dae, "main"}, // 73
+	{0x00001df1, 0x00001e24, "read_xyz"}, // 74
+	{0x00001e31, 0x00001e72, "sqrt"}, // 75
+}; 
+const unsigned NumProfileRegions=76;
+volatile unsigned RegionCount[76];
+unsigned SortedRegions[76];

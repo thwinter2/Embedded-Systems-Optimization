@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>SpeedDemo-SG</OutputName>
+          <OutputName>LCDs_Profiler</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -82,12 +82,12 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>C:\Users\Alex\Documents\Teaching\ESO\ESO-2018\Code\ESO-18\Speed\SpeedDemo-SG\Scripts\update_regions_MDK.bat !L</UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name>Scripts\update_regions_MDK.bat !L</UserProg1Name>
+            <UserProg2Name>Scripts\find_sizes.bat !L</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>2</nStopA1X>
-            <nStopA2X>0</nStopA2X>
+            <nStopA2X>2</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -134,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -159,7 +159,7 @@
             <ldmm>1</ldmm>
             <ldXref>1</ldXref>
             <BigEnd>0</BigEnd>
-            <AdsALst>1</AdsALst>
+            <AdsALst>0</AdsALst>
             <AdsACrf>1</AdsACrf>
             <AdsANop>0</AdsANop>
             <AdsANot>0</AdsANot>
@@ -172,7 +172,7 @@
             <AdsLsun>1</AdsLsun>
             <AdsLven>1</AdsLven>
             <AdsLsxf>1</AdsLsxf>
-            <RvctClst>0</RvctClst>
+            <RvctClst>1</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M0+"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
@@ -312,8 +312,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
-            <oTime>1</oTime>
+            <Optim>1</Optim>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -335,10 +335,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--fpmode=fast</MiscControls>
+              <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\Include;.\Source\LCD;.\Source\Profiler</IncludePath>
+              <IncludePath>.\Include;.\Source\Profiler;.\Source\LCD</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -380,7 +380,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source</GroupName>
+          <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
               <FileName>delay.c</FileName>
@@ -398,39 +398,24 @@
               <FilePath>.\Source\main.c</FilePath>
             </File>
             <File>
+              <FileName>MMA8451.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\MMA8451.c</FilePath>
+            </File>
+            <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\I2C.c</FilePath>
+            </File>
+            <File>
               <FileName>timers.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\timers.c</FilePath>
-            </File>
-            <File>
-              <FileName>CMAN_coords.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\CMAN_coords.c</FilePath>
-            </File>
-            <File>
-              <FileName>geometry.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\geometry.c</FilePath>
-            </File>
-            <File>
-              <FileName>queue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\queue.c</FilePath>
-            </File>
-            <File>
-              <FileName>UART.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\UART.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Profiler</GroupName>
-          <Files>
-            <File>
-              <FileName>PIT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Profiler\PIT.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -483,6 +468,21 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\UART.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\queue.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Profiler</GroupName>
+          <Files>
             <File>
               <FileName>profile.c</FileName>
               <FileType>1</FileType>
@@ -544,6 +544,11 @@
               <FileType>1</FileType>
               <FilePath>.\Source\Profiler\region.c</FilePath>
             </File>
+            <File>
+              <FileName>PIT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Profiler\PIT.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -553,57 +558,6 @@
               <FileName>LCD_graphics.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\LCD\LCD_graphics.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>4</Optim>
-                    <oTime>1</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>LCD_text.c</FileName>
@@ -619,11 +573,6 @@
               <FileName>lucida_12x19.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\LCD\lucida_12x19.c</FilePath>
-            </File>
-            <File>
-              <FileName>lucida_20x31.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\LCD\lucida_20x31.c</FilePath>
             </File>
             <File>
               <FileName>ST7789.c</FileName>
@@ -657,7 +606,7 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS">
-        <package name="Kinetis_KLxx_DFP" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.14.0"/>
+        <package name="Kinetis_KLxx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.13.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>

@@ -9,8 +9,6 @@
 #include "LCD.h"
 #include "font.h"
 #include "timers.h"
-#include "i2c.h"
-#include "mma8451.h"
 #include "UART.h"
 #include "delay.h"
 #include "profile.h"
