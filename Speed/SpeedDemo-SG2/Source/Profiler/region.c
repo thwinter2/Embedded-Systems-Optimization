@@ -1,8 +1,8 @@
 // Automatically generated file. Do not edit if you plan to regenerate it.
 #include "region.h"
 const REGION_T RegionTable[] = {
-	{0x00002391, 0x000023b4, "LCD_24S_Write_Command"}, // 0
-	{0x000023b9, 0x000023dc, "LCD_24S_Write_Data"}, // 1
+	{0x00002301, 0x00002324, "LCD_24S_Write_Command"}, // 0
+	{0x00002329, 0x0000234c, "LCD_24S_Write_Data"}, // 1
 	{0x00000de7, 0x00000f82, "_fp_digits"}, // 2
 	{0x000011fd, 0x00001206, "_printf_input_char"}, // 3
 	{0x000017b5, 0x000019a0, "btod_internal_mul"}, // 4
@@ -81,67 +81,66 @@ const REGION_T RegionTable[] = {
 	{0x00001e6f, 0x00001e7e, "exit"}, // 77
 	{0x00001e7f, 0x00001edc, "__fpl_return_NaN"}, // 78
 	{0x00001edd, 0x00001ee4, "_sys_exit"}, // 79
-	{0x00001ee9, 0x00001f4c, "Calc_Bearing"}, // 80
-	{0x00001f55, 0x00001f88, "Control_RGB_LEDs"}, // 81
-	{0x00001f91, 0x00001fa4, "Delay"}, // 82
-	{0x00001fa9, 0x00001fb0, "Disable_Profiling"}, // 83
-	{0x00001fb5, 0x00002066, "Display_Profile"}, // 84
-	{0x000020a1, 0x000020a8, "Enable_Profiling"}, // 85
-	{0x000020ad, 0x00002204, "Find_Nearest_Waypoint"}, // 86
-	{0x00002225, 0x0000226e, "Init_Profiling"}, // 87
-	{0x00002281, 0x000022d2, "Init_RGB_LEDs"}, // 88
-	{0x000022e9, 0x0000237a, "Init_UART0"}, // 89
-	{0x000023e1, 0x000023ea, "LCD_Erase"}, // 90
-	{0x000023f1, 0x00002472, "LCD_Fill_Buffer"}, // 91
-	{0x00002475, 0x0000259a, "LCD_GPIO_Init"}, // 92
-	{0x000025b1, 0x0000266a, "LCD_Init"}, // 93
-	{0x0000268d, 0x00002722, "LCD_Start_Rectangle"}, // 94
-	{0x00002723, 0x00002752, "LCD_TS_Blocking_Read"}, // 95
-	{0x00002755, 0x0000276c, "LCD_TS_Init"}, // 96
-	{0x00002775, 0x000028f8, "LCD_TS_Read"}, // 97
-	{0x00002911, 0x0000293a, "LCD_Text_Init"}, // 98
-	{0x0000294d, 0x00002ae8, "LCD_Text_PrintChar"}, // 99
-	{0x00002af5, 0x00002b3a, "LCD_Text_PrintStr"}, // 100
-	{0x00002b41, 0x00002b72, "LCD_Write_Rectangle_Pixe"}, // 101
-	{0x00002b75, 0x00002ba4, "PIT_IRQHandler"}, // 102
-	{0x00002bad, 0x00002bf8, "PIT_Init"}, // 103
-	{0x00002c11, 0x00002c1c, "PIT_Start"}, // 104
-	{0x00002c21, 0x00002c7c, "PWM_Init"}, // 105
-	{0x00002c8d, 0x00002cea, "Process_Profile_Sample"}, // 106
-	{0x00002cfd, 0x00002d36, "Q_Dequeue"}, // 107
-	{0x00002d37, 0x00002d44, "Q_Empty"}, // 108
-	{0x00002d45, 0x00002d74, "Q_Enqueue"}, // 109
-	{0x00002d75, 0x00002d84, "Q_Full"}, // 110
-	{0x00002d85, 0x00002dc8, "Serial_Print_Sorted_Prof"}, // 111
-	{0x00002e21, 0x00002eb8, "Sort_Profile_Regions"}, // 112
-	{0x00002ec9, 0x00002f80, "SystemInit"}, // 113
-	{0x00002fb1, 0x00002fbc, "TPM0_IRQHandler"}, // 114
-	{0x00002fc1, 0x00003018, "UART0_IRQHandler"}, // 115
-	{0x00003025, 0x00003054, "__ARM_common_ll_muluu"}, // 116
-	{0x00003055, 0x00003062, "__ARM_common_memcpy4_10"}, // 117
-	{0x00003065, 0x0000308c, "__ARM_fpclassify"}, // 118
-	{0x00003091, 0x000030b2, "__ARM_fpclassifyf"}, // 119
-	{0x000030b3, 0x000030bc, "__mathlib_flt_infnan"}, // 120
-	{0x000030bd, 0x000030c4, "__mathlib_flt_infnan2"}, // 121
-	{0x000030c5, 0x000030d0, "__mathlib_flt_invalid"}, // 122
-	{0x000030d1, 0x000030de, "__mathlib_flt_underflow"}, // 123
-	{0x000030e1, 0x0000324e, "__mathlib_rredf2"}, // 124
-	{0x00003261, 0x0000326e, "_is_digit"}, // 125
-	{0x00003271, 0x00003354, "acosf"}, // 126
-	{0x0000337d, 0x0000358a, "atan2f"}, // 127
-	{0x000035d9, 0x00003716, "cosf"}, // 128
-	{0x00003751, 0x00003762, "fputc"}, // 129
-	{0x00003769, 0x00003882, "main"}, // 130
-	{0x00003909, 0x00003a52, "sinf"}, // 131
-	{0x00003a8d, 0x00003ab8, "sqrtf"}, // 132
-	{0x00003ab9, 0x00003ae4, "_get_lc_numeric"}, // 133
-	{0x00003ae5, 0x00003b6a, "_fadd"}, // 134
-	{0x00003b71, 0x00003bbe, "_fcmple"}, // 135
-	{0x00003bc5, 0x00003c70, "_fmul"}, // 136
-	{0x00003c75, 0x00003c8c, "_frsb"}, // 137
-	{0x00003c8d, 0x00003d58, "_fsub"}, // 138
-	{0x00003d5d, 0x00003d6c, "_printf_fp_dec"}, // 139
+	{0x00001ee9, 0x00001f1c, "Control_RGB_LEDs"}, // 80
+	{0x00001f25, 0x00001f38, "Delay"}, // 81
+	{0x00001f3d, 0x00001f44, "Disable_Profiling"}, // 82
+	{0x00001f49, 0x00001ffa, "Display_Profile"}, // 83
+	{0x00002035, 0x0000203c, "Enable_Profiling"}, // 84
+	{0x00002041, 0x0000216e, "Find_Nearest_Waypoint"}, // 85
+	{0x00002195, 0x000021de, "Init_Profiling"}, // 86
+	{0x000021f1, 0x00002242, "Init_RGB_LEDs"}, // 87
+	{0x00002259, 0x000022ea, "Init_UART0"}, // 88
+	{0x00002351, 0x0000235a, "LCD_Erase"}, // 89
+	{0x00002361, 0x000023e2, "LCD_Fill_Buffer"}, // 90
+	{0x000023e5, 0x0000250a, "LCD_GPIO_Init"}, // 91
+	{0x00002521, 0x000025da, "LCD_Init"}, // 92
+	{0x000025fd, 0x00002692, "LCD_Start_Rectangle"}, // 93
+	{0x00002693, 0x000026c2, "LCD_TS_Blocking_Read"}, // 94
+	{0x000026c5, 0x000026dc, "LCD_TS_Init"}, // 95
+	{0x000026e5, 0x00002868, "LCD_TS_Read"}, // 96
+	{0x00002881, 0x000028aa, "LCD_Text_Init"}, // 97
+	{0x000028bd, 0x00002a58, "LCD_Text_PrintChar"}, // 98
+	{0x00002a65, 0x00002aaa, "LCD_Text_PrintStr"}, // 99
+	{0x00002ab1, 0x00002ae2, "LCD_Write_Rectangle_Pixe"}, // 100
+	{0x00002ae5, 0x00002b14, "PIT_IRQHandler"}, // 101
+	{0x00002b1d, 0x00002b68, "PIT_Init"}, // 102
+	{0x00002b81, 0x00002b8c, "PIT_Start"}, // 103
+	{0x00002b91, 0x00002bec, "PWM_Init"}, // 104
+	{0x00002bfd, 0x00002c5a, "Process_Profile_Sample"}, // 105
+	{0x00002c6d, 0x00002ca6, "Q_Dequeue"}, // 106
+	{0x00002ca7, 0x00002cb4, "Q_Empty"}, // 107
+	{0x00002cb5, 0x00002ce4, "Q_Enqueue"}, // 108
+	{0x00002ce5, 0x00002cf4, "Q_Full"}, // 109
+	{0x00002cf5, 0x00002d38, "Serial_Print_Sorted_Prof"}, // 110
+	{0x00002d91, 0x00002e28, "Sort_Profile_Regions"}, // 111
+	{0x00002e39, 0x00002ef0, "SystemInit"}, // 112
+	{0x00002f21, 0x00002f2c, "TPM0_IRQHandler"}, // 113
+	{0x00002f31, 0x00002f88, "UART0_IRQHandler"}, // 114
+	{0x00002f95, 0x00002fc4, "__ARM_common_ll_muluu"}, // 115
+	{0x00002fc5, 0x00002fd2, "__ARM_common_memcpy4_10"}, // 116
+	{0x00002fd5, 0x00002ffc, "__ARM_fpclassify"}, // 117
+	{0x00003001, 0x00003022, "__ARM_fpclassifyf"}, // 118
+	{0x00003023, 0x0000302c, "__mathlib_flt_infnan"}, // 119
+	{0x0000302d, 0x00003034, "__mathlib_flt_infnan2"}, // 120
+	{0x00003035, 0x00003040, "__mathlib_flt_invalid"}, // 121
+	{0x00003041, 0x0000304e, "__mathlib_flt_underflow"}, // 122
+	{0x00003051, 0x000031be, "__mathlib_rredf2"}, // 123
+	{0x000031d1, 0x000031de, "_is_digit"}, // 124
+	{0x000031e1, 0x000032c4, "acosf"}, // 125
+	{0x000032ed, 0x000034fa, "atan2f"}, // 126
+	{0x00003549, 0x00003686, "cosf"}, // 127
+	{0x000036c1, 0x000036d2, "fputc"}, // 128
+	{0x000036d9, 0x000037f2, "main"}, // 129
+	{0x00003879, 0x000039c2, "sinf"}, // 130
+	{0x000039fd, 0x00003a28, "sqrtf"}, // 131
+	{0x00003a29, 0x00003a54, "_get_lc_numeric"}, // 132
+	{0x00003a55, 0x00003ada, "_fadd"}, // 133
+	{0x00003ae1, 0x00003b8c, "_fmul"}, // 134
+	{0x00003b91, 0x00003be4, "_frcmple"}, // 135
+	{0x00003be9, 0x00003c00, "_frsb"}, // 136
+	{0x00003c01, 0x00003ccc, "_fsub"}, // 137
+	{0x00003cd1, 0x00003ce0, "_printf_fp_dec"}, // 138
 }; 
-const unsigned NumProfileRegions=140;
-volatile unsigned RegionCount[140];
-unsigned SortedRegions[140];
+const unsigned NumProfileRegions=139;
+volatile unsigned RegionCount[139];
+unsigned SortedRegions[139];

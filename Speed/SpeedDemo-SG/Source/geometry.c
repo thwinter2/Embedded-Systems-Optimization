@@ -6,7 +6,7 @@
 
 extern const GPT_T waypoints[];
 
-#define VER 1
+#define VER 10
 
 #if VER==1	// Double precision mathlib functions
 float Calc_Distance( GPT_T * p1,  const GPT_T * p2) { 
@@ -220,8 +220,7 @@ float Calc_Distance( GPT_T * p1,  const GPT_T * p2) {
 	p1LonRad = p1->Lon*PI_OVER_180;
 	p2LonRad = p2->Lon*PI_OVER_180;
 	p1LatRad = p1->Lat*PI_OVER_180;
-	p2LatRad = p2
-->Lat*PI_OVER_180;
+	p2LatRad = p2->Lat*PI_OVER_180;
   return acosf(sinf(p1LatRad)*sinf(p2LatRad) + 
 					cosf(p1LatRad)*cosf(p2LatRad)*
 							cosf(p2LonRad - p1LonRad)) * 6371;

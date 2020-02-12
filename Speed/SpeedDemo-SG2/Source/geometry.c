@@ -14,7 +14,7 @@ extern const GPT_T waypoints[];
 		NOTE: NOT using merged CD/CB functions here
 */
 
-#define VER 11  // Raise profiler sampling frequency for version 13
+#define VER 13  // Raise profiler sampling frequency for version 13
 
 // Table holds precalculated sin/cos for p2. Table Lat/Lon values are in radians
 float Calc_Distance( GPT_T * p1,  const GPT_T * p2) { 
