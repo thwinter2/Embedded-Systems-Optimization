@@ -83,9 +83,12 @@ float approx_sqrt(float x) {
 }
 
 float approx_atan2f(float y, float x) {
-	//http://pubs.opengroup.org/onlinepubs/009695399/functions/atan2.html
-	//Volkan SALMA
-
+/* 
+	Author: Volkan SALMA
+	Source code for approximation: https://gist.github.com/volkansalma/2972237
+	Info on original atan2f function: http://pubs.opengroup.org/onlinepubs/009695399/functions/atan2.html
+*/
+	
 	const float ONEQTR_PI = M_PI / 4.0;
 	const float THRQTR_PI = 3.0 * M_PI / 4.0;
 	float r, angle;
