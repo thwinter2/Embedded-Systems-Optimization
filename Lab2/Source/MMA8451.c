@@ -64,12 +64,11 @@ void read_full_xyz() {
 void read_xyz(void) {
 	// sign extend byte to 16 bits - need to cast to signed since function
 	// returns uint8_t which is unsigned
-	acc_X =
-			((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_XHI))) << 8;
-	acc_Y =
-			((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_YHI))) << 8;
-	acc_Z =
-			((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_ZHI))) << 8;
+	acc_X = ((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_XHI))) << 8;
+	ShortDelay(10); // minimum 7
+	acc_Y = ((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_YHI))) << 8;
+	ShortDelay(10); // minimum 7
+	acc_Z = ((int16_t) ((int8_t) i2c_read_byte(MMA_ADDR, REG_ZHI))) << 8;
 }
 
 float approx_sqrt(float x) {
@@ -88,7 +87,7 @@ float approx_atan2f(float y, float x) {
 	Source code for approximation: https://gist.github.com/volkansalma/2972237
 	Info on original atan2f function: http://pubs.opengroup.org/onlinepubs/009695399/functions/atan2.html
 */
-	
+
 	const float ONEQTR_PI = M_PI / 4.0;
 	const float THRQTR_PI = 3.0 * M_PI / 4.0;
 	float r, angle;
