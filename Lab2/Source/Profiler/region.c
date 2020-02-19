@@ -1,8 +1,8 @@
 // Automatically generated file. Do not edit if you plan to regenerate it.
 #include "region.h"
 const REGION_T RegionTable[] = {
-	{0x00001149, 0x000011b6, "__NVIC_SetPriority"}, // 0
-	{0x000012bd, 0x0000156c, "_printf_core"}, // 1
+	{0x0000115d, 0x000011ca, "__NVIC_SetPriority"}, // 0
+	{0x000012d1, 0x00001580, "_printf_core"}, // 1
 	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 2
 	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 3
 	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 4
@@ -50,34 +50,35 @@ const REGION_T RegionTable[] = {
 	{0x00000d65, 0x00000da8, "Q_Enqueue"}, // 46
 	{0x00000da9, 0x00000dbc, "Q_Full"}, // 47
 	{0x00000dbd, 0x00000e00, "Serial_Print_Sorted_Prof"}, // 48
-	{0x00000e55, 0x00000eec, "Sort_Profile_Regions"}, // 49
-	{0x00000efd, 0x00001006, "SystemInit"}, // 50
-	{0x00001035, 0x00001040, "TPM0_IRQHandler"}, // 51
-	{0x00001045, 0x000010be, "UART0_IRQHandler"}, // 52
-	{0x000010cd, 0x000010e4, "__0printf$5"}, // 53
-	{0x000010ed, 0x0000111a, "__ARM_clz"}, // 54
-	{0x0000111d, 0x00001144, "__ARM_fpclassify"}, // 55
-	{0x000011c1, 0x0000126c, "__kernel_poly"}, // 56
-	{0x0000126d, 0x00001276, "__mathlib_dbl_infnan"}, // 57
-	{0x00001277, 0x0000127e, "__mathlib_dbl_infnan2"}, // 58
-	{0x00001281, 0x0000128e, "__mathlib_dbl_underflow"}, // 59
-	{0x00001295, 0x000012a2, "__scatterload_copy"}, // 60
-	{0x000012a3, 0x000012b0, "__scatterload_zeroinit"}, // 61
-	{0x000012b1, 0x000012b6, "__set_errno"}, // 62
-	{0x00001599, 0x00001770, "atan"}, // 63
-	{0x000017b5, 0x00001902, "atan2"}, // 64
-	{0x0000192d, 0x00001a30, "convert_xyz_to_roll_pitc"}, // 65
-	{0x00001a55, 0x00001a74, "fputc"}, // 66
-	{0x00001a79, 0x00001b80, "i2c_busy"}, // 67
-	{0x00001b8d, 0x00001be2, "i2c_init"}, // 68
-	{0x00001bf1, 0x00001c68, "i2c_read_byte"}, // 69
-	{0x00001c6d, 0x00001cb4, "i2c_wait"}, // 70
-	{0x00001cbd, 0x00001d00, "i2c_write_byte"}, // 71
-	{0x00001d05, 0x00001d3a, "init_mma"}, // 72
-	{0x00001d3d, 0x00001dae, "main"}, // 73
-	{0x00001df1, 0x00001e24, "read_xyz"}, // 74
-	{0x00001e31, 0x00001e72, "sqrt"}, // 75
+	{0x00000e55, 0x00000e68, "ShortDelay"}, // 49
+	{0x00000e69, 0x00000f00, "Sort_Profile_Regions"}, // 50
+	{0x00000f11, 0x0000101a, "SystemInit"}, // 51
+	{0x00001049, 0x00001054, "TPM0_IRQHandler"}, // 52
+	{0x00001059, 0x000010d2, "UART0_IRQHandler"}, // 53
+	{0x000010e1, 0x000010f8, "__0printf$5"}, // 54
+	{0x00001101, 0x0000112e, "__ARM_clz"}, // 55
+	{0x00001131, 0x00001158, "__ARM_fpclassify"}, // 56
+	{0x000011d5, 0x00001280, "__kernel_poly"}, // 57
+	{0x00001281, 0x0000128a, "__mathlib_dbl_infnan"}, // 58
+	{0x0000128b, 0x00001292, "__mathlib_dbl_infnan2"}, // 59
+	{0x00001295, 0x000012a2, "__mathlib_dbl_underflow"}, // 60
+	{0x000012a9, 0x000012b6, "__scatterload_copy"}, // 61
+	{0x000012b7, 0x000012c4, "__scatterload_zeroinit"}, // 62
+	{0x000012c5, 0x000012ca, "__set_errno"}, // 63
+	{0x000015ad, 0x00001784, "atan"}, // 64
+	{0x000017c9, 0x00001916, "atan2"}, // 65
+	{0x00001941, 0x00001a44, "convert_xyz_to_roll_pitc"}, // 66
+	{0x00001a69, 0x00001a88, "fputc"}, // 67
+	{0x00001a8d, 0x00001b94, "i2c_busy"}, // 68
+	{0x00001ba1, 0x00001bf6, "i2c_init"}, // 69
+	{0x00001c05, 0x00001c7c, "i2c_read_byte"}, // 70
+	{0x00001c81, 0x00001cc8, "i2c_wait"}, // 71
+	{0x00001cd1, 0x00001d14, "i2c_write_byte"}, // 72
+	{0x00001d19, 0x00001d4e, "init_mma"}, // 73
+	{0x00001d51, 0x00001dc2, "main"}, // 74
+	{0x00001e05, 0x00001e44, "read_xyz"}, // 75
+	{0x00001e51, 0x00001e92, "sqrt"}, // 76
 }; 
-const unsigned NumProfileRegions=76;
-volatile unsigned RegionCount[76];
-unsigned SortedRegions[76];
+const unsigned NumProfileRegions=77;
+volatile unsigned RegionCount[77];
+unsigned SortedRegions[77];

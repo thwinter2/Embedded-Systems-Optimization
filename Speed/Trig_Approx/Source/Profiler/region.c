@@ -1,0 +1,85 @@
+// Automatically generated file. Do not edit if you plan to regenerate it.
+#include "region.h"
+const REGION_T RegionTable[] = {
+	{0x00001231, 0x00001388, "_fp_digits"}, // 0
+	{0x000013a5, 0x00001a7e, "_printf_core"}, // 1
+	{0x00001a91, 0x00001ab0, "_printf_post_padding"}, // 2
+	{0x00001ab1, 0x00001adc, "_printf_pre_padding"}, // 3
+	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 4
+	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 5
+	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 6
+	{0x000000e5, 0x000000e6, "SVC_Handler"}, // 7
+	{0x000000e7, 0x000000e8, "PendSV_Handler"}, // 8
+	{0x000000e9, 0x000000ea, "SysTick_Handler"}, // 9
+	{0x000000fd, 0x00000128, "__aeabi_uidivmod"}, // 10
+	{0x00000129, 0x000001ca, "__aeabi_fadd"}, // 11
+	{0x000001cb, 0x000001d2, "__aeabi_fsub"}, // 12
+	{0x000001d3, 0x000001da, "__aeabi_frsub"}, // 13
+	{0x000001db, 0x00000254, "__aeabi_fmul"}, // 14
+	{0x00000255, 0x0000026c, "__ARM_scalbnf"}, // 15
+	{0x0000026d, 0x000003b4, "__aeabi_dadd"}, // 16
+	{0x000003b5, 0x000003c0, "__aeabi_dsub"}, // 17
+	{0x000003c1, 0x000003cc, "__aeabi_drsub"}, // 18
+	{0x000003d1, 0x000003e6, "__aeabi_i2f"}, // 19
+	{0x000003e7, 0x000003f4, "__aeabi_ui2f"}, // 20
+	{0x000003f5, 0x000003fc, "Disable_Profiling"}, // 21
+	{0x00000411, 0x000004da, "__aeabi_dmul"}, // 22
+	{0x000004e1, 0x000005ca, "__aeabi_ddiv"}, // 23
+	{0x000005d1, 0x000005e8, "__aeabi_ui2d"}, // 24
+	{0x000005ed, 0x0000061e, "__aeabi_f2iz"}, // 25
+	{0x00000621, 0x00000652, "__aeabi_d2uiz"}, // 26
+	{0x0000065d, 0x000006bc, "__aeabi_uldivmod"}, // 27
+	{0x000006bd, 0x000006dc, "__aeabi_llsl"}, // 28
+	{0x000006dd, 0x000006fe, "__aeabi_llsr"}, // 29
+	{0x000006ff, 0x00000724, "__aeabi_lasr"}, // 30
+	{0x00000725, 0x00000734, "_float_round"}, // 31
+	{0x00000735, 0x000007a6, "_float_epilogue"}, // 32
+	{0x000007a7, 0x000007e4, "_frnd"}, // 33
+	{0x000007e5, 0x00000832, "_frem"}, // 34
+	{0x00000833, 0x0000084c, "_double_round"}, // 35
+	{0x0000084d, 0x000008f0, "_double_epilogue"}, // 36
+	{0x000008f1, 0x00000926, "__aeabi_d2ulz"}, // 37
+	{0x00000931, 0x00000956, "__aeabi_cdrcmple"}, // 38
+	{0x00000959, 0x00000974, "__scatterload"}, // 39
+	{0x0000097d, 0x000009f8, "__aeabi_fdiv"}, // 40
+	{0x000009f9, 0x00000a2c, "Control_RGB_LEDs"}, // 41
+	{0x00000a35, 0x00000a48, "Delay"}, // 42
+	{0x00000a4d, 0x00000a54, "Enable_Profiling"}, // 43
+	{0x00000a59, 0x00000aa0, "Init_Profiling"}, // 44
+	{0x00000ab1, 0x00000b02, "Init_RGB_LEDs"}, // 45
+	{0x00000b19, 0x00000baa, "Init_UART0"}, // 46
+	{0x00000bc1, 0x00000bf0, "PIT_IRQHandler"}, // 47
+	{0x00000bf9, 0x00000c44, "PIT_Init"}, // 48
+	{0x00000c5d, 0x00000c68, "PIT_Start"}, // 49
+	{0x00000c6d, 0x00000cc6, "Process_Profile_Sample"}, // 50
+	{0x00000cd9, 0x00000d12, "Q_Dequeue"}, // 51
+	{0x00000d13, 0x00000d20, "Q_Empty"}, // 52
+	{0x00000d21, 0x00000d50, "Q_Enqueue"}, // 53
+	{0x00000d51, 0x00000d60, "Q_Full"}, // 54
+	{0x00000d61, 0x00000da4, "Serial_Print_Sorted_Prof"}, // 55
+	{0x00000dfd, 0x00000e80, "Sort_Profile_Regions"}, // 56
+	{0x00000e91, 0x00000f48, "SystemInit"}, // 57
+	{0x00000f79, 0x00000f84, "TPM0_IRQHandler"}, // 58
+	{0x00000f89, 0x00000fe0, "UART0_IRQHandler"}, // 59
+	{0x00000fed, 0x00001004, "__0printf"}, // 60
+	{0x0000100d, 0x0000103a, "__ARM_clz"}, // 61
+	{0x0000103b, 0x0000106c, "__ARM_common_ll_muluu"}, // 62
+	{0x0000106d, 0x00001076, "__mathlib_flt_infnan"}, // 63
+	{0x00001077, 0x00001082, "__mathlib_flt_invalid"}, // 64
+	{0x00001085, 0x000011f2, "__mathlib_rredf2"}, // 65
+	{0x00001205, 0x00001212, "__scatterload_copy"}, // 66
+	{0x00001213, 0x00001214, "__scatterload_null"}, // 67
+	{0x00001215, 0x00001222, "__scatterload_zeroinit"}, // 68
+	{0x00001225, 0x0000122a, "__set_errno"}, // 69
+	{0x00001add, 0x00001bc4, "cos_32"}, // 70
+	{0x00001bdd, 0x00001c40, "cos_52"}, // 71
+	{0x00001c4d, 0x00001c84, "cos_52s"}, // 72
+	{0x00001c95, 0x00001d36, "cos_xx"}, // 73
+	{0x00001d4d, 0x00001e8a, "cosf"}, // 74
+	{0x00001ec5, 0x00001f24, "fmodf"}, // 75
+	{0x00001f25, 0x00001f36, "fputc"}, // 76
+	{0x00001f3d, 0x00001fca, "main"}, // 77
+}; 
+const unsigned NumProfileRegions=78;
+volatile unsigned RegionCount[78];
+unsigned SortedRegions[78];

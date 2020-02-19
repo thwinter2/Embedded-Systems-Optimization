@@ -119,16 +119,6 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>CMSIS_AGDI</Key>
-          <Name>-X"Any" -UAny -O206 -S0 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(0BC11477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD1FFFF000 -FC4000 -FN1 -FF0MK_P128_48MHZ.FLM -FS00 -FL020000 -FP0($$Device:MKL25Z128xxx4$Flash\MK_P128_48MHZ.FLM)</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
-          <Key>Pemicro_ArmCortexInterface</Key>
-          <Name>-S0 -B0 -O0</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -150,7 +140,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U621000000 -O110 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(0BC11477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD1FFFF000 -FC4000 -FN1 -FF0MK_P128_48MHZ.FLM -FS00 -FL020000 -FP0($$Device:MKL25Z128xxx4$Flash\MK_P128_48MHZ.FLM)</Name>
+          <Name>-U621000000 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(0BC11477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD1FFFF000 -FC4000 -FN1 -FF0MK_P128_48MHZ.FLM -FS00 -FL020000 -FP0($$Device:MKL25Z128xxx4$Flash\MK_P128_48MHZ.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -158,49 +148,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD1FFFF000 -FC4000 -FN1 -FF0MK_P128_48MHZ -FS00 -FL020000 -FP0($$Device:MKL25Z128xxx4$Flash\MK_P128_48MHZ.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>0</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>4810</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename></Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>0x000012CA</Expression>
-        </Bp>
-      </Breakpoint>
-      <WatchWindow1>
-        <Ww>
-          <count>0</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>(float) R0</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ay</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>az</ItemText>
-        </Ww>
-      </WatchWindow1>
-      <MemoryWindow1>
-        <Mm>
-          <WinNumber>1</WinNumber>
-          <SubType>0</SubType>
-          <ItemText>MSP</ItemText>
-          <AccSizeX>0</AccSizeX>
-        </Mm>
-      </MemoryWindow1>
+      <Breakpoint/>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -225,7 +173,7 @@
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
-        <StkLoc>1</StkLoc>
+        <StkLoc>0</StkLoc>
         <TrcWin>0</TrcWin>
         <newCpu>0</newCpu>
         <uProt>0</uProt>
@@ -259,26 +207,14 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\delay.c</PathWithFileName>
-      <FilenameWithoutPath>delay.c</FilenameWithoutPath>
+      <PathWithFileName>.\Source\sincos.c</PathWithFileName>
+      <FilenameWithoutPath>sincos.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>2</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\LEDs.c</PathWithFileName>
-      <FilenameWithoutPath>LEDs.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>3</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -290,13 +226,25 @@
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
+      <FileNumber>3</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\delay.c</PathWithFileName>
+      <FilenameWithoutPath>delay.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
       <FileNumber>4</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\MMA8451.c</PathWithFileName>
-      <FilenameWithoutPath>MMA8451.c</FilenameWithoutPath>
+      <PathWithFileName>.\Source\LEDs.c</PathWithFileName>
+      <FilenameWithoutPath>LEDs.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -307,26 +255,14 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\debug.c</PathWithFileName>
-      <FilenameWithoutPath>debug.c</FilenameWithoutPath>
+      <PathWithFileName>.\Source\queue.c</PathWithFileName>
+      <FilenameWithoutPath>queue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>6</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\I2C.c</PathWithFileName>
-      <FilenameWithoutPath>I2C.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -338,69 +274,13 @@
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>8</FileNumber>
+      <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Source\UART.c</PathWithFileName>
       <FilenameWithoutPath>UART.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>9</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\queue.c</PathWithFileName>
-      <FilenameWithoutPath>queue.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-  </Group>
-
-  <Group>
-    <GroupName>Profiler</GroupName>
-    <tvExp>1</tvExp>
-    <tvExpOptDlg>0</tvExpOptDlg>
-    <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>10</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\Profiler\profile.c</PathWithFileName>
-      <FilenameWithoutPath>profile.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>11</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\Profiler\region.c</PathWithFileName>
-      <FilenameWithoutPath>region.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>12</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\Profiler\PIT.c</PathWithFileName>
-      <FilenameWithoutPath>PIT.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -413,8 +293,8 @@
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>13</FileNumber>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>8</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -425,8 +305,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>14</FileNumber>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>9</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -437,20 +317,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>15</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\LCD\lucida_8x13.c</PathWithFileName>
-      <FilenameWithoutPath>lucida_8x13.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>16</FileNumber>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>10</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -461,8 +329,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>17</FileNumber>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>11</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -473,14 +341,58 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>18</FileNumber>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>12</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Source\LCD\touchscreen.c</PathWithFileName>
       <FilenameWithoutPath>touchscreen.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>Profiler</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>13</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\Profiler\PIT.c</PathWithFileName>
+      <FilenameWithoutPath>PIT.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>14</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\Profiler\profile.c</PathWithFileName>
+      <FilenameWithoutPath>profile.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>15</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>1</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\Profiler\region.c</PathWithFileName>
+      <FilenameWithoutPath>region.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
