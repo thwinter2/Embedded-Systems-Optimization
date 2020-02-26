@@ -32,8 +32,8 @@ void die(												/* Stop with dying message */
 }
 
 
+#if 0
 void PFF_Test(void) {
-
 	FATFS fatfs;									/* File system object */
 	DIR dir;											/* Directory object */
 	FILINFO fno;									/* File information object */
@@ -115,6 +115,7 @@ void PFF_Test(void) {
 //  printf("\nTest completed.\n");
 	for (;;);
 }
+#endif
 
 /*----------------------------------------------------------------------------
   MAIN function

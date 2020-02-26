@@ -5,7 +5,7 @@
  *  e-mail: nelson.lombardo@gmail.com
  *  License at the end of file.
  */
- // Modified 2017 by Alex Dean (agdean@ncsu.edu) for teaching FSMs
+ // Modified 2017 by Alex Dean (agdean@ncsu.edu) for teaching FSMs and general use
 
 
 #include "spi_io.h"

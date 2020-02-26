@@ -34,6 +34,8 @@ int fgetc(FILE *f){
 	return UART0->D;
 }
 
+#pragma push
+#pragma diag_suppress 550
 // Code listing 8.8, p. 231
 void Init_UART0(uint32_t baud_rate) {
 	uint16_t sbr;
@@ -99,8 +101,8 @@ void Init_UART0(uint32_t baud_rate) {
 	// Clear the UART RDRF flag
 	temp = UART0->D;
 	UART0->S1 &= ~UART0_S1_RDRF_MASK;
-
 }
+#pragma pop
 
 /* END - UART0 Device Driver 
 	Code created by Shannon Strutz

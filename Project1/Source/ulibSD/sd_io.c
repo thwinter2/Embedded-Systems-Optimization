@@ -336,7 +336,7 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 			// AGD: Loop fusion to simplify FSM formation
 			byte_num = 0;
 			do {
-				DEBUG_TOGGLE(DBG_2); // AGD TODO: remove for project
+				DEBUG_TOGGLE(DBG_2); 
 				data = SPI_RW(0xff);
 				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
 					*(BYTE *) dat = data;
