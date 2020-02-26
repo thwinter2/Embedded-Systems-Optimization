@@ -5,7 +5,6 @@
 // Last updated Nov. 26, 2010
 //------------------------------------------------------------------------------
 #include "picojpeg.h"
-#include "JPEG_image.h"
 #include "pff.h"
 #include "debug.h"
 
@@ -237,6 +236,7 @@ int LCD_JPEG(void) {
 	int image_count;
 
 	do {
+		pixel_data_hash = 0;
 		rc = pf_opendir(&dir, "");
 		image_count = 0;
 		if (rc == FR_OK) {
@@ -263,10 +263,18 @@ int LCD_JPEG(void) {
 				LCD_Text_PrintStr_RC(0, 0, "No JPEGs Found!");				
 			}
 		} else {
-			LCD_Text_PrintStr_RC(0, 0, "Couldn't open root dir");
+			LCD_Text_PrintStr_RC(0, 0, "Couldn't open");
+			LCD_Text_PrintStr_RC(0, 0, "root directory");
 			while (1)
 				;
 		}
+#if ENABLE_PIXEL_HASH
+		if (pixel_data_hash != 0x7D215B3D) {
+			LCD_Text_PrintStr_RC(0, 0, "Pixel hash failed");
+			while (1)
+				;
+		}
+#endif
 	} while (RUN_FOREVER);
 
 	return 0;

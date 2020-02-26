@@ -5,6 +5,8 @@
 #include "misc.h"
 #include "colors.h"
 
+#define ENABLE_PIXEL_HASH 0 // define to 0 to disable pixel hashing
+
 typedef struct {
 	uint32_t X, Y;
 } PT_T;
@@ -78,5 +80,5 @@ void LCD_Write_Rectangle_N_Quad_Pixel_Components(uint32_t * R, uint32_t * G, uin
  void LCD_TS_Calibrate(void);
 
  extern uint8_t G_LCD_char_width, G_LCD_char_height;
-
+ extern uint32_t pixel_data_hash;
 #endif

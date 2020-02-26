@@ -706,6 +706,10 @@ static uint8 readDRIMarker(void)
    
    return 0;
 }
+
+#pragma push
+#pragma diag_suppress 550
+#pragma diag_suppress 170
 //------------------------------------------------------------------------------
 // Read a start of scan (SOS) marker.
 static uint8 readSOSMarker(void)
@@ -756,6 +760,8 @@ static uint8 readSOSMarker(void)
    
    return 0;
 }
+#pragma pop
+
 //------------------------------------------------------------------------------
 static uint8 nextMarker(void)
 {

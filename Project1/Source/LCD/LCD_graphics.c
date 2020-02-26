@@ -5,7 +5,6 @@
 #include "T6963.h"
 
 #include "picojpeg.h"
-#include "JPEG_image.h"
 
 #define DRAW_RUNS_AS_LINES (0)
 #define STEP 8
