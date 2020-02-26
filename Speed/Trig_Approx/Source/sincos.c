@@ -196,11 +196,6 @@ float cos_xx(float x) {
 	if (x < 0)
 		x = -x;											// cos(-x) = cos(x)
 	x = fmod(x, twopi);						// Get rid of values > 2* pi
-/*
-	while (x > twopi) {
-		x -= twopi;
-	}
-*/
 
 	quad = (int) (x * two_over_pi);	// Get quadrant # (0 to 3) we're in
 	switch (quad) {

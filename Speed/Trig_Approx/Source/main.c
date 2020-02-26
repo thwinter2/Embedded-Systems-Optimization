@@ -63,7 +63,7 @@ int main(void) {
 	printf("n\rTrig Function Approximation Tester\n\r");
 #endif
 
-#if 0
+#if 1
 	eval_error();
 	while (1)
 		;
@@ -78,13 +78,11 @@ int main(void) {
 	LCD_Text_PrintStr(&pt, "Initializing");
 #endif
 
-	Control_RGB_LEDs(1, 0, 1);		// Purple: running
 
 	while (test_funs[i].Function != NULL) {
 		Init_Profiling();
-//		Enable_Profiling();
+		Control_RGB_LEDs(1, 0, 1);		// Purple: running
 		sum = Test_Approx(NUM_TESTS, test_funs[i].Function);
-// 		Disable_Profiling();
 		Control_RGB_LEDs(0, 0, 1);	// Blue: done
 		printf("\n\r*** %s ***\n\r", test_funs[i].Name);
 		Sort_Profile_Regions();

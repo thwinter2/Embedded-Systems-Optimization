@@ -1,10 +1,10 @@
 // Automatically generated file. Do not edit if you plan to regenerate it.
 #include "region.h"
 const REGION_T RegionTable[] = {
-	{0x00001231, 0x00001388, "_fp_digits"}, // 0
-	{0x000013a5, 0x00001a7e, "_printf_core"}, // 1
-	{0x00001a91, 0x00001ab0, "_printf_post_padding"}, // 2
-	{0x00001ab1, 0x00001adc, "_printf_pre_padding"}, // 3
+	{0x00001539, 0x00001690, "_fp_digits"}, // 0
+	{0x000016ad, 0x00001d86, "_printf_core"}, // 1
+	{0x00001d99, 0x00001db8, "_printf_post_padding"}, // 2
+	{0x00001db9, 0x00001de4, "_printf_pre_padding"}, // 3
 	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 4
 	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 5
 	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 6
@@ -21,65 +21,66 @@ const REGION_T RegionTable[] = {
 	{0x000003b5, 0x000003c0, "__aeabi_dsub"}, // 17
 	{0x000003c1, 0x000003cc, "__aeabi_drsub"}, // 18
 	{0x000003d1, 0x000003e6, "__aeabi_i2f"}, // 19
-	{0x000003e7, 0x000003f4, "__aeabi_ui2f"}, // 20
-	{0x000003f5, 0x000003fc, "Disable_Profiling"}, // 21
-	{0x00000411, 0x000004da, "__aeabi_dmul"}, // 22
-	{0x000004e1, 0x000005ca, "__aeabi_ddiv"}, // 23
-	{0x000005d1, 0x000005e8, "__aeabi_ui2d"}, // 24
-	{0x000005ed, 0x0000061e, "__aeabi_f2iz"}, // 25
-	{0x00000621, 0x00000652, "__aeabi_d2uiz"}, // 26
-	{0x0000065d, 0x000006bc, "__aeabi_uldivmod"}, // 27
-	{0x000006bd, 0x000006dc, "__aeabi_llsl"}, // 28
-	{0x000006dd, 0x000006fe, "__aeabi_llsr"}, // 29
-	{0x000006ff, 0x00000724, "__aeabi_lasr"}, // 30
-	{0x00000725, 0x00000734, "_float_round"}, // 31
-	{0x00000735, 0x000007a6, "_float_epilogue"}, // 32
-	{0x000007a7, 0x000007e4, "_frnd"}, // 33
-	{0x000007e5, 0x00000832, "_frem"}, // 34
-	{0x00000833, 0x0000084c, "_double_round"}, // 35
-	{0x0000084d, 0x000008f0, "_double_epilogue"}, // 36
-	{0x000008f1, 0x00000926, "__aeabi_d2ulz"}, // 37
-	{0x00000931, 0x00000956, "__aeabi_cdrcmple"}, // 38
-	{0x00000959, 0x00000974, "__scatterload"}, // 39
-	{0x0000097d, 0x000009f8, "__aeabi_fdiv"}, // 40
-	{0x000009f9, 0x00000a2c, "Control_RGB_LEDs"}, // 41
-	{0x00000a35, 0x00000a48, "Delay"}, // 42
-	{0x00000a4d, 0x00000a54, "Enable_Profiling"}, // 43
-	{0x00000a59, 0x00000aa0, "Init_Profiling"}, // 44
-	{0x00000ab1, 0x00000b02, "Init_RGB_LEDs"}, // 45
-	{0x00000b19, 0x00000baa, "Init_UART0"}, // 46
-	{0x00000bc1, 0x00000bf0, "PIT_IRQHandler"}, // 47
-	{0x00000bf9, 0x00000c44, "PIT_Init"}, // 48
-	{0x00000c5d, 0x00000c68, "PIT_Start"}, // 49
-	{0x00000c6d, 0x00000cc6, "Process_Profile_Sample"}, // 50
-	{0x00000cd9, 0x00000d12, "Q_Dequeue"}, // 51
-	{0x00000d13, 0x00000d20, "Q_Empty"}, // 52
-	{0x00000d21, 0x00000d50, "Q_Enqueue"}, // 53
-	{0x00000d51, 0x00000d60, "Q_Full"}, // 54
-	{0x00000d61, 0x00000da4, "Serial_Print_Sorted_Prof"}, // 55
-	{0x00000dfd, 0x00000e80, "Sort_Profile_Regions"}, // 56
-	{0x00000e91, 0x00000f48, "SystemInit"}, // 57
-	{0x00000f79, 0x00000f84, "TPM0_IRQHandler"}, // 58
-	{0x00000f89, 0x00000fe0, "UART0_IRQHandler"}, // 59
-	{0x00000fed, 0x00001004, "__0printf"}, // 60
-	{0x0000100d, 0x0000103a, "__ARM_clz"}, // 61
-	{0x0000103b, 0x0000106c, "__ARM_common_ll_muluu"}, // 62
-	{0x0000106d, 0x00001076, "__mathlib_flt_infnan"}, // 63
-	{0x00001077, 0x00001082, "__mathlib_flt_invalid"}, // 64
-	{0x00001085, 0x000011f2, "__mathlib_rredf2"}, // 65
-	{0x00001205, 0x00001212, "__scatterload_copy"}, // 66
-	{0x00001213, 0x00001214, "__scatterload_null"}, // 67
-	{0x00001215, 0x00001222, "__scatterload_zeroinit"}, // 68
-	{0x00001225, 0x0000122a, "__set_errno"}, // 69
-	{0x00001add, 0x00001bc4, "cos_32"}, // 70
-	{0x00001bdd, 0x00001c40, "cos_52"}, // 71
-	{0x00001c4d, 0x00001c84, "cos_52s"}, // 72
-	{0x00001c95, 0x00001d36, "cos_xx"}, // 73
-	{0x00001d4d, 0x00001e8a, "cosf"}, // 74
-	{0x00001ec5, 0x00001f24, "fmodf"}, // 75
-	{0x00001f25, 0x00001f36, "fputc"}, // 76
-	{0x00001f3d, 0x00001fca, "main"}, // 77
+	{0x000003e7, 0x000003f4, "Q_Empty"}, // 20
+	{0x000003f5, 0x000003fe, "__mathlib_dbl_infnan"}, // 21
+	{0x000003ff, 0x00000400, "__scatterload_null"}, // 22
+	{0x00000411, 0x000004da, "__aeabi_dmul"}, // 23
+	{0x000004e1, 0x000005ca, "__aeabi_ddiv"}, // 24
+	{0x000005d1, 0x000005e8, "__aeabi_ui2d"}, // 25
+	{0x000005ed, 0x0000061e, "__aeabi_f2iz"}, // 26
+	{0x00000621, 0x0000065e, "__aeabi_d2iz"}, // 27
+	{0x00000669, 0x0000069a, "__aeabi_d2uiz"}, // 28
+	{0x000006a5, 0x000006cc, "__aeabi_f2d"}, // 29
+	{0x000006cd, 0x0000072c, "__aeabi_uldivmod"}, // 30
+	{0x0000072d, 0x0000074c, "__aeabi_llsl"}, // 31
+	{0x0000074d, 0x0000076e, "__aeabi_llsr"}, // 32
+	{0x0000076f, 0x00000794, "__aeabi_lasr"}, // 33
+	{0x00000795, 0x000007a4, "_float_round"}, // 34
+	{0x000007a5, 0x00000816, "_float_epilogue"}, // 35
+	{0x00000817, 0x00000864, "_frem"}, // 36
+	{0x00000865, 0x0000087e, "_double_round"}, // 37
+	{0x0000087f, 0x00000922, "_double_epilogue"}, // 38
+	{0x00000925, 0x0000095a, "__aeabi_d2ulz"}, // 39
+	{0x00000965, 0x0000098a, "__aeabi_cdrcmple"}, // 40
+	{0x0000098d, 0x000009a8, "__scatterload"}, // 41
+	{0x000009b1, 0x00000a2c, "__aeabi_fdiv"}, // 42
+	{0x00000a2d, 0x00000a58, "__ARM_scalbn"}, // 43
+	{0x00000a59, 0x00000a7a, "__aeabi_i2d"}, // 44
+	{0x00000a81, 0x00000ad2, "Init_RGB_LEDs"}, // 45
+	{0x00000ae9, 0x00000b7a, "Init_UART0"}, // 46
+	{0x00000b91, 0x00000bc0, "PIT_IRQHandler"}, // 47
+	{0x00000bc9, 0x00000c22, "Process_Profile_Sample"}, // 48
+	{0x00000c35, 0x00000c6e, "Q_Dequeue"}, // 49
+	{0x00000c6f, 0x00000c9e, "Q_Enqueue"}, // 50
+	{0x00000c9f, 0x00000cae, "Q_Full"}, // 51
+	{0x00000cb1, 0x00000d68, "SystemInit"}, // 52
+	{0x00000d99, 0x00000da4, "TPM0_IRQHandler"}, // 53
+	{0x00000da9, 0x00000e00, "UART0_IRQHandler"}, // 54
+	{0x00000e0d, 0x00000e24, "__0printf"}, // 55
+	{0x00000e2d, 0x00000e5a, "__ARM_clz"}, // 56
+	{0x00000e5b, 0x00000e8c, "__ARM_common_ll_muluu"}, // 57
+	{0x00000e8d, 0x00000eb4, "__ARM_fpclassify"}, // 58
+	{0x00000eb9, 0x000011fe, "__ieee754_rem_pio2"}, // 59
+	{0x00001255, 0x00001334, "__kernel_cos"}, // 60
+	{0x00001349, 0x000013f4, "__kernel_poly"}, // 61
+	{0x000013f5, 0x000014d2, "__kernel_sin"}, // 62
+	{0x000014e1, 0x000014f0, "__mathlib_dbl_invalid"}, // 63
+	{0x000014f1, 0x000014fe, "__mathlib_dbl_underflow"}, // 64
+	{0x00001505, 0x00001510, "__mathlib_flt_invalid"}, // 65
+	{0x00001511, 0x0000151e, "__scatterload_copy"}, // 66
+	{0x0000151f, 0x0000152c, "__scatterload_zeroinit"}, // 67
+	{0x0000152d, 0x00001532, "__set_errno"}, // 68
+	{0x00001de5, 0x00001e72, "cos"}, // 69
+	{0x00001e7d, 0x00001f64, "cos_32"}, // 70
+	{0x00001f7d, 0x00001fe0, "cos_52"}, // 71
+	{0x00001fed, 0x00002024, "cos_52s"}, // 72
+	{0x00002035, 0x000020d6, "cos_xx"}, // 73
+	{0x000020ed, 0x000022be, "eval_error"}, // 74
+	{0x00002399, 0x000023f8, "fmodf"}, // 75
+	{0x000023f9, 0x0000240a, "fputc"}, // 76
+	{0x00002411, 0x00002428, "main"}, // 77
+	{0x00002451, 0x000024e2, "sin"}, // 78
 }; 
-const unsigned NumProfileRegions=78;
-volatile unsigned RegionCount[78];
-unsigned SortedRegions[78];
+const unsigned NumProfileRegions=79;
+volatile unsigned RegionCount[79];
+unsigned SortedRegions[79];
