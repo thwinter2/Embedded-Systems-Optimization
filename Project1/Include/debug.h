@@ -13,9 +13,9 @@
 #define DBG_6 10	// unused
 #define DBG_7 11	// unused
 
-#define DEBUG_START(channel) {PTB->PSOR = MASK(channel);} 
-#define DEBUG_STOP(channel) { PTB->PCOR = MASK(channel); }
-#define DEBUG_TOGGLE(channel) { PTB->PTOR = MASK(channel); }
+#define DEBUG_START(channel) {FPTB->PSOR = MASK(channel);} 
+#define DEBUG_STOP(channel) { FPTB->PCOR = MASK(channel); }
+#define DEBUG_TOGGLE(channel) { FPTB->PTOR = MASK(channel); }
 
 void Init_Debug_Signals(void);
 

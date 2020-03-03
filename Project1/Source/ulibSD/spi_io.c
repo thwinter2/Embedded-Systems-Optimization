@@ -18,6 +18,39 @@
 
 BYTE msgReceive;
 
+void Init_DMA_Transmit(void){
+	
+	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
+	SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;
+	
+	DMAMUX0->CHCFG[0] = 0;
+	
+	DMA0->DMA[0].DCR = DMA_DCR_EINT_MASK | DMA_DCR_SINC_MASK | DMA_DCR_SSIZE(1) | DMA_DCR_DSIZE(1) | 
+	DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK;
+	
+	// Configure DMA ISR
+	NVIC_SetPriority(DMA0_IRQn, 2);
+	NVIC_ClearPendingIRQ(DMA0_IRQn);
+	NVIC_EnableIRQ(DMA0_IRQn);
+	
+	// Set DMA MUX channel to use SPI1 Transmit as Trigger
+	DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_SOURCE(19);
+	
+}
+
+void Start_DMA(uint32_t * source, uint32_t * destination, uint32_t count){
+	// Initialize Source/Dest Pointers
+	DMA0->DMA[0].SAR = DMA_SAR_SAR((uint32_t) source);
+	DMA0->DMA[0].DAR = DMA_DAR_DAR((uint32_t) destination);
+	// byte count
+	DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR(count);
+	// clear done flag
+	DMA0->DMA[0].DSR_BCR &= ~DMA_DSR_BCR_DONE_MASK;
+	// set enable flag
+	DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_ENBL_MASK;
+	
+}
+
 void SPI_Init(void) {
 
 	SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK;
@@ -29,7 +62,7 @@ void SPI_Init(void) {
 	 * Multiplexing pines
 	 */
 	PORTE_PCR4 = PORT_PCR_MUX(1) | PORT_PCR_DSE_MASK & (~PORT_PCR_SRE_MASK);	//CS
-	GPIOE_PDDR |= 1 << 4;					// Pin is configured as general-purpose output, for the GPIO function.
+	FGPIOE_PDDR |= 1 << 4;					// Pin is configured as general-purpose output, for the GPIO function.
 
 	PORTE_PCR2 = PORT_PCR_MUX(2) | PORT_PCR_DSE_MASK & (~PORT_PCR_SRE_MASK);	// SCK
 	PORTE_PCR1 = PORT_PCR_MUX(2) | PORT_PCR_DSE_MASK & (~PORT_PCR_SRE_MASK);	// MOSI
@@ -56,7 +89,7 @@ void SPI_Init(void) {
 	 * Bit 1 SPISWAI    = 0 SPI clocks operate in wait mode
 	 * Bit 0 SPC0       = 0 uses separate pins for data input and output
 	 */
-	SPI1_C2 = 0x00;
+	SPI1_C2 = 0x24;
 
 	/*
 	 * Bit 7    SPRF    = 0 Flag is set when receive data buffer is full
@@ -69,7 +102,7 @@ void SPI_Init(void) {
 }
 
 BYTE SPI_RW(BYTE d) { 
-	DEBUG_START(DBG_1);
+	//DEBUG_START(DBG_1);
 
 	while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 		DEBUG_TOGGLE(DBG_1);
@@ -77,7 +110,7 @@ BYTE SPI_RW(BYTE d) {
 	DEBUG_START(DBG_1);
 	SPI1_D = d;
 	while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-		DEBUG_TOGGLE(DBG_1);
+		//DEBUG_TOGGLE(DBG_1);
 	}
 	DEBUG_STOP(DBG_1);
 	return ((BYTE) (SPI1_D));
@@ -97,7 +130,7 @@ inline void SPI_CS_High(void) {
 }
 
 inline void SPI_Freq_High(void) {
-	SPI1_BR = 0x01;								
+	SPI1_BR = 0x10;								
 }
 
 inline void SPI_Freq_Low(void) {
@@ -126,12 +159,12 @@ inline void SPI_Timer_Off(void) {
 inline void SPI_Debug_Init(void) {
 	SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;	// Port A enable
 	PORTA_PCR12 = PORT_PCR_MUX(1) | PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
-	GPIOA_PDDR |= (1 << 12);			// Pin is configured as general-purpose output, for the GPIO function.
-	GPIOA_PDOR &= ~(1 << 12);			// Off
+	FGPIOA_PDDR |= (1 << 12);			// Pin is configured as general-purpose output, for the GPIO function.
+	FGPIOA_PDOR &= ~(1 << 12);			// Off
 }
 inline void SPI_Debug_Mark(void) {
-	GPIOA_PDOR |= (1 << 12);			// On
-	GPIOA_PDOR &= ~(1 << 12);			// Off
+	FGPIOA_PDOR |= (1 << 12);			// On
+	FGPIOA_PDOR &= ~(1 << 12);			// Off
 }
 #endif
 

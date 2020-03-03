@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\LCDs_Profiler.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\LCDs_Profiler.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Mar 02 21:50:04 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Tue Mar 03 14:09:14 2020
 <BR><P>
-<H3>Maximum Stack Usage =        576 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        560 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; LCD_JPEG &rArr; pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 <P>
@@ -350,7 +350,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[43]"></a>LCD_JPEG</STRONG> (Thumb, 150 bytes, Stack size 88 bytes, lcd_jpeg.o(i.LCD_JPEG))
-<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = LCD_JPEG &rArr; pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 488<LI>Call Chain = LCD_JPEG &rArr; pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pf_readdir
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pf_opendir
@@ -519,33 +519,33 @@ Global Symbols
 <LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[55]"></a>SD_Init</STRONG> (Thumb, 462 bytes, Stack size 32 bytes, sd_io.o(i.SD_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<P><STRONG><a name="[55]"></a>SD_Init</STRONG> (Thumb, 398 bytes, Stack size 24 bytes, sd_io.o(i.SD_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
-<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_Low
+<BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Off
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_High
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_CS_High
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Speed_Transfer
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Sectors
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Off
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_initialize
 </UL>
 
-<P><STRONG><a name="[61]"></a>SD_Read</STRONG> (Thumb, 170 bytes, Stack size 40 bytes, sd_io.o(i.SD_Read))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<P><STRONG><a name="[61]"></a>SD_Read</STRONG> (Thumb, 140 bytes, Stack size 40 bytes, sd_io.o(i.SD_Read))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
+<BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Off
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_readp
 </UL>
@@ -559,31 +559,29 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 </UL>
 
-<P><STRONG><a name="[67]"></a>SPI_Freq_High</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Freq_High))
-<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Speed_Transfer
-</UL>
-
-<P><STRONG><a name="[58]"></a>SPI_Freq_Low</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Freq_Low))
+<P><STRONG><a name="[58]"></a>SPI_Freq_High</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Freq_High))
 <BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Speed_Transfer
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
 
-<P><STRONG><a name="[56]"></a>SPI_Init</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Init))
+<P><STRONG><a name="[67]"></a>SPI_Freq_Low</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Freq_Low))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Speed_Transfer
+</UL>
+
+<P><STRONG><a name="[56]"></a>SPI_Init</STRONG> (Thumb, 66 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
 
-<P><STRONG><a name="[59]"></a>SPI_RW</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, spi_io.o(i.SPI_RW))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SPI_RW
-</UL>
-<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
+<P><STRONG><a name="[59]"></a>SPI_RW</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, spi_io.o(i.SPI_RW))
+<BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Sectors
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Read
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
 </UL>
 
-<P><STRONG><a name="[60]"></a>SPI_Release</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, spi_io.o(i.SPI_Release))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = SPI_Release &rArr; SPI_RW
+<P><STRONG><a name="[60]"></a>SPI_Release</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, spi_io.o(i.SPI_Release))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = SPI_Release
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
 </UL>
@@ -672,27 +670,27 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[5e]"></a>__SD_Sectors</STRONG> (Thumb, 186 bytes, Stack size 40 bytes, sd_io.o(i.__SD_Sectors))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
-<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Power_Of_Two
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
+<BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Release
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Power_Of_Two
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
 
-<P><STRONG><a name="[5d]"></a>__SD_Send_Cmd</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, sd_io.o(i.__SD_Send_Cmd))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32 + In Cycle
+<P><STRONG><a name="[5d]"></a>__SD_Send_Cmd</STRONG> (Thumb, 136 bytes, Stack size 16 bytes, sd_io.o(i.__SD_Send_Cmd))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16 + In Cycle
 <LI>Call Chain = __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_CS_Low
+<BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Off
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
+<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_CS_Low
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_CS_High
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Off
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Sectors
@@ -703,8 +701,8 @@ Global Symbols
 <P><STRONG><a name="[5f]"></a>__SD_Speed_Transfer</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, sd_io.o(i.__SD_Speed_Transfer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __SD_Speed_Transfer
 </UL>
-<BR>[Calls]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_Low
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_High
+<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_Low
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Freq_High
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
@@ -714,7 +712,7 @@ Global Symbols
 <P><STRONG><a name="[be]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[7d]"></a>disk_initialize</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, diskio.o(i.disk_initialize))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
@@ -722,7 +720,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[6b]"></a>disk_readp</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, diskio.o(i.disk_readp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Read
 </UL>
@@ -741,7 +739,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[26]"></a>main</STRONG> (Thumb, 176 bytes, Stack size 72 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 576<LI>Call Chain = main &rArr; LCD_JPEG &rArr; pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 560<LI>Call Chain = main &rArr; LCD_JPEG &rArr; pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pf_mount
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sort_Profile_Regions
@@ -769,7 +767,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[9c]"></a>pf_mount</STRONG> (Thumb, 256 bytes, Stack size 56 bytes, pff.o(i.pf_mount))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = pf_mount &rArr; disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = pf_mount &rArr; disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
@@ -782,7 +780,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[a2]"></a>pf_open</STRONG> (Thumb, 86 bytes, Stack size 80 bytes, pff.o(i.pf_open))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_clust
@@ -792,7 +790,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[44]"></a>pf_opendir</STRONG> (Thumb, 74 bytes, Stack size 56 bytes, pff.o(i.pf_opendir))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = pf_opendir &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = pf_opendir &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_clust
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
@@ -802,7 +800,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[a3]"></a>pf_read</STRONG> (Thumb, 200 bytes, Stack size 40 bytes, pff.o(i.pf_read))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = pf_read &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = pf_read &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
@@ -812,7 +810,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[46]"></a>pf_readdir</STRONG> (Thumb, 152 bytes, Stack size 64 bytes, pff.o(i.pf_readdir))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = pf_readdir &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = pf_readdir &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fileinfo
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_rewind
@@ -842,7 +840,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[47]"></a>pjpeg_load_from_file</STRONG> (Thumb, 664 bytes, Stack size 176 bytes, lcd_jpeg.o(i.pjpeg_load_from_file))
-<BR><BR>[Stack]<UL><LI>Max Depth = 416<LI>Call Chain = pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 400<LI>Call Chain = pjpeg_load_from_file &rArr; pf_open &rArr; follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pjpeg_decode_mcu
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pjpeg_decode_init
@@ -857,7 +855,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2c]"></a>pjpeg_need_bytes_callback</STRONG> (Thumb, 38 bytes, Stack size 16 bytes, lcd_jpeg.o(i.pjpeg_need_bytes_callback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = pjpeg_need_bytes_callback &rArr; pf_read &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = pjpeg_need_bytes_callback &rArr; pf_read &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pf_read
 </UL>
@@ -977,7 +975,7 @@ Local Symbols
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;decodeNextMCU
 </UL>
 
-<P><STRONG><a name="[88]"></a>getChar</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, picojpeg.o(i.getChar))
+<P><STRONG><a name="[88]"></a>getChar</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, picojpeg.o(i.getChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = getChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;processRestart
@@ -1260,7 +1258,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[6a]"></a>check_fs</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, pff.o(i.check_fs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = check_fs &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = check_fs &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_readp
@@ -1281,7 +1279,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[78]"></a>dir_find</STRONG> (Thumb, 98 bytes, Stack size 24 bytes, pff.o(i.dir_find))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_rewind
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
@@ -1291,7 +1289,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[7a]"></a>dir_next</STRONG> (Thumb, 92 bytes, Stack size 16 bytes, pff.o(i.dir_next))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
@@ -1312,7 +1310,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[7e]"></a>follow_path</STRONG> (Thumb, 104 bytes, Stack size 32 bytes, pff.o(i.follow_path))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = follow_path &rArr; dir_find &rArr; dir_next &rArr; get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_clust
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_rewind
@@ -1334,7 +1332,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[7b]"></a>get_fat</STRONG> (Thumb, 60 bytes, Stack size 8 bytes, pff.o(i.get_fat))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = get_fat &rArr; disk_readp &rArr; SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_readp

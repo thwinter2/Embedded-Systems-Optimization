@@ -217,7 +217,7 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 		SPI_Init();
 
 		SPI_CS_High();
-		SPI_Freq_Low();
+		SPI_Freq_High();
 
 		// 80 dummy clocks
 		for (idx = 0; idx != 10; idx++)
