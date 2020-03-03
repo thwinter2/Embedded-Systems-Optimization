@@ -57,10 +57,13 @@ int main(void) {
 #ifdef PROFILER_SERIAL_SUPPORT
 	Init_Profiling();
 	Control_RGB_LEDs(1, 0, 1);		// Magenta: running
+	Enable_Profiling();
 	for (r = 0; r < NUM_TESTS; r++) {
-		read_xyz();
+		read_full_xyz();
 		convert_xyz_to_roll_pitch();
 	}
+	Disable_Profiling();
+	
 	Control_RGB_LEDs(0, 0, 1);		// Blue: done
 	Sort_Profile_Regions();
 	Serial_Print_Sorted_Profile();

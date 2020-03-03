@@ -1,0 +1,91 @@
+L 1 "Source\Profiler\region.c"
+N// Automatically generated file. Do not edit if you plan to regenerate it.
+N#include "region.h"
+L 1 "Source\Profiler\region.h" 1
+N#ifndef REGION_H
+N#define REGION_H
+N
+Ntypedef struct {
+N	unsigned int Start;
+N	unsigned int End;
+N	char Name[24];
+N} REGION_T;
+N
+Nextern const REGION_T RegionTable[];
+Nextern const unsigned NumProfileRegions;
+Nextern volatile unsigned RegionCount[];
+Nextern unsigned SortedRegions[];
+N
+N#endif
+L 3 "Source\Profiler\region.c" 2
+Nconst REGION_T RegionTable[] = {
+N	{0x00000ced, 0x00000f9c, "_printf_core"}, // 0
+N	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 1
+N	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 2
+N	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 3
+N	{0x000000e5, 0x000000e6, "SVC_Handler"}, // 4
+N	{0x000000e7, 0x000000e8, "PendSV_Handler"}, // 5
+N	{0x000000e9, 0x000000ea, "SysTick_Handler"}, // 6
+N	{0x000000fd, 0x00000128, "__aeabi_uidivmod"}, // 7
+N	{0x00000129, 0x000001ca, "__aeabi_fadd"}, // 8
+N	{0x000001cb, 0x000001d2, "__aeabi_fsub"}, // 9
+N	{0x000001d3, 0x000001da, "__aeabi_frsub"}, // 10
+N	{0x000001db, 0x00000254, "__aeabi_fmul"}, // 11
+N	{0x00000255, 0x000002d0, "__aeabi_fdiv"}, // 12
+N	{0x000002d1, 0x000002e8, "__ARM_scalbnf"}, // 13
+N	{0x000002e9, 0x000003d2, "__aeabi_ddiv"}, // 14
+N	{0x000003d9, 0x000003ee, "__aeabi_i2f"}, // 15
+N	{0x000003f1, 0x000003f8, "Disable_Profiling"}, // 16
+N	{0x000003fd, 0x000003fe, "__scatterload_null"}, // 17
+N	{0x00000411, 0x00000428, "__aeabi_ui2d"}, // 18
+N	{0x0000042d, 0x0000045e, "__aeabi_d2uiz"}, // 19
+N	{0x00000469, 0x000004c8, "__aeabi_uldivmod"}, // 20
+N	{0x000004c9, 0x000004ea, "__aeabi_llsr"}, // 21
+N	{0x000004eb, 0x000004fa, "_float_round"}, // 22
+N	{0x000004fb, 0x0000056c, "_float_epilogue"}, // 23
+N	{0x0000056d, 0x00000586, "_double_round"}, // 24
+N	{0x00000587, 0x0000062a, "_double_epilogue"}, // 25
+N	{0x0000062d, 0x00000648, "__scatterload"}, // 26
+N	{0x00000651, 0x00000670, "__aeabi_llsl"}, // 27
+N	{0x00000671, 0x000006a2, "Control_RGB_LEDs"}, // 28
+N	{0x000006a9, 0x000006ba, "Delay"}, // 29
+N	{0x000006c1, 0x000006c8, "Enable_Profiling"}, // 30
+N	{0x000006cd, 0x00000718, "Init_Profiling"}, // 31
+N	{0x0000072d, 0x00000780, "Init_RGB_LEDs"}, // 32
+N	{0x00000791, 0x00000822, "Init_UART0"}, // 33
+N	{0x00000839, 0x00000868, "PIT_IRQHandler"}, // 34
+N	{0x00000871, 0x000008ba, "PIT_Init"}, // 35
+N	{0x000008d5, 0x000008e0, "PIT_Start"}, // 36
+N	{0x000008e5, 0x00000942, "Process_Profile_Sample"}, // 37
+N	{0x00000955, 0x00000990, "Q_Dequeue"}, // 38
+N	{0x00000991, 0x0000099e, "Q_Empty"}, // 39
+N	{0x0000099f, 0x000009d4, "Q_Enqueue"}, // 40
+N	{0x000009d5, 0x000009e4, "Q_Full"}, // 41
+N	{0x000009e5, 0x00000a28, "Serial_Print_Sorted_Prof"}, // 42
+N	{0x00000a7d, 0x00000b14, "Sort_Profile_Regions"}, // 43
+N	{0x00000b25, 0x00000bde, "SystemInit"}, // 44
+N	{0x00000c0d, 0x00000c18, "TPM0_IRQHandler"}, // 45
+N	{0x00000c1d, 0x00000c74, "UART0_IRQHandler"}, // 46
+N	{0x00000c81, 0x00000c98, "__0printf$5"}, // 47
+N	{0x00000ca1, 0x00000cce, "__ARM_clz"}, // 48
+N	{0x00000ccf, 0x00000cdc, "__scatterload_copy"}, // 49
+N	{0x00000cdd, 0x00000cea, "__scatterload_zeroinit"}, // 50
+N	{0x00000fc9, 0x00001044, "approx_atan2f"}, // 51
+N	{0x00001059, 0x00001062, "approx_sqrt"}, // 52
+N	{0x00001065, 0x000010da, "convert_xyz_to_roll_pitc"}, // 53
+N	{0x000010e5, 0x000010f6, "fputc"}, // 54
+N	{0x000010fd, 0x0000119c, "i2c_busy"}, // 55
+N	{0x000011a5, 0x000011e0, "i2c_init"}, // 56
+N	{0x000011ed, 0x00001244, "i2c_read_byte"}, // 57
+N	{0x00001249, 0x00001278, "i2c_read_setup"}, // 58
+N	{0x0000127d, 0x000012b2, "i2c_repeated_read"}, // 59
+N	{0x000012bd, 0x000012d0, "i2c_start"}, // 60
+N	{0x000012d5, 0x00001300, "i2c_wait"}, // 61
+N	{0x00001309, 0x0000133c, "i2c_write_byte"}, // 62
+N	{0x00001341, 0x00001376, "init_mma"}, // 63
+N	{0x00001379, 0x000013ec, "main"}, // 64
+N	{0x0000142d, 0x0000147a, "read_full_xyz"}, // 65
+N}; 
+Nconst unsigned NumProfileRegions=66;
+Nvolatile unsigned RegionCount[66];
+Nunsigned SortedRegions[66];

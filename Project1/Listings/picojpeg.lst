@@ -1,0 +1,2855 @@
+L 1 "Source\LCD\picojpeg.c"
+N//------------------------------------------------------------------------------
+N// picojpeg.c v1.1 - Public domain, Rich Geldreich <richgel99@gmail.com>
+N// Nov. 27, 2010 - Initial release
+N// Feb. 9, 2013 - Added H1V2/H2V1 support, cleaned up macros, signed shift fixes 
+N// Also integrated and tested changes from Chris Phoenix <cphoenix@gmail.com>.
+N//------------------------------------------------------------------------------
+N#include "picojpeg.h"
+L 1 ".\Include\picojpeg.h" 1
+N//------------------------------------------------------------------------------
+N// picojpeg - Public domain, Rich Geldreich <richgel99@gmail.com>
+N//------------------------------------------------------------------------------
+N#ifndef PICOJPEG_H
+N#define PICOJPEG_H
+N
+N#ifdef __cplusplus
+Sextern "C" {
+N#endif
+N	
+N// Error codes
+Nenum
+N{
+N   PJPG_NO_MORE_BLOCKS = 1,
+N   PJPG_BAD_DHT_COUNTS,
+N   PJPG_BAD_DHT_INDEX,
+N   PJPG_BAD_DHT_MARKER,
+N   PJPG_BAD_DQT_MARKER,
+N   PJPG_BAD_DQT_TABLE,
+N   PJPG_BAD_PRECISION,
+N   PJPG_BAD_HEIGHT,
+N   PJPG_BAD_WIDTH,
+N   PJPG_TOO_MANY_COMPONENTS,
+N   PJPG_BAD_SOF_LENGTH,
+N   PJPG_BAD_VARIABLE_MARKER,
+N   PJPG_BAD_DRI_LENGTH,
+N   PJPG_BAD_SOS_LENGTH,
+N   PJPG_BAD_SOS_COMP_ID,
+N   PJPG_W_EXTRA_BYTES_BEFORE_MARKER,
+N   PJPG_NO_ARITHMITIC_SUPPORT,
+N   PJPG_UNEXPECTED_MARKER,
+N   PJPG_NOT_JPEG,
+N   PJPG_UNSUPPORTED_MARKER,
+N   PJPG_BAD_DQT_LENGTH,
+N   PJPG_TOO_MANY_BLOCKS,
+N   PJPG_UNDEFINED_QUANT_TABLE,
+N   PJPG_UNDEFINED_HUFF_TABLE,
+N   PJPG_NOT_SINGLE_SCAN,
+N   PJPG_UNSUPPORTED_COLORSPACE,
+N   PJPG_UNSUPPORTED_SAMP_FACTORS,
+N   PJPG_DECODE_ERROR,
+N   PJPG_BAD_RESTART_MARKER,
+N   PJPG_ASSERTION_ERROR,
+N   PJPG_BAD_SOS_SPECTRAL,
+N   PJPG_BAD_SOS_SUCCESSIVE,
+N   PJPG_STREAM_READ_ERROR,
+N   PJPG_NOTENOUGHMEM,
+N   PJPG_UNSUPPORTED_COMP_IDENT,
+N   PJPG_UNSUPPORTED_QUANT_TABLE,
+N   PJPG_UNSUPPORTED_MODE,        // picojpeg doesn't support progressive JPEG's
+N	 PJPG_FILE_OPEN_FAILED,
+N};  
+N
+N// Scan types
+Ntypedef enum
+N{
+N   PJPG_GRAYSCALE,
+N   PJPG_YH1V1,
+N   PJPG_YH2V1,
+N   PJPG_YH1V2,
+N   PJPG_YH2V2
+N} pjpeg_scan_type_t;
+N
+Ntypedef struct
+N{
+N   // Image resolution
+N   int m_width;
+N   int m_height;
+N   
+N   // Number of components (1 or 3)
+N   int m_comps;
+N   
+N   // Total number of minimum coded units (MCU's) per row/col.
+N   int m_MCUSPerRow;
+N   int m_MCUSPerCol;
+N   
+N   // Scan type
+N   pjpeg_scan_type_t m_scanType;
+N   
+N   // MCU width/height in pixels (each is either 8 or 16 depending on the scan type)
+N   int m_MCUWidth;
+N   int m_MCUHeight;
+N
+N   // m_pMCUBufR, m_pMCUBufG, and m_pMCUBufB are pointers to internal MCU Y or RGB pixel component buffers.
+N   // Each time pjpegDecodeMCU() is called successfully these buffers will be filled with 8x8 pixel blocks of Y or RGB pixels.
+N   // Each MCU consists of (m_MCUWidth/8)*(m_MCUHeight/8) Y/RGB blocks: 1 for greyscale/no subsampling, 2 for H1V2/H2V1, or 4 blocks for H2V2 sampling factors. 
+N   // Each block is a contiguous array of 64 (8x8) bytes of a single component: either Y for grayscale images, or R, G or B components for color images.
+N   //
+N   // The 8x8 pixel blocks are organized in these byte arrays like this:
+N   //
+N   // PJPG_GRAYSCALE: Each MCU is decoded to a single block of 8x8 grayscale pixels. 
+N   // Only the values in m_pMCUBufR are valid. Each 8 bytes is a row of pixels (raster order: left to right, top to bottom) from the 8x8 block.
+N   //
+N   // PJPG_H1V1: Each MCU contains is decoded to a single block of 8x8 RGB pixels.
+N   //
+N   // PJPG_YH2V1: Each MCU is decoded to 2 blocks, or 16x8 pixels.
+N   // The 2 RGB blocks are at byte offsets: 0, 64
+N   //
+N   // PJPG_YH1V2: Each MCU is decoded to 2 blocks, or 8x16 pixels. 
+N   // The 2 RGB blocks are at byte offsets: 0, 
+N   //                                       128
+N   //
+N   // PJPG_YH2V2: Each MCU is decoded to 4 blocks, or 16x16 pixels.
+N   // The 2x2 block array is organized at byte offsets:   0,  64, 
+N   //                                                   128, 192
+N   //
+N   // It is up to the caller to copy or blit these pixels from these buffers into the destination bitmap.
+N   unsigned char *m_pMCUBufR;
+N   unsigned char *m_pMCUBufG;
+N   unsigned char *m_pMCUBufB;
+N} pjpeg_image_info_t;
+N
+Ntypedef unsigned char (*pjpeg_need_bytes_callback_t)(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data);
+N
+N// Initializes the decompressor. Returns 0 on success, or one of the above error codes on failure.
+N// pNeed_bytes_callback will be called to fill the decompressor's internal input buffer.
+N// If reduce is 1, only the first pixel of each block will be decoded. This mode is much faster because it skips the AC dequantization, IDCT and chroma upsampling of every image pixel.
+N// Not thread safe.
+Nunsigned char pjpeg_decode_init(pjpeg_image_info_t *pInfo, pjpeg_need_bytes_callback_t pNeed_bytes_callback, void *pCallback_data, unsigned char reduce);
+N
+N// Decompresses the file's next MCU. Returns 0 on success, PJPG_NO_MORE_BLOCKS if no more blocks are available, or an error code.
+N// Must be called a total of m_MCUSPerRow*m_MCUSPerCol times to completely decompress the image.
+N// Not thread safe.
+Nunsigned char pjpeg_decode_mcu(void);
+N
+N// AD Opt
+N#define LESS_INLINING 1 // 0 to re-enable inlining
+N
+N#ifdef __cplusplus
+S}
+N#endif
+N
+N
+N#endif // PICOJPEG_H
+L 8 "Source\LCD\picojpeg.c" 2
+N#include <stdint.h>
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+N/* Copyright (C) ARM Ltd., 1999,2014 */
+N/* All rights reserved */
+N
+N/*
+N * RCS $Revision$
+N * Checkin $Date$
+N * Revising $Author: agrant $
+N */
+N
+N#ifndef __stdint_h
+N#define __stdint_h
+N#define __ARMCLIB_VERSION 5060037
+N
+N  #ifdef __INT64_TYPE__
+S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
+S    #define __INT64 __INT64_TYPE__
+N  #else
+N    /* armcc has builtin '__int64' which can be used in --strict mode */
+N    #define __INT64 __int64
+N    #define __INT64_C_SUFFIX__ ll
+N  #endif
+N  #define __PASTE2(x, y) x ## y
+N  #define __PASTE(x, y) __PASTE2(x, y)
+N  #define __INT64_C(x)  __ESCAPE__(__PASTE(x, __INT64_C_SUFFIX__))
+N  #define __UINT64_C(x)  __ESCAPE__(__PASTE(x ## u, __INT64_C_SUFFIX__))
+N  #if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
+X  #if 0L || (1L && !0L)
+N    /* armclang and non-strict armcc allow 'long long' in system headers */
+N    #define __LONGLONG long long
+N  #else
+S    /* strict armcc has '__int64' */
+S    #define __LONGLONG __int64
+N  #endif
+N
+N  #ifndef __STDINT_DECLS
+N  #define __STDINT_DECLS
+N
+N    #undef __CLIBNS
+N
+N    #ifdef __cplusplus
+S      namespace std {
+S          #define __CLIBNS std::
+S          extern "C" {
+N    #else
+N      #define __CLIBNS
+N    #endif  /* __cplusplus */
+N
+N
+N/*
+N * 'signed' is redundant below, except for 'signed char' and if
+N * the typedef is used to declare a bitfield.
+N */
+N
+N    /* 7.18.1.1 */
+N
+N    /* exact-width signed integer types */
+Ntypedef   signed          char int8_t;
+Ntypedef   signed short     int int16_t;
+Ntypedef   signed           int int32_t;
+Ntypedef   signed       __INT64 int64_t;
+Xtypedef   signed       __int64 int64_t;
+N
+N    /* exact-width unsigned integer types */
+Ntypedef unsigned          char uint8_t;
+Ntypedef unsigned short     int uint16_t;
+Ntypedef unsigned           int uint32_t;
+Ntypedef unsigned       __INT64 uint64_t;
+Xtypedef unsigned       __int64 uint64_t;
+N
+N    /* 7.18.1.2 */
+N
+N    /* smallest type of at least n bits */
+N    /* minimum-width signed integer types */
+Ntypedef   signed          char int_least8_t;
+Ntypedef   signed short     int int_least16_t;
+Ntypedef   signed           int int_least32_t;
+Ntypedef   signed       __INT64 int_least64_t;
+Xtypedef   signed       __int64 int_least64_t;
+N
+N    /* minimum-width unsigned integer types */
+Ntypedef unsigned          char uint_least8_t;
+Ntypedef unsigned short     int uint_least16_t;
+Ntypedef unsigned           int uint_least32_t;
+Ntypedef unsigned       __INT64 uint_least64_t;
+Xtypedef unsigned       __int64 uint_least64_t;
+N
+N    /* 7.18.1.3 */
+N
+N    /* fastest minimum-width signed integer types */
+Ntypedef   signed           int int_fast8_t;
+Ntypedef   signed           int int_fast16_t;
+Ntypedef   signed           int int_fast32_t;
+Ntypedef   signed       __INT64 int_fast64_t;
+Xtypedef   signed       __int64 int_fast64_t;
+N
+N    /* fastest minimum-width unsigned integer types */
+Ntypedef unsigned           int uint_fast8_t;
+Ntypedef unsigned           int uint_fast16_t;
+Ntypedef unsigned           int uint_fast32_t;
+Ntypedef unsigned       __INT64 uint_fast64_t;
+Xtypedef unsigned       __int64 uint_fast64_t;
+N
+N    /* 7.18.1.4 integer types capable of holding object pointers */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+Stypedef   signed       __INT64 intptr_t;
+Stypedef unsigned       __INT64 uintptr_t;
+N#else
+Ntypedef   signed           int intptr_t;
+Ntypedef unsigned           int uintptr_t;
+N#endif
+N
+N    /* 7.18.1.5 greatest-width integer types */
+Ntypedef   signed     __LONGLONG intmax_t;
+Xtypedef   signed     long long intmax_t;
+Ntypedef unsigned     __LONGLONG uintmax_t;
+Xtypedef unsigned     long long uintmax_t;
+N
+N
+N#if !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.2.1 */
+N
+N    /* minimum values of exact-width signed integer types */
+N#define INT8_MIN                   -128
+N#define INT16_MIN                -32768
+N#define INT32_MIN          (~0x7fffffff)   /* -2147483648 is unsigned */
+N#define INT64_MIN  __INT64_C(~0x7fffffffffffffff) /* -9223372036854775808 is unsigned */
+N
+N    /* maximum values of exact-width signed integer types */
+N#define INT8_MAX                    127
+N#define INT16_MAX                 32767
+N#define INT32_MAX            2147483647
+N#define INT64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of exact-width unsigned integer types */
+N#define UINT8_MAX                   255
+N#define UINT16_MAX                65535
+N#define UINT32_MAX           4294967295u
+N#define UINT64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.2 */
+N
+N    /* minimum values of minimum-width signed integer types */
+N#define INT_LEAST8_MIN                   -128
+N#define INT_LEAST16_MIN                -32768
+N#define INT_LEAST32_MIN          (~0x7fffffff)
+N#define INT_LEAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of minimum-width signed integer types */
+N#define INT_LEAST8_MAX                    127
+N#define INT_LEAST16_MAX                 32767
+N#define INT_LEAST32_MAX            2147483647
+N#define INT_LEAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of minimum-width unsigned integer types */
+N#define UINT_LEAST8_MAX                   255
+N#define UINT_LEAST16_MAX                65535
+N#define UINT_LEAST32_MAX           4294967295u
+N#define UINT_LEAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.3 */
+N
+N    /* minimum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MIN           (~0x7fffffff)
+N#define INT_FAST16_MIN          (~0x7fffffff)
+N#define INT_FAST32_MIN          (~0x7fffffff)
+N#define INT_FAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MAX             2147483647
+N#define INT_FAST16_MAX            2147483647
+N#define INT_FAST32_MAX            2147483647
+N#define INT_FAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of fastest minimum-width unsigned integer types */
+N#define UINT_FAST8_MAX            4294967295u
+N#define UINT_FAST16_MAX           4294967295u
+N#define UINT_FAST32_MAX           4294967295u
+N#define UINT_FAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.4 */
+N
+N    /* minimum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MIN INT64_MIN
+N#else
+N#define INTPTR_MIN INT32_MIN
+N#endif
+N
+N    /* maximum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MAX INT64_MAX
+N#else
+N#define INTPTR_MAX INT32_MAX
+N#endif
+N
+N    /* maximum value of pointer-holding unsigned integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define UINTPTR_MAX UINT64_MAX
+N#else
+N#define UINTPTR_MAX UINT32_MAX
+N#endif
+N
+N    /* 7.18.2.5 */
+N
+N    /* minimum value of greatest-width signed integer type */
+N#define INTMAX_MIN  __ESCAPE__(~0x7fffffffffffffffll)
+N
+N    /* maximum value of greatest-width signed integer type */
+N#define INTMAX_MAX  __ESCAPE__(9223372036854775807ll)
+N
+N    /* maximum value of greatest-width unsigned integer type */
+N#define UINTMAX_MAX __ESCAPE__(18446744073709551615ull)
+N
+N    /* 7.18.3 */
+N
+N    /* limits of ptrdiff_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define PTRDIFF_MIN INT64_MIN
+S#define PTRDIFF_MAX INT64_MAX
+N#else
+N#define PTRDIFF_MIN INT32_MIN
+N#define PTRDIFF_MAX INT32_MAX
+N#endif
+N
+N    /* limits of sig_atomic_t */
+N#define SIG_ATOMIC_MIN (~0x7fffffff)
+N#define SIG_ATOMIC_MAX   2147483647
+N
+N    /* limit of size_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define SIZE_MAX UINT64_MAX
+N#else
+N#define SIZE_MAX UINT32_MAX
+N#endif
+N
+N    /* limits of wchar_t */
+N    /* NB we have to undef and redef because they're defined in both
+N     * stdint.h and wchar.h */
+N#undef WCHAR_MIN
+N#undef WCHAR_MAX
+N
+N#if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+X#if 0L || (0L && __ARM_SIZEOF_WCHAR_T == 4)
+S  #define WCHAR_MIN   0
+S  #define WCHAR_MAX   0xffffffffU
+N#else
+N  #define WCHAR_MIN   0
+N  #define WCHAR_MAX   65535
+N#endif
+N
+N    /* limits of wint_t */
+N#define WINT_MIN (~0x7fffffff)
+N#define WINT_MAX 2147483647
+N
+N#endif /* __STDC_LIMIT_MACROS */
+N
+N#if !defined(__cplusplus) || defined(__STDC_CONSTANT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.4.1 macros for minimum-width integer constants */
+N#define INT8_C(x)   (x)
+N#define INT16_C(x)  (x)
+N#define INT32_C(x)  (x)
+N#define INT64_C(x)  __INT64_C(x)
+N
+N#define UINT8_C(x)  (x ## u)
+N#define UINT16_C(x) (x ## u)
+N#define UINT32_C(x) (x ## u)
+N#define UINT64_C(x) __UINT64_C(x)
+N
+N    /* 7.18.4.2 macros for greatest-width integer constants */
+N#define INTMAX_C(x)  __ESCAPE__(x ## ll)
+N#define UINTMAX_C(x) __ESCAPE__(x ## ull)
+N
+N#endif /* __STDC_CONSTANT_MACROS */
+N
+N    #ifdef __cplusplus
+S         }  /* extern "C" */
+S      }  /* namespace std */
+N    #endif /* __cplusplus */
+N  #endif /* __STDINT_DECLS */
+N
+N  #ifdef __cplusplus
+S    #ifndef __STDINT_NO_EXPORTS
+S      using ::std::int8_t;
+S      using ::std::int16_t;
+S      using ::std::int32_t;
+S      using ::std::int64_t;
+S      using ::std::uint8_t;
+S      using ::std::uint16_t;
+S      using ::std::uint32_t;
+S      using ::std::uint64_t;
+S      using ::std::int_least8_t;
+S      using ::std::int_least16_t;
+S      using ::std::int_least32_t;
+S      using ::std::int_least64_t;
+S      using ::std::uint_least8_t;
+S      using ::std::uint_least16_t;
+S      using ::std::uint_least32_t;
+S      using ::std::uint_least64_t;
+S      using ::std::int_fast8_t;
+S      using ::std::int_fast16_t;
+S      using ::std::int_fast32_t;
+S      using ::std::int_fast64_t;
+S      using ::std::uint_fast8_t;
+S      using ::std::uint_fast16_t;
+S      using ::std::uint_fast32_t;
+S      using ::std::uint_fast64_t;
+S      using ::std::intptr_t;
+S      using ::std::uintptr_t;
+S      using ::std::intmax_t;
+S      using ::std::uintmax_t;
+S    #endif
+N  #endif /* __cplusplus */
+N
+N#undef __INT64
+N#undef __LONGLONG
+N
+N#endif /* __stdint_h */
+N
+N/* end of stdint.h */
+L 9 "Source\LCD\picojpeg.c" 2
+N//------------------------------------------------------------------------------
+N// Set to 1 if right shifts on signed ints are always unsigned (logical) shifts
+N// When 1, arithmetic right shifts will be emulated by using a logical shift
+N// with special case code to ensure the sign bit is replicated.
+N#define PJPG_RIGHT_SHIFT_IS_ALWAYS_UNSIGNED 0
+N
+N// Define PJPG_INLINE to "inline" if your C compiler supports explicit inlining
+N#define PJPG_INLINE
+N//------------------------------------------------------------------------------
+Ntypedef uint8_t uint8;
+Ntypedef uint16_t uint16;
+Ntypedef int8_t int8;
+Ntypedef int16_t int16;
+N//------------------------------------------------------------------------------
+N
+N// AD Opt
+Nvolatile uint32_t huffDecode_ctr = 0;
+N
+N
+N#if PJPG_RIGHT_SHIFT_IS_ALWAYS_UNSIGNED
+X#if 0
+Sstatic int16 replicateSignBit16(int8 n)
+S{
+S   switch (n)
+S   {
+S      case 0:  return 0x0000;
+S      case 1:  return 0x8000;
+S      case 2:  return 0xC000;
+S      case 3:  return 0xE000;
+S      case 4:  return 0xF000;
+S      case 5:  return 0xF800;
+S      case 6:  return 0xFC00;
+S      case 7:  return 0xFE00;
+S      case 8:  return 0xFF00;
+S      case 9:  return 0xFF80;
+S      case 10: return 0xFFC0;
+S      case 11: return 0xFFE0;
+S      case 12: return 0xFFF0; 
+S      case 13: return 0xFFF8;
+S      case 14: return 0xFFFC;
+S      case 15: return 0xFFFE;
+S      default: return 0xFFFF;
+S   }
+S}
+Sstatic PJPG_INLINE int16 arithmeticRightShiftN16(int16 x, int8 n) 
+S{
+S   int16 r = (uint16)x >> (uint8)n;
+S   if (x < 0)
+S      r |= replicateSignBit16(n);
+S   return r;
+S}
+Sstatic PJPG_INLINE long arithmeticRightShift8L(long x) 
+S{
+S   long r = (unsigned long)x >> 8U;
+S   if (x < 0)
+S      r |= ~(~(unsigned long)0U >> 8U);
+S   return r;
+S}
+S#define PJPG_ARITH_SHIFT_RIGHT_N_16(x, n) arithmeticRightShiftN16(x, n)
+S#define PJPG_ARITH_SHIFT_RIGHT_8_L(x) arithmeticRightShift8L(x)
+N#else
+N#define PJPG_ARITH_SHIFT_RIGHT_N_16(x, n) ((x) >> (n))
+N#define PJPG_ARITH_SHIFT_RIGHT_8_L(x) ((x) >> 8)
+N#endif
+N//------------------------------------------------------------------------------
+N// Change as needed - the PJPG_MAX_WIDTH/PJPG_MAX_HEIGHT checks are only present
+N// to quickly detect bogus files.
+N#define PJPG_MAX_WIDTH 16384
+N#define PJPG_MAX_HEIGHT 16384
+N#define PJPG_MAXCOMPSINSCAN 3
+N//------------------------------------------------------------------------------
+Ntypedef enum
+N{
+N   M_SOF0  = 0xC0,
+N   M_SOF1  = 0xC1,
+N   M_SOF2  = 0xC2,
+N   M_SOF3  = 0xC3,
+N
+N   M_SOF5  = 0xC5,
+N   M_SOF6  = 0xC6,
+N   M_SOF7  = 0xC7,
+N
+N   M_JPG   = 0xC8,
+N   M_SOF9  = 0xC9,
+N   M_SOF10 = 0xCA,
+N   M_SOF11 = 0xCB,
+N
+N   M_SOF13 = 0xCD,
+N   M_SOF14 = 0xCE,
+N   M_SOF15 = 0xCF,
+N
+N   M_DHT   = 0xC4,
+N
+N   M_DAC   = 0xCC,
+N
+N   M_RST0  = 0xD0,
+N   M_RST1  = 0xD1,
+N   M_RST2  = 0xD2,
+N   M_RST3  = 0xD3,
+N   M_RST4  = 0xD4,
+N   M_RST5  = 0xD5,
+N   M_RST6  = 0xD6,
+N   M_RST7  = 0xD7,
+N
+N   M_SOI   = 0xD8,
+N   M_EOI   = 0xD9,
+N   M_SOS   = 0xDA,
+N   M_DQT   = 0xDB,
+N   M_DNL   = 0xDC,
+N   M_DRI   = 0xDD,
+N   M_DHP   = 0xDE,
+N   M_EXP   = 0xDF,
+N
+N   M_APP0  = 0xE0,
+N   M_APP15 = 0xEF,
+N
+N   M_JPG0  = 0xF0,
+N   M_JPG13 = 0xFD,
+N   M_COM   = 0xFE,
+N
+N   M_TEM   = 0x01,
+N
+N   M_ERROR = 0x100,
+N   
+N   RST0    = 0xD0
+N} JPEG_MARKER;
+N//------------------------------------------------------------------------------
+Nstatic const int8 ZAG[] = 
+N{
+N   0,  1,  8, 16,  9,  2,  3, 10,
+N   17, 24, 32, 25, 18, 11,  4,  5,
+N   12, 19, 26, 33, 40, 48, 41, 34,
+N   27, 20, 13,  6,  7, 14, 21, 28,
+N   35, 42, 49, 56, 57, 50, 43, 36,
+N   29, 22, 15, 23, 30, 37, 44, 51,
+N   58, 59, 52, 45, 38, 31, 39, 46,
+N   53, 60, 61, 54, 47, 55, 62, 63,
+N};
+N//------------------------------------------------------------------------------
+N// 128 bytes
+Nstatic int16 gCoeffBuf[8*8];
+N
+N// 8*8*4 bytes * 3 = 768
+Nstatic uint8 gMCUBufR[256];
+Nstatic uint8 gMCUBufG[256];
+Nstatic uint8 gMCUBufB[256];
+N
+N// 256 bytes
+Nstatic int16 gQuant0[8*8];
+Nstatic int16 gQuant1[8*8];
+N
+N// 6 bytes
+Nstatic int16 gLastDC[3];
+N
+Ntypedef struct HuffTableT
+N{
+N   uint16 mMinCode[16];
+N   uint16 mMaxCode[16];
+N   uint8 mValPtr[16];
+N} HuffTable;
+N
+N// DC - 192
+Nstatic HuffTable gHuffTab0;
+N
+Nstatic uint8 gHuffVal0[16];
+N
+Nstatic HuffTable gHuffTab1;
+Nstatic uint8 gHuffVal1[16];
+N
+N// AC - 672
+Nstatic HuffTable gHuffTab2;
+Nstatic uint8 gHuffVal2[256];
+N
+Nstatic HuffTable gHuffTab3;
+Nstatic uint8 gHuffVal3[256];
+N
+Nstatic uint8 gValidHuffTables;
+Nstatic uint8 gValidQuantTables;
+N
+Nstatic uint8 gTemFlag;
+N#define PJPG_MAX_IN_BUF_SIZE 256
+Nstatic uint8 gInBuf[PJPG_MAX_IN_BUF_SIZE];
+Xstatic uint8 gInBuf[256];
+Nstatic uint8 gInBufOfs;
+Nstatic uint8 gInBufLeft;
+N
+Nstatic uint16 gBitBuf;
+Nstatic uint8 gBitsLeft;
+N//------------------------------------------------------------------------------
+Nstatic uint16 gImageXSize;
+Nstatic uint16 gImageYSize;
+Nstatic uint8 gCompsInFrame;
+Nstatic uint8 gCompIdent[3];
+Nstatic uint8 gCompHSamp[3];
+Nstatic uint8 gCompVSamp[3];
+Nstatic uint8 gCompQuant[3];
+N
+Nstatic uint16 gRestartInterval;
+Nstatic uint16 gNextRestartNum;
+Nstatic uint16 gRestartsLeft;
+N
+Nstatic uint8 gCompsInScan;
+Nstatic uint8 gCompList[3];
+Nstatic uint8 gCompDCTab[3]; // 0,1
+Nstatic uint8 gCompACTab[3]; // 0,1
+N
+Nstatic pjpeg_scan_type_t gScanType;
+N
+Nstatic uint8 gMaxBlocksPerMCU;
+Nstatic uint8 gMaxMCUXSize;
+Nstatic uint8 gMaxMCUYSize;
+Nstatic uint16 gMaxMCUSPerRow;
+Nstatic uint16 gMaxMCUSPerCol;
+Nstatic uint16 gNumMCUSRemaining;
+Nstatic uint8 gMCUOrg[6];
+N
+Nstatic pjpeg_need_bytes_callback_t g_pNeedBytesCallback;
+Nstatic void *g_pCallback_data;
+Nstatic uint8 gCallbackStatus;
+Nstatic uint8 gReduce;
+N//------------------------------------------------------------------------------
+Nstatic void fillInBuf(void)
+N{
+N   unsigned char status;
+N
+N   // Reserve a few bytes at the beginning of the buffer for putting back ("stuffing") chars.
+N   gInBufOfs = 4;
+N   gInBufLeft = 0;
+N
+N   status = (*g_pNeedBytesCallback)(gInBuf + gInBufOfs, PJPG_MAX_IN_BUF_SIZE - gInBufOfs, &gInBufLeft, g_pCallback_data);
+X   status = (*g_pNeedBytesCallback)(gInBuf + gInBufOfs, 256 - gInBufOfs, &gInBufLeft, g_pCallback_data);
+N   if (status)
+N   {
+N      // The user provided need bytes callback has indicated an error, so record the error and continue trying to decode.
+N      // The highest level pjpeg entrypoints will catch the error and return the non-zero status.
+N      gCallbackStatus = status;
+N   }
+N}   
+N//------------------------------------------------------------------------------
+Nstatic PJPG_INLINE uint8 getChar(void)
+Xstatic  uint8 getChar(void)
+N{
+N   if (!gInBufLeft)
+N   {
+N      fillInBuf();
+N      if (!gInBufLeft)
+N      {
+N         gTemFlag = ~gTemFlag;
+N         return gTemFlag ? 0xFF : 0xD9;
+N      } 
+N   }
+N   
+N   gInBufLeft--;
+N   return gInBuf[gInBufOfs++];
+N}
+N//------------------------------------------------------------------------------
+Nstatic PJPG_INLINE void stuffChar(uint8 i)
+Xstatic  void stuffChar(uint8 i)
+N{
+N   gInBufOfs--;
+N   gInBuf[gInBufOfs] = i;
+N   gInBufLeft++;
+N}
+N//------------------------------------------------------------------------------
+Nstatic PJPG_INLINE uint8 getOctet(uint8 FFCheck)
+Xstatic  uint8 getOctet(uint8 FFCheck)
+N{
+N   uint8 c = getChar();
+N      
+N   if ((FFCheck) && (c == 0xFF))
+N   {
+N      uint8 n = getChar();
+N
+N      if (n)
+N      {
+N         stuffChar(n);
+N         stuffChar(0xFF);
+N      }
+N   }
+N
+N   return c;
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic uint16 getBits(uint8 numBits, uint8 FFCheck) __attribute__((noinline));
+N#endif
+Nstatic uint16 getBits(uint8 numBits, uint8 FFCheck)
+N{
+N   uint8 origBits = numBits;
+N   uint16 ret = gBitBuf;
+N   
+N   if (numBits > 8)
+N   {
+N      numBits -= 8;
+N      
+N      gBitBuf <<= gBitsLeft;
+N      
+N      gBitBuf |= getOctet(FFCheck);
+N      
+N      gBitBuf <<= (8 - gBitsLeft);
+N      
+N      ret = (ret & 0xFF00) | (gBitBuf >> 8);
+N   }
+N      
+N   if (gBitsLeft < numBits)
+N   {
+N      gBitBuf <<= gBitsLeft;
+N      
+N      gBitBuf |= getOctet(FFCheck);
+N      
+N      gBitBuf <<= (numBits - gBitsLeft);
+N                        
+N      gBitsLeft = 8 - (numBits - gBitsLeft);
+N   }
+N   else
+N   {
+N      gBitsLeft = (uint8)(gBitsLeft - numBits);
+N      gBitBuf <<= numBits;
+N   }
+N   
+N   return ret >> (16 - origBits);
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic uint16 getBits1(uint8 numBits) __attribute__((noinline));
+N#endif
+Nstatic uint16 getBits1(uint8 numBits)
+N{
+N   return getBits(numBits, 0);
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic uint16 getBits2(uint8 numBits) __attribute__((noinline));
+N#endif
+Nstatic uint16 getBits2(uint8 numBits)
+N{
+N   return getBits(numBits, 1);
+N}
+N//------------------------------------------------------------------------------
+Nstatic PJPG_INLINE uint8 getBit(void)
+Xstatic  uint8 getBit(void)
+N{
+N   uint8 ret = 0;
+N   if (gBitBuf & 0x8000) 
+N      ret = 1;
+N   
+N   if (!gBitsLeft)
+N   {
+N      gBitBuf |= getOctet(1);
+N
+N      gBitsLeft += 8;
+N// AD Opt
+N			gBitsLeft--;
+N			gBitBuf <<= 1;
+N	    return ret;
+N   } else {
+N			gBitsLeft--;
+N			gBitBuf <<= 1;
+N			return ret;
+N   }
+N// AD Opt end	  
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint16 getExtendTest(uint8 i)
+N{
+N   switch (i)
+N   {
+N      case 0: return 0;
+N      case 1: return 0x0001;
+N      case 2: return 0x0002;
+N      case 3: return 0x0004;
+N      case 4: return 0x0008;
+N      case 5: return 0x0010; 
+N      case 6: return 0x0020;
+N      case 7: return 0x0040;
+N      case 8:  return 0x0080;
+N      case 9:  return 0x0100;
+N      case 10: return 0x0200;
+N      case 11: return 0x0400;
+N      case 12: return 0x0800;
+N      case 13: return 0x1000;
+N      case 14: return 0x2000; 
+N      case 15: return 0x4000;
+N      default: return 0;
+N   }      
+N}
+N//------------------------------------------------------------------------------
+Nstatic int16 getExtendOffset(uint8 i)
+N{ 
+N   switch (i)
+N   {
+N      case 0: return 0;
+N      case 1: return ((-1)<<1) + 1; 
+N      case 2: return ((-1)<<2) + 1; 
+N      case 3: return ((-1)<<3) + 1; 
+N      case 4: return ((-1)<<4) + 1; 
+N      case 5: return ((-1)<<5) + 1; 
+N      case 6: return ((-1)<<6) + 1; 
+N      case 7: return ((-1)<<7) + 1; 
+N      case 8: return ((-1)<<8) + 1; 
+N      case 9: return ((-1)<<9) + 1;
+N      case 10: return ((-1)<<10) + 1; 
+N      case 11: return ((-1)<<11) + 1; 
+N      case 12: return ((-1)<<12) + 1; 
+N      case 13: return ((-1)<<13) + 1; 
+N      case 14: return ((-1)<<14) + 1; 
+N      case 15: return ((-1)<<15) + 1;
+N      default: return 0;
+N   }
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic int16 huffExtend(uint16 x, uint8 s) __attribute__((noinline));
+N#endif
+Nstatic int16 huffExtend(uint16 x, uint8 s)
+N{
+N   return ((x < getExtendTest(s)) ? ((int16)x + getExtendOffset(s)) : (int16)x);
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal) __attribute__((noinline));
+N#endif
+Nstatic uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal)
+N{
+N   uint8 i = 0;
+N   uint8 j;
+N	
+N   uint16 code = getBit();
+N
+N   // This func only reads a bit at a time, which on modern CPU's is not terribly efficient.
+N   // But on microcontrollers without strong integer shifting support this seems like a 
+N   // more reasonable approach.
+N   for ( ; ; )
+N   {
+N      uint16 maxCode;
+N
+N		 	// AD Opt
+N			huffDecode_ctr++;
+N
+N		 
+N      if (i == 16)
+N         return 0;
+N
+N      maxCode = pHuffTable->mMaxCode[i];
+N      if ((code <= maxCode) && (maxCode != 0xFFFF))
+N         break;
+N
+N      i++;
+N      code <<= 1;
+N      code |= getBit();
+N   }
+N
+N   j = pHuffTable->mValPtr[i];
+N   j = (uint8)(j + (code - pHuffTable->mMinCode[i]));
+N
+N   return pHuffVal[j];
+N}
+N//------------------------------------------------------------------------------
+Nstatic void huffCreate(const uint8* pBits, HuffTable* pHuffTable)
+N{
+N   uint8 i = 0;
+N   uint8 j = 0;
+N
+N   uint16 code = 0;
+N      
+N   for ( ; ; )
+N   {
+N      uint8 num = pBits[i];
+N      
+N      if (!num)
+N      {
+N         pHuffTable->mMinCode[i] = 0x0000;
+N         pHuffTable->mMaxCode[i] = 0xFFFF;
+N         pHuffTable->mValPtr[i] = 0;
+N      }
+N      else
+N      {
+N         pHuffTable->mMinCode[i] = code;
+N         pHuffTable->mMaxCode[i] = code + num - 1;
+N         pHuffTable->mValPtr[i] = j;
+N         
+N         j = (uint8)(j + num);
+N         
+N         code = (uint16)(code + num);
+N      }
+N      
+N      code <<= 1;
+N      
+N      i++;
+N      if (i > 15)
+N         break;
+N   }
+N}
+N//------------------------------------------------------------------------------
+Nstatic HuffTable* getHuffTable(uint8 index)
+N{
+N   // 0-1 = DC
+N   // 2-3 = AC
+N   switch (index)
+N   {
+N      case 0: return &gHuffTab0;
+N      case 1: return &gHuffTab1;
+N      case 2: return &gHuffTab2;
+N      case 3: return &gHuffTab3;
+N      default: return 0;
+N   }
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8* getHuffVal(uint8 index)
+N{
+N   // 0-1 = DC
+N   // 2-3 = AC
+N   switch (index)
+N   {
+N      case 0: return gHuffVal0;
+N      case 1: return gHuffVal1;
+N      case 2: return gHuffVal2;
+N      case 3: return gHuffVal3;
+N      default: return 0;
+N   }
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint16 getMaxHuffCodes(uint8 index)
+N{
+N   return (index < 2) ? 12 : 255;
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 readDHTMarker(void)
+N{
+N   uint8 bits[16];
+N   uint16 left = getBits1(16);
+N
+N   if (left < 2)
+N      return PJPG_BAD_DHT_MARKER;
+N
+N   left -= 2;
+N
+N   while (left)
+N   {
+N      uint8 i, tableIndex, index;
+N      uint8* pHuffVal;
+N      HuffTable* pHuffTable;
+N      uint16 count, totalRead;
+N            
+N      index = (uint8)getBits1(8);
+N      
+N      if ( ((index & 0xF) > 1) || ((index & 0xF0) > 0x10) )
+N         return PJPG_BAD_DHT_INDEX;
+N      
+N      tableIndex = ((index >> 3) & 2) + (index & 1);
+N      
+N      pHuffTable = getHuffTable(tableIndex);
+N      pHuffVal = getHuffVal(tableIndex);
+N      
+N      gValidHuffTables |= (1 << tableIndex);
+N            
+N      count = 0;
+N      for (i = 0; i <= 15; i++)
+N      {
+N         uint8 n = (uint8)getBits1(8);
+N         bits[i] = n;
+N         count = (uint16)(count + n);
+N      }
+N      
+N      if (count > getMaxHuffCodes(tableIndex))
+N         return PJPG_BAD_DHT_COUNTS;
+N
+N      for (i = 0; i < count; i++)
+N         pHuffVal[i] = (uint8)getBits1(8);
+N
+N      totalRead = 1 + 16 + count;
+N
+N      if (left < totalRead)
+N         return PJPG_BAD_DHT_MARKER;
+N
+N      left = (uint16)(left - totalRead);
+N
+N      huffCreate(bits, pHuffTable);
+N   }
+N      
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nstatic void createWinogradQuant(int16* pQuant);
+N
+Nstatic uint8 readDQTMarker(void)
+N{
+N   uint16 left = getBits1(16);
+N
+N   if (left < 2)
+N      return PJPG_BAD_DQT_MARKER;
+N
+N   left -= 2;
+N
+N   while (left)
+N   {
+N      uint8 i;
+N      uint8 n = (uint8)getBits1(8);
+N      uint8 prec = n >> 4;
+N      uint16 totalRead;
+N
+N      n &= 0x0F;
+N
+N      if (n > 1)
+N         return PJPG_BAD_DQT_TABLE;
+N
+N      gValidQuantTables |= (n ? 2 : 1);         
+N
+N      // read quantization entries, in zag order
+N      for (i = 0; i < 64; i++)
+N      {
+N         uint16 temp = getBits1(8);
+N
+N         if (prec)
+N            temp = (temp << 8) + getBits1(8);
+N
+N         if (n)
+N            gQuant1[i] = (int16)temp;            
+N         else
+N            gQuant0[i] = (int16)temp;            
+N      }
+N      
+N      createWinogradQuant(n ? gQuant1 : gQuant0);
+N
+N      totalRead = 64 + 1;
+N
+N      if (prec)
+N         totalRead += 64;
+N
+N      if (left < totalRead)
+N         return PJPG_BAD_DQT_LENGTH;
+N
+N      left = (uint16)(left - totalRead);
+N   }
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 readSOFMarker(void)
+N{
+N   uint8 i;
+N   uint16 left = getBits1(16);
+N
+N   if (getBits1(8) != 8)   
+N      return PJPG_BAD_PRECISION;
+N
+N   gImageYSize = getBits1(16);
+N
+N   if ((!gImageYSize) || (gImageYSize > PJPG_MAX_HEIGHT))
+X   if ((!gImageYSize) || (gImageYSize > 16384))
+N      return PJPG_BAD_HEIGHT;
+N
+N   gImageXSize = getBits1(16);
+N
+N   if ((!gImageXSize) || (gImageXSize > PJPG_MAX_WIDTH))
+X   if ((!gImageXSize) || (gImageXSize > 16384))
+N      return PJPG_BAD_WIDTH;
+N
+N   gCompsInFrame = (uint8)getBits1(8);
+N
+N   if (gCompsInFrame > 3)
+N      return PJPG_TOO_MANY_COMPONENTS;
+N
+N   if (left != (gCompsInFrame + gCompsInFrame + gCompsInFrame + 8))
+N      return PJPG_BAD_SOF_LENGTH;
+N   
+N   for (i = 0; i < gCompsInFrame; i++)
+N   {
+N      gCompIdent[i] = (uint8)getBits1(8);
+N      gCompHSamp[i] = (uint8)getBits1(4);
+N      gCompVSamp[i] = (uint8)getBits1(4);
+N      gCompQuant[i] = (uint8)getBits1(8);
+N      
+N      if (gCompQuant[i] > 1)
+N         return PJPG_UNSUPPORTED_QUANT_TABLE;
+N   }
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// Used to skip unrecognized markers.
+Nstatic uint8 skipVariableMarker(void)
+N{
+N   uint16 left = getBits1(16);
+N
+N   if (left < 2)
+N      return PJPG_BAD_VARIABLE_MARKER;
+N
+N   left -= 2;
+N
+N   while (left)
+N   {
+N      getBits1(8);
+N      left--;
+N   }
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// Read a define restart interval (DRI) marker.
+Nstatic uint8 readDRIMarker(void)
+N{
+N   if (getBits1(16) != 4)
+N      return PJPG_BAD_DRI_LENGTH;
+N
+N   gRestartInterval = getBits1(16);
+N   
+N   return 0;
+N}
+N
+N#pragma push
+N#pragma diag_suppress 550
+N#pragma diag_suppress 170
+N//------------------------------------------------------------------------------
+N// Read a start of scan (SOS) marker.
+Nstatic uint8 readSOSMarker(void)
+N{
+N   uint8 i;
+N   uint16 left = getBits1(16);
+N   uint8 spectral_start, spectral_end, successive_high, successive_low;
+N
+N   gCompsInScan = (uint8)getBits1(8);
+N
+N   left -= 3;
+N
+N   if ( (left != (gCompsInScan + gCompsInScan + 3)) || (gCompsInScan < 1) || (gCompsInScan > PJPG_MAXCOMPSINSCAN) )
+X   if ( (left != (gCompsInScan + gCompsInScan + 3)) || (gCompsInScan < 1) || (gCompsInScan > 3) )
+N      return PJPG_BAD_SOS_LENGTH;
+N   
+N   for (i = 0; i < gCompsInScan; i++)
+N   {
+N      uint8 cc = (uint8)getBits1(8);
+N      uint8 c = (uint8)getBits1(8);
+N      uint8 ci;
+N      
+N      left -= 2;
+N     
+N      for (ci = 0; ci < gCompsInFrame; ci++)
+N         if (cc == gCompIdent[ci])
+N            break;
+N
+N      if (ci >= gCompsInFrame)
+N         return PJPG_BAD_SOS_COMP_ID;
+N
+N      gCompList[i]    = ci;
+N      gCompDCTab[ci] = (c >> 4) & 15;
+N      gCompACTab[ci] = (c & 15);
+N   }
+N
+N   spectral_start  = (uint8)getBits1(8);
+N   spectral_end    = (uint8)getBits1(8);
+N   successive_high = (uint8)getBits1(4);
+N   successive_low  = (uint8)getBits1(4);
+N
+N   left -= 3;
+N
+N   while (left)                  
+N   {
+N      getBits1(8);
+N      left--;
+N   }
+N   
+N   return 0;
+N}
+N#pragma pop
+N
+N//------------------------------------------------------------------------------
+Nstatic uint8 nextMarker(void)
+N{
+N   uint8 c;
+N   uint8 bytes = 0;
+N
+N   do
+N   {
+N      do
+N      {
+N         bytes++;
+N
+N         c = (uint8)getBits1(8);
+N
+N      } while (c != 0xFF);
+N
+N      do
+N      {
+N         c = (uint8)getBits1(8);
+N
+N      } while (c == 0xFF);
+N
+N   } while (c == 0);
+N
+N   // If bytes > 0 here, there where extra bytes before the marker (not good).
+N
+N   return c;
+N}
+N//------------------------------------------------------------------------------
+N// Process markers. Returns when an SOFx, SOI, EOI, or SOS marker is
+N// encountered.
+Nstatic uint8 processMarkers(uint8* pMarker)
+N{
+N   for ( ; ; )
+N   {
+N      uint8 c = nextMarker();
+N
+N      switch (c)
+N      {
+N         case M_SOF0:
+N         case M_SOF1:
+N         case M_SOF2:
+N         case M_SOF3:
+N         case M_SOF5:
+N         case M_SOF6:
+N         case M_SOF7:
+N         //      case M_JPG:
+N         case M_SOF9:
+N         case M_SOF10:
+N         case M_SOF11:
+N         case M_SOF13:
+N         case M_SOF14:
+N         case M_SOF15:
+N         case M_SOI:
+N         case M_EOI:
+N         case M_SOS:
+N         {
+N            *pMarker = c;
+N            return 0;
+N         }
+N         case M_DHT:
+N         {
+N            readDHTMarker();
+N            break;
+N         }
+N         // Sorry, no arithmetic support at this time. Dumb patents!
+N         case M_DAC:
+N         {
+N            return PJPG_NO_ARITHMITIC_SUPPORT;
+N         }
+N         case M_DQT:
+N         {
+N            readDQTMarker();
+N            break;
+N         }
+N         case M_DRI:
+N         {
+N            readDRIMarker();
+N            break;
+N         }
+N         //case M_APP0:  /* no need to read the JFIF marker */
+N
+N         case M_JPG:
+N         case M_RST0:    /* no parameters */
+N         case M_RST1:
+N         case M_RST2:
+N         case M_RST3:
+N         case M_RST4:
+N         case M_RST5:
+N         case M_RST6:
+N         case M_RST7:
+N         case M_TEM:
+N         {
+N            return PJPG_UNEXPECTED_MARKER;
+N         }
+N         default:    /* must be DNL, DHP, EXP, APPn, JPGn, COM, or RESn or APP0 */
+N         {
+N            skipVariableMarker();
+N            break;
+N         }
+N      }
+N   }
+N//   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// Finds the start of image (SOI) marker.
+Nstatic uint8 locateSOIMarker(void)
+N{
+N   uint16 bytesleft;
+N   
+N   uint8 lastchar = (uint8)getBits1(8);
+N
+N   uint8 thischar = (uint8)getBits1(8);
+N
+N   /* ok if it's a normal JPEG file without a special header */
+N
+N   if ((lastchar == 0xFF) && (thischar == M_SOI))
+N      return 0;
+N
+N   bytesleft = 4096; //512;
+N
+N   for ( ; ; )
+N   {
+N      if (--bytesleft == 0)
+N         return PJPG_NOT_JPEG;
+N
+N      lastchar = thischar;
+N
+N      thischar = (uint8)getBits1(8);
+N
+N      if (lastchar == 0xFF) 
+N      {
+N         if (thischar == M_SOI)
+N            break;
+N         else if (thischar == M_EOI)	//getBits1 will keep returning M_EOI if we read past the end
+N            return PJPG_NOT_JPEG;
+N      }
+N   }
+N
+N   /* Check the next character after marker: if it's not 0xFF, it can't
+N   be the start of the next marker, so the file is bad */
+N
+N   thischar = (uint8)((gBitBuf >> 8) & 0xFF);
+N
+N   if (thischar != 0xFF)
+N      return PJPG_NOT_JPEG;
+N      
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// Find a start of frame (SOF) marker.
+Nstatic uint8 locateSOFMarker(void)
+N{
+N   uint8 c;
+N
+N   uint8 status = locateSOIMarker();
+N   if (status)
+N      return status;
+N   
+N   status = processMarkers(&c);
+N   if (status)
+N      return status;
+N
+N   switch (c)
+N   {
+N      case M_SOF2:
+N      {
+N         // Progressive JPEG - not supported by picojpeg (would require too
+N         // much memory, or too many IDCT's for embedded systems).
+N         return PJPG_UNSUPPORTED_MODE;
+N      }
+N      case M_SOF0:  /* baseline DCT */
+N      {
+N         status = readSOFMarker();
+N         if (status)
+N            return status;
+N            
+N         break;
+N      }
+N      case M_SOF9:  
+N      {
+N         return PJPG_NO_ARITHMITIC_SUPPORT;
+N      }
+N      case M_SOF1:  /* extended sequential DCT */
+N      default:
+N      {
+N         return PJPG_UNSUPPORTED_MARKER;
+N      }
+N   }
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// Find a start of scan (SOS) marker.
+Nstatic uint8 locateSOSMarker(uint8* pFoundEOI)
+N{
+N   uint8 c;
+N   uint8 status;
+N
+N   *pFoundEOI = 0;
+N      
+N   status = processMarkers(&c);
+N   if (status)
+N      return status;
+N
+N   if (c == M_EOI)
+N   {
+N      *pFoundEOI = 1;
+N      return 0;
+N   }
+N   else if (c != M_SOS)
+N      return PJPG_UNEXPECTED_MARKER;
+N
+N   return readSOSMarker();
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 init(void)
+N{
+N   gImageXSize = 0;
+N   gImageYSize = 0;
+N   gCompsInFrame = 0;
+N   gRestartInterval = 0;
+N   gCompsInScan = 0;
+N   gValidHuffTables = 0;
+N   gValidQuantTables = 0;
+N   gTemFlag = 0;
+N   gInBufOfs = 0;
+N   gInBufLeft = 0;
+N   gBitBuf = 0;
+N   gBitsLeft = 8;
+N
+N   getBits1(8);
+N   getBits1(8);
+N
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// This method throws back into the stream any bytes that where read
+N// into the bit buffer during initial marker scanning.
+Nstatic void fixInBuffer(void)
+N{
+N   /* In case any 0xFF's where pulled into the buffer during marker scanning */
+N
+N   if (gBitsLeft > 0)  
+N      stuffChar((uint8)gBitBuf);
+N   
+N   stuffChar((uint8)(gBitBuf >> 8));
+N   
+N   gBitsLeft = 8;
+N   getBits2(8);
+N   getBits2(8);
+N}
+N//------------------------------------------------------------------------------
+N// Restart interval processing.
+Nstatic uint8 processRestart(void)
+N{
+N   // Let's scan a little bit to find the marker, but not _too_ far.
+N   // 1536 is a "fudge factor" that determines how much to scan.
+N   uint16 i;
+N   uint8 c = 0;
+N
+N   for (i = 1536; i > 0; i--)
+N      if (getChar() == 0xFF)
+N         break;
+N
+N   if (i == 0)
+N      return PJPG_BAD_RESTART_MARKER;
+N   
+N   for ( ; i > 0; i--)
+N      if ((c = getChar()) != 0xFF)
+N         break;
+N
+N   if (i == 0)
+N      return PJPG_BAD_RESTART_MARKER;
+N
+N   // Is it the expected marker? If not, something bad happened.
+N   if (c != (gNextRestartNum + M_RST0))
+N      return PJPG_BAD_RESTART_MARKER;
+N
+N   // Reset each component's DC prediction values.
+N   gLastDC[0] = 0;
+N   gLastDC[1] = 0;
+N   gLastDC[2] = 0;
+N
+N   gRestartsLeft = gRestartInterval;
+N
+N   gNextRestartNum = (gNextRestartNum + 1) & 7;
+N
+N   // Get the bit buffer going again
+N
+N   gBitsLeft = 8;
+N   getBits2(8);
+N   getBits2(8);
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+N// FIXME: findEOI() is not actually called at the end of the image 
+N// (it's optional, and probably not needed on embedded devices)
+Nstatic uint8 findEOI(void)
+N{
+N   uint8 c;
+N   uint8 status;
+N
+N   // Prime the bit buffer
+N   gBitsLeft = 8;
+N   getBits1(8);
+N   getBits1(8);
+N
+N   // The next marker _should_ be EOI
+N   status = processMarkers(&c);
+N   if (status)
+N      return status;
+N   else if (gCallbackStatus)
+N      return gCallbackStatus;
+N   
+N   //gTotalBytesRead -= in_buf_left;
+N   if (c != M_EOI)
+N      return PJPG_UNEXPECTED_MARKER;
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 checkHuffTables(void)
+N{
+N   uint8 i;
+N
+N   for (i = 0; i < gCompsInScan; i++)
+N   {
+N      uint8 compDCTab = gCompDCTab[gCompList[i]];
+N      uint8 compACTab = gCompACTab[gCompList[i]] + 2;
+N      
+N      if ( ((gValidHuffTables & (1 << compDCTab)) == 0) ||
+N           ((gValidHuffTables & (1 << compACTab)) == 0) )
+N         return PJPG_UNDEFINED_HUFF_TABLE;           
+N   }
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 checkQuantTables(void)
+N{
+N   uint8 i;
+N
+N   for (i = 0; i < gCompsInScan; i++)
+N   {
+N      uint8 compQuantMask = gCompQuant[gCompList[i]] ? 2 : 1;
+N      
+N      if ((gValidQuantTables & compQuantMask) == 0)
+N         return PJPG_UNDEFINED_QUANT_TABLE;
+N   }         
+N
+N   return 0;         
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 initScan(void)
+N{
+N   uint8 foundEOI;
+N   uint8 status = locateSOSMarker(&foundEOI);
+N   if (status)
+N      return status;
+N   if (foundEOI)
+N      return PJPG_UNEXPECTED_MARKER;
+N   
+N   status = checkHuffTables();
+N   if (status)
+N      return status;
+N
+N   status = checkQuantTables();
+N   if (status)
+N      return status;
+N
+N   gLastDC[0] = 0;
+N   gLastDC[1] = 0;
+N   gLastDC[2] = 0;
+N
+N   if (gRestartInterval)
+N   {
+N      gRestartsLeft = gRestartInterval;
+N      gNextRestartNum = 0;
+N   }
+N
+N   fixInBuffer();
+N
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nstatic uint8 initFrame(void)
+N{
+N   if (gCompsInFrame == 1)
+N   {
+N      if ((gCompHSamp[0] != 1) || (gCompVSamp[0] != 1))
+N         return PJPG_UNSUPPORTED_SAMP_FACTORS;
+N
+N      gScanType = PJPG_GRAYSCALE;
+N
+N      gMaxBlocksPerMCU = 1;
+N      gMCUOrg[0] = 0;
+N
+N      gMaxMCUXSize     = 8;
+N      gMaxMCUYSize     = 8;
+N   }
+N   else if (gCompsInFrame == 3)
+N   {
+N      if ( ((gCompHSamp[1] != 1) || (gCompVSamp[1] != 1)) ||
+N         ((gCompHSamp[2] != 1) || (gCompVSamp[2] != 1)) )
+N         return PJPG_UNSUPPORTED_SAMP_FACTORS;
+N
+N      if ((gCompHSamp[0] == 1) && (gCompVSamp[0] == 1))
+N      {
+N         gScanType = PJPG_YH1V1;
+N
+N         gMaxBlocksPerMCU = 3;
+N         gMCUOrg[0] = 0;
+N         gMCUOrg[1] = 1;
+N         gMCUOrg[2] = 2;
+N                  
+N         gMaxMCUXSize = 8;
+N         gMaxMCUYSize = 8;
+N      }
+N      else if ((gCompHSamp[0] == 1) && (gCompVSamp[0] == 2))
+N      {
+N         gScanType = PJPG_YH1V2;
+N
+N         gMaxBlocksPerMCU = 4;
+N         gMCUOrg[0] = 0;
+N         gMCUOrg[1] = 0;
+N         gMCUOrg[2] = 1;
+N         gMCUOrg[3] = 2;
+N
+N         gMaxMCUXSize = 8;
+N         gMaxMCUYSize = 16;
+N      }
+N      else if ((gCompHSamp[0] == 2) && (gCompVSamp[0] == 1))
+N      {
+N         gScanType = PJPG_YH2V1;
+N
+N         gMaxBlocksPerMCU = 4;
+N         gMCUOrg[0] = 0;
+N         gMCUOrg[1] = 0;
+N         gMCUOrg[2] = 1;
+N         gMCUOrg[3] = 2;
+N
+N         gMaxMCUXSize = 16;
+N         gMaxMCUYSize = 8;
+N      }
+N      else if ((gCompHSamp[0] == 2) && (gCompVSamp[0] == 2))
+N      {
+N         gScanType = PJPG_YH2V2;
+N
+N         gMaxBlocksPerMCU = 6;
+N         gMCUOrg[0] = 0;
+N         gMCUOrg[1] = 0;
+N         gMCUOrg[2] = 0;
+N         gMCUOrg[3] = 0;
+N         gMCUOrg[4] = 1;
+N         gMCUOrg[5] = 2;
+N
+N         gMaxMCUXSize = 16;
+N         gMaxMCUYSize = 16;
+N      }
+N      else
+N         return PJPG_UNSUPPORTED_SAMP_FACTORS;
+N   }
+N   else
+N      return PJPG_UNSUPPORTED_COLORSPACE;
+N
+N   gMaxMCUSPerRow = (gImageXSize + (gMaxMCUXSize - 1)) >> ((gMaxMCUXSize == 8) ? 3 : 4);
+N   gMaxMCUSPerCol = (gImageYSize + (gMaxMCUYSize - 1)) >> ((gMaxMCUYSize == 8) ? 3 : 4);
+N   
+N   gNumMCUSRemaining = gMaxMCUSPerRow * gMaxMCUSPerCol;
+N   
+N   return 0;
+N}
+N//----------------------------------------------------------------------------
+N// Winograd IDCT: 5 multiplies per row/col, up to 80 muls for the 2D IDCT
+N
+N#define PJPG_DCT_SCALE_BITS 7
+N
+N#define PJPG_DCT_SCALE (1U << PJPG_DCT_SCALE_BITS)
+N
+N#define PJPG_DESCALE(x) PJPG_ARITH_SHIFT_RIGHT_N_16(((x) + (1U << (PJPG_DCT_SCALE_BITS - 1))), PJPG_DCT_SCALE_BITS)
+N
+N#define PJPG_WFIX(x) ((x) * PJPG_DCT_SCALE + 0.5f)
+N
+N#define PJPG_WINOGRAD_QUANT_SCALE_BITS 10
+N
+Nconst uint8 gWinogradQuant[] = 
+N{
+N   128,  178,  178,  167,  246,  167,  151,  232,
+N   232,  151,  128,  209,  219,  209,  128,  101,
+N   178,  197,  197,  178,  101,   69,  139,  167,
+N   177,  167,  139,   69,   35,   96,  131,  151,
+N   151,  131,   96,   35,   49,   91,  118,  128,
+N   118,   91,   49,   46,   81,  101,  101,   81,
+N   46,   42,   69,   79,   69,   42,   35,   54,
+N   54,   35,   28,   37,   28,   19,   19,   10,
+N};   
+N
+N// Multiply quantization matrix by the Winograd IDCT scale factors
+N// AD Opt: restrict
+Nstatic void createWinogradQuant(int16* restrict pQuant)
+N{
+N   uint8 i;
+N   
+N   for (i = 0; i < 64; i++) 
+N   {
+N      long x = pQuant[i];
+N      x *= gWinogradQuant[i];
+N      pQuant[i] = (int16)((x + (1 << (PJPG_WINOGRAD_QUANT_SCALE_BITS - PJPG_DCT_SCALE_BITS - 1))) >> (PJPG_WINOGRAD_QUANT_SCALE_BITS - PJPG_DCT_SCALE_BITS));
+X      pQuant[i] = (int16)((x + (1 << (10 - 7 - 1))) >> (10 - 7));
+N   }
+N}
+N
+N// These multiply helper functions are the 4 types of signed multiplies needed by the Winograd IDCT.
+N// A smart C compiler will optimize them to use 16x8 = 24 bit muls, if not you may need to tweak
+N// these functions or drop to CPU specific inline assembly.
+N
+N// 1/cos(4*pi/16)
+N// 362, 256+106
+Nstatic PJPG_INLINE int16 imul_b1_b3(int16 w)
+Xstatic  int16 imul_b1_b3(int16 w)
+N{
+N   long x = (w * 362L);
+N   x += 128L;
+N   return (int16)(PJPG_ARITH_SHIFT_RIGHT_8_L(x));
+X   return (int16)(((x) >> 8));
+N}
+N
+N// 1/cos(6*pi/16)
+N// 669, 256+256+157
+Nstatic PJPG_INLINE int16 imul_b2(int16 w)
+Xstatic  int16 imul_b2(int16 w)
+N{
+N   long x = (w * 669L);
+N   x += 128L;
+N   return (int16)(PJPG_ARITH_SHIFT_RIGHT_8_L(x));
+X   return (int16)(((x) >> 8));
+N}
+N
+N// 1/cos(2*pi/16)
+N// 277, 256+21
+Nstatic PJPG_INLINE int16 imul_b4(int16 w)
+Xstatic  int16 imul_b4(int16 w)
+N{
+N   long x = (w * 277L);
+N   x += 128L;
+N   return (int16)(PJPG_ARITH_SHIFT_RIGHT_8_L(x));
+X   return (int16)(((x) >> 8));
+N}
+N
+N// 1/(cos(2*pi/16) + cos(6*pi/16))
+N// 196, 196
+Nstatic PJPG_INLINE int16 imul_b5(int16 w)
+Xstatic  int16 imul_b5(int16 w)
+N{
+N   long x = (w * 196L);
+N   x += 128L;
+N   return (int16)(PJPG_ARITH_SHIFT_RIGHT_8_L(x));
+X   return (int16)(((x) >> 8));
+N}
+N
+Nstatic PJPG_INLINE uint8 clamp(int16 s)
+Xstatic  uint8 clamp(int16 s)
+N{
+N   if ((uint16)s > 255U)
+N   {
+N      if (s < 0) 
+N         return 0; 
+N      else if (s > 255) 
+N         return 255;
+N   }
+N      
+N   return (uint8)s;
+N}
+N
+N#if LESS_INLINING
+X#if 1
+Nstatic void idctRows(void) __attribute__((noinline));
+N#endif
+Nstatic void idctRows(void)
+N{
+N   uint8 i;
+N   int16* pSrc = gCoeffBuf;
+N            
+N   for (i = 0; i < 8; i++)
+N   {
+N		 if ((pSrc[1] | pSrc[2] | pSrc[3] | pSrc[4] | pSrc[5] | pSrc[6] | pSrc[7]) == 0) // AD: suspicious
+N      {
+N         // Short circuit the 1D IDCT if only the DC component is non-zero
+N         int16 src0 = *pSrc;
+N
+N         *(pSrc+1) = src0;
+N         *(pSrc+2) = src0;
+N         *(pSrc+3) = src0;
+N         *(pSrc+4) = src0;
+N         *(pSrc+5) = src0;
+N         *(pSrc+6) = src0;
+N         *(pSrc+7) = src0;
+N      }
+N      else
+N      {
+N         int16 src4 = *(pSrc+5);
+N         int16 src7 = *(pSrc+3);
+N         int16 x4  = src4 - src7;
+N         int16 x7  = src4 + src7;
+N
+N         int16 src5 = *(pSrc+1);
+N         int16 src6 = *(pSrc+7);
+N         int16 x5  = src5 + src6;
+N         int16 x6  = src5 - src6;
+N
+N         int16 tmp1 = imul_b5(x4 - x6);
+N         int16 stg26 = imul_b4(x6) - tmp1;
+N
+N         int16 x24 = tmp1 - imul_b2(x4);
+N
+N         int16 x15 = x5 - x7;
+N         int16 x17 = x5 + x7;
+N
+N         int16 tmp2 = stg26 - x17;
+N         int16 tmp3 = imul_b1_b3(x15) - tmp2;
+N         int16 x44 = tmp3 + x24;
+N
+N         int16 src0 = *(pSrc+0);
+N         int16 src1 = *(pSrc+4);
+N         int16 x30 = src0 + src1;
+N         int16 x31 = src0 - src1;
+N
+N         int16 src2 = *(pSrc+2);
+N         int16 src3 = *(pSrc+6);
+N         int16 x12 = src2 - src3;
+N         int16 x13 = src2 + src3;
+N
+N         int16 x32 = imul_b1_b3(x12) - x13;
+N
+N         int16 x40 = x30 + x13;
+N         int16 x43 = x30 - x13;
+N         int16 x41 = x31 + x32;
+N         int16 x42 = x31 - x32;
+N
+N         *(pSrc+0) = x40 + x17;
+N         *(pSrc+1) = x41 + tmp2;
+N         *(pSrc+2) = x42 + tmp3;
+N         *(pSrc+3) = x43 - x44;
+N         *(pSrc+4) = x43 + x44;
+N         *(pSrc+5) = x42 - tmp3;
+N         *(pSrc+6) = x41 - tmp2;
+N         *(pSrc+7) = x40 - x17;
+N      }
+N                  
+N      pSrc += 8;
+N   }      
+N}
+N#if LESS_INLINING
+X#if 1
+Nstatic void idctCols(void) __attribute__((noinline));
+N#endif
+Nstatic void idctCols(void)
+N{
+N   uint8 i;
+N      
+N   int16* pSrc = gCoeffBuf;
+N   
+N   for (i = 0; i < 8; i++)
+N   {
+N//		 if ((pSrc[1*8] | pSrc[2*8] | pSrc[3*8] | pSrc[4*8] | pSrc[5*8] | pSrc[6*8] | pSrc[7*8]) == 0) // AD: suspicious
+N// AD Opt
+N		 if ((pSrc[1*8] == 0) && (pSrc[2*8] == 0) && (pSrc[3*8] == 0) && (pSrc[4*8] == 0) && 
+N			 (pSrc[5*8] == 0) && (pSrc[6*8] == 0) && (pSrc[7*8] == 0) ) // AD Opt
+N// End AD Opt
+N		 {
+N         // Short circuit the 1D IDCT if only the DC component is non-zero
+N         uint8 c = clamp(PJPG_DESCALE(*pSrc) + 128);
+X         uint8 c = clamp(((((*pSrc) + (1U << (7 - 1)))) >> (7)) + 128);
+N         *(pSrc+0*8) = c;
+N         *(pSrc+1*8) = c;
+N         *(pSrc+2*8) = c;
+N         *(pSrc+3*8) = c;
+N         *(pSrc+4*8) = c;
+N         *(pSrc+5*8) = c;
+N         *(pSrc+6*8) = c;
+N         *(pSrc+7*8) = c;
+N      }
+N      else
+N      {
+N         int16 src4 = *(pSrc+5*8);
+N         int16 src7 = *(pSrc+3*8);
+N         int16 x4  = src4 - src7;
+N         int16 x7  = src4 + src7;
+N
+N         int16 src5 = *(pSrc+1*8);
+N         int16 src6 = *(pSrc+7*8);
+N         int16 x5  = src5 + src6;
+N         int16 x6  = src5 - src6;
+N
+N         int16 tmp1 = imul_b5(x4 - x6);
+N         int16 stg26 = imul_b4(x6) - tmp1;
+N
+N         int16 x24 = tmp1 - imul_b2(x4);
+N
+N         int16 x15 = x5 - x7;
+N         int16 x17 = x5 + x7;
+N
+N         int16 tmp2 = stg26 - x17;
+N         int16 tmp3 = imul_b1_b3(x15) - tmp2;
+N         int16 x44 = tmp3 + x24;
+N
+N         int16 src0 = *(pSrc+0*8);
+N         int16 src1 = *(pSrc+4*8);
+N         int16 x30 = src0 + src1;
+N         int16 x31 = src0 - src1;
+N
+N         int16 src2 = *(pSrc+2*8);
+N         int16 src3 = *(pSrc+6*8);
+N         int16 x12 = src2 - src3;
+N         int16 x13 = src2 + src3;
+N
+N         int16 x32 = imul_b1_b3(x12) - x13;
+N
+N         int16 x40 = x30 + x13;
+N         int16 x43 = x30 - x13;
+N         int16 x41 = x31 + x32;
+N         int16 x42 = x31 - x32;
+N
+N         // descale, convert to unsigned and clamp to 8-bit
+N         *(pSrc+0*8) = clamp(PJPG_DESCALE(x40 + x17)  + 128);
+X         *(pSrc+0*8) = clamp(((((x40 + x17) + (1U << (7 - 1)))) >> (7))  + 128);
+N         *(pSrc+1*8) = clamp(PJPG_DESCALE(x41 + tmp2) + 128);
+X         *(pSrc+1*8) = clamp(((((x41 + tmp2) + (1U << (7 - 1)))) >> (7)) + 128);
+N         *(pSrc+2*8) = clamp(PJPG_DESCALE(x42 + tmp3) + 128);
+X         *(pSrc+2*8) = clamp(((((x42 + tmp3) + (1U << (7 - 1)))) >> (7)) + 128);
+N         *(pSrc+3*8) = clamp(PJPG_DESCALE(x43 - x44)  + 128);
+X         *(pSrc+3*8) = clamp(((((x43 - x44) + (1U << (7 - 1)))) >> (7))  + 128);
+N         *(pSrc+4*8) = clamp(PJPG_DESCALE(x43 + x44)  + 128);
+X         *(pSrc+4*8) = clamp(((((x43 + x44) + (1U << (7 - 1)))) >> (7))  + 128);
+N         *(pSrc+5*8) = clamp(PJPG_DESCALE(x42 - tmp3) + 128);
+X         *(pSrc+5*8) = clamp(((((x42 - tmp3) + (1U << (7 - 1)))) >> (7)) + 128);
+N         *(pSrc+6*8) = clamp(PJPG_DESCALE(x41 - tmp2) + 128);
+X         *(pSrc+6*8) = clamp(((((x41 - tmp2) + (1U << (7 - 1)))) >> (7)) + 128);
+N         *(pSrc+7*8) = clamp(PJPG_DESCALE(x40 - x17)  + 128);
+X         *(pSrc+7*8) = clamp(((((x40 - x17) + (1U << (7 - 1)))) >> (7))  + 128);
+N      }
+N
+N      pSrc++;      
+N   }      
+N}
+N
+N/*----------------------------------------------------------------------------*/
+Nstatic PJPG_INLINE uint8 addAndClamp(uint8 a, int16 b)
+Xstatic  uint8 addAndClamp(uint8 a, int16 b)
+N{
+N   b = a + b;
+N   
+N   if ((uint16)b > 255U)
+N   {
+N      if (b < 0)
+N         return 0;
+N      else if (b > 255)
+N         return 255;
+N   }
+N      
+N   return (uint8)b;
+N}
+N/*----------------------------------------------------------------------------*/
+Nstatic PJPG_INLINE uint8 subAndClamp(uint8 a, int16 b)
+Xstatic  uint8 subAndClamp(uint8 a, int16 b)
+N{
+N   b = a - b;
+N
+N   if ((uint16)b > 255U)
+N   {
+N      if (b < 0)
+N         return 0;
+N      else if (b > 255)
+N         return 255;
+N   }
+N
+N   return (uint8)b;
+N}
+N/*----------------------------------------------------------------------------*/
+N// 103/256
+N//R = Y + 1.402 (Cr-128)
+N
+N// 88/256, 183/256
+N//G = Y - 0.34414 (Cb-128) - 0.71414 (Cr-128)
+N
+N// 198/256
+N//B = Y + 1.772 (Cb-128)
+N/*----------------------------------------------------------------------------*/
+N// Cb upsample and accumulate, 4x4 to 8x8
+N#if LESS_INLINING
+X#if 1
+Nstatic void upsampleCb(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
+N#endif
+Nstatic void upsampleCb(uint8 srcOfs, uint8 dstOfs)
+N{
+N   // Cb - affects G and B
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   uint8* pDstB = gMCUBufB + dstOfs;
+N   for (y = 0; y < 4; y++)
+N   {
+N      for (x = 0; x < 4; x++)
+N      {
+N         uint8 cb = (uint8)*pSrc++;
+N         int16 cbG, cbB;
+N
+N         cbG = ((cb * 88U) >> 8U) - 44U;
+N         pDstG[0] = subAndClamp(pDstG[0], cbG);
+N         pDstG[1] = subAndClamp(pDstG[1], cbG);
+N         pDstG[8] = subAndClamp(pDstG[8], cbG);
+N         pDstG[9] = subAndClamp(pDstG[9], cbG);
+N
+N         cbB = (cb + ((cb * 198U) >> 8U)) - 227U;
+N         pDstB[0] = addAndClamp(pDstB[0], cbB);
+N         pDstB[1] = addAndClamp(pDstB[1], cbB);
+N         pDstB[8] = addAndClamp(pDstB[8], cbB);
+N         pDstB[9] = addAndClamp(pDstB[9], cbB);
+N
+N         pDstG += 2;
+N         pDstB += 2;
+N      }
+N
+N      pSrc = pSrc - 4 + 8;
+N      pDstG = pDstG - 8 + 16;
+N      pDstB = pDstB - 8 + 16;
+N   }
+N}   
+N/*----------------------------------------------------------------------------*/
+N// Cb upsample and accumulate, 4x8 to 8x8
+Nstatic void upsampleCbH(uint8 srcOfs, uint8 dstOfs)
+N{
+N   // Cb - affects G and B
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   uint8* pDstB = gMCUBufB + dstOfs;
+N   for (y = 0; y < 8; y++)
+N   {
+N      for (x = 0; x < 4; x++)
+N      {
+N         uint8 cb = (uint8)*pSrc++;
+N         int16 cbG, cbB;
+N
+N         cbG = ((cb * 88U) >> 8U) - 44U;
+N         pDstG[0] = subAndClamp(pDstG[0], cbG);
+N         pDstG[1] = subAndClamp(pDstG[1], cbG);
+N
+N         cbB = (cb + ((cb * 198U) >> 8U)) - 227U;
+N         pDstB[0] = addAndClamp(pDstB[0], cbB);
+N         pDstB[1] = addAndClamp(pDstB[1], cbB);
+N
+N         pDstG += 2;
+N         pDstB += 2;
+N      }
+N
+N      pSrc = pSrc - 4 + 8;
+N   }
+N}   
+N/*----------------------------------------------------------------------------*/
+N// Cb upsample and accumulate, 8x4 to 8x8
+Nstatic void upsampleCbV(uint8 srcOfs, uint8 dstOfs)
+N{
+N   // Cb - affects G and B
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   uint8* pDstB = gMCUBufB + dstOfs;
+N   for (y = 0; y < 4; y++)
+N   {
+N      for (x = 0; x < 8; x++)
+N      {
+N         uint8 cb = (uint8)*pSrc++;
+N         int16 cbG, cbB;
+N
+N         cbG = ((cb * 88U) >> 8U) - 44U;
+N         pDstG[0] = subAndClamp(pDstG[0], cbG);
+N         pDstG[8] = subAndClamp(pDstG[8], cbG);
+N
+N         cbB = (cb + ((cb * 198U) >> 8U)) - 227U;
+N         pDstB[0] = addAndClamp(pDstB[0], cbB);
+N         pDstB[8] = addAndClamp(pDstB[8], cbB);
+N
+N         ++pDstG;
+N         ++pDstB;
+N      }
+N
+N      pDstG = pDstG - 8 + 16;
+N      pDstB = pDstB - 8 + 16;
+N   }
+N}   
+N/*----------------------------------------------------------------------------*/
+N// 103/256
+N//R = Y + 1.402 (Cr-128)
+N
+N// 88/256, 183/256
+N//G = Y - 0.34414 (Cb-128) - 0.71414 (Cr-128)
+N
+N// 198/256
+N//B = Y + 1.772 (Cb-128)
+N/*----------------------------------------------------------------------------*/
+N// Cr upsample and accumulate, 4x4 to 8x8
+N#if LESS_INLINING
+X#if 1
+Nstatic void upsampleCr(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
+N#endif
+Nstatic void upsampleCr(uint8 srcOfs, uint8 dstOfs) 
+N{
+N   // Cr - affects R and G
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstR = gMCUBufR + dstOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   for (y = 0; y < 4; y++)
+N   {
+N      for (x = 0; x < 4; x++)
+N      {
+N         uint8 cr = (uint8)*pSrc++;
+N         int16 crR, crG;
+N
+N         crR = (cr + ((cr * 103U) >> 8U)) - 179;
+N         pDstR[0] = addAndClamp(pDstR[0], crR);
+N         pDstR[1] = addAndClamp(pDstR[1], crR);
+N         pDstR[8] = addAndClamp(pDstR[8], crR);
+N         pDstR[9] = addAndClamp(pDstR[9], crR);
+N         
+N         crG = ((cr * 183U) >> 8U) - 91;
+N         pDstG[0] = subAndClamp(pDstG[0], crG);
+N         pDstG[1] = subAndClamp(pDstG[1], crG);
+N         pDstG[8] = subAndClamp(pDstG[8], crG);
+N         pDstG[9] = subAndClamp(pDstG[9], crG);
+N         
+N         pDstR += 2;
+N         pDstG += 2;
+N      }
+N
+N      pSrc = pSrc - 4 + 8;
+N      pDstR = pDstR - 8 + 16;
+N      pDstG = pDstG - 8 + 16;
+N   }
+N}   
+N/*----------------------------------------------------------------------------*/
+N// Cr upsample and accumulate, 4x8 to 8x8
+Nstatic void upsampleCrH(uint8 srcOfs, uint8 dstOfs)
+N{
+N   // Cr - affects R and G
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstR = gMCUBufR + dstOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   for (y = 0; y < 8; y++)
+N   {
+N      for (x = 0; x < 4; x++)
+N      {
+N         uint8 cr = (uint8)*pSrc++;
+N         int16 crR, crG;
+N
+N         crR = (cr + ((cr * 103U) >> 8U)) - 179;
+N         pDstR[0] = addAndClamp(pDstR[0], crR);
+N         pDstR[1] = addAndClamp(pDstR[1], crR);
+N         
+N         crG = ((cr * 183U) >> 8U) - 91;
+N         pDstG[0] = subAndClamp(pDstG[0], crG);
+N         pDstG[1] = subAndClamp(pDstG[1], crG);
+N         
+N         pDstR += 2;
+N         pDstG += 2;
+N      }
+N
+N      pSrc = pSrc - 4 + 8;
+N   }
+N}   
+N/*----------------------------------------------------------------------------*/
+N// Cr upsample and accumulate, 8x4 to 8x8
+Nstatic void upsampleCrV(uint8 srcOfs, uint8 dstOfs)
+N{
+N   // Cr - affects R and G
+N   uint8 x, y;
+N   int16* pSrc = gCoeffBuf + srcOfs;
+N   uint8* pDstR = gMCUBufR + dstOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   for (y = 0; y < 4; y++)
+N   {
+N      for (x = 0; x < 8; x++)
+N      {
+N         uint8 cr = (uint8)*pSrc++;
+N         int16 crR, crG;
+N
+N         crR = (cr + ((cr * 103U) >> 8U)) - 179;
+N         pDstR[0] = addAndClamp(pDstR[0], crR);
+N         pDstR[8] = addAndClamp(pDstR[8], crR);
+N
+N         crG = ((cr * 183U) >> 8U) - 91;
+N         pDstG[0] = subAndClamp(pDstG[0], crG);
+N         pDstG[8] = subAndClamp(pDstG[8], crG);
+N
+N         ++pDstR;
+N         ++pDstG;
+N      }
+N
+N      pDstR = pDstR - 8 + 16;
+N      pDstG = pDstG - 8 + 16;
+N   }
+N} 
+N/*----------------------------------------------------------------------------*/
+N// Convert Y to RGB
+Nstatic void copyY(uint8 dstOfs) // AD Opt: Move data 32 bits at a time. Need prolog and epilog.
+N{
+N   uint8 i;
+N   uint8* pRDst = gMCUBufR + dstOfs;
+N   uint8* pGDst = gMCUBufG + dstOfs;
+N   uint8* pBDst = gMCUBufB + dstOfs;
+N   int16* pSrc = gCoeffBuf;
+N   
+N   for (i = 64; i > 0; i--)
+N   {
+N      uint8 c = (uint8)*pSrc++;
+N      
+N      *pRDst++ = c;
+N      *pGDst++ = c;
+N      *pBDst++ = c;
+N   }
+N}
+N/*----------------------------------------------------------------------------*/
+N// Cb convert to RGB and accumulate
+N#if LESS_INLINING
+X#if 1
+Nstatic void convertCb(uint8 dstOfs) __attribute__((noinline));
+N#endif
+Nstatic void convertCb(uint8 dstOfs)
+N{
+N   uint8 i;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   uint8* pDstB = gMCUBufB + dstOfs;
+N   int16* pSrc = gCoeffBuf;
+N
+N   for (i = 64; i > 0; i--)
+N   {
+N      uint8 cb = (uint8)*pSrc++;
+N      int16 cbG, cbB;
+N
+N      cbG = ((cb * 88U) >> 8U) - 44U;
+N      *pDstG++ = subAndClamp(pDstG[0], cbG);
+N
+N      cbB = (cb + ((cb * 198U) >> 8U)) - 227U;
+N      *pDstB++ = addAndClamp(pDstB[0], cbB);
+N   }
+N}
+N/*----------------------------------------------------------------------------*/
+N// Cr convert to RGB and accumulate
+N#if LESS_INLINING
+X#if 1
+Nstatic void convertCr(uint8 dstOfs) __attribute__((noinline));
+N#endif
+Nstatic void convertCr(uint8 dstOfs)
+N{
+N   uint8 i;
+N   uint8* pDstR = gMCUBufR + dstOfs;
+N   uint8* pDstG = gMCUBufG + dstOfs;
+N   int16* pSrc = gCoeffBuf;
+N
+N   for (i = 64; i > 0; i--)
+N   {
+N      uint8 cr = (uint8)*pSrc++;
+N      int16 crR, crG;
+N
+N      crR = (cr + ((cr * 103U) >> 8U)) - 179;
+N      *pDstR++ = addAndClamp(pDstR[0], crR);
+N
+N      crG = ((cr * 183U) >> 8U) - 91;
+N      *pDstG++ = subAndClamp(pDstG[0], crG);
+N   }
+N}
+N/*----------------------------------------------------------------------------*/
+N#if LESS_INLINING
+X#if 1
+Nstatic void transformBlock(uint8 mcuBlock) __attribute__((noinline));
+N#endif
+Nstatic void transformBlock(uint8 mcuBlock)
+N{
+N   idctRows();
+N   idctCols();
+N   
+N   switch (gScanType)
+N   {
+N      case PJPG_GRAYSCALE:
+N      {
+N         // MCU size: 1, 1 block per MCU
+N         copyY(0);
+N         break;
+N      }
+N      case PJPG_YH1V1:
+N      {
+N         // MCU size: 8x8, 3 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               copyY(0);
+N               break;
+N            }
+N            case 1:
+N            {
+N               convertCb(0);
+N               break;
+N            }
+N            case 2:
+N            {
+N               convertCr(0);
+N               break;
+N            }
+N         }
+N
+N         break;
+N      }
+N      case PJPG_YH1V2:
+N      {
+N         // MCU size: 8x16, 4 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               copyY(0);
+N               break;
+N            }
+N            case 1:
+N            {
+N               copyY(128);
+N               break;
+N            }
+N            case 2:
+N            {
+N               upsampleCbV(0, 0);
+N               upsampleCbV(4*8, 128);
+N               break;
+N            }
+N            case 3:
+N            {
+N               upsampleCrV(0, 0);
+N               upsampleCrV(4*8, 128);
+N               break;
+N            }
+N         }
+N
+N         break;
+N      }        
+N      case PJPG_YH2V1:
+N      {
+N         // MCU size: 16x8, 4 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               copyY(0);
+N               break;
+N            }
+N            case 1:
+N            {
+N               copyY(64);
+N               break;
+N            }
+N            case 2:
+N            {
+N               upsampleCbH(0, 0);
+N               upsampleCbH(4, 64);
+N               break;
+N            }
+N            case 3:
+N            {
+N               upsampleCrH(0, 0);
+N               upsampleCrH(4, 64);
+N               break;
+N            }
+N         }
+N         
+N         break;
+N      }        
+N      case PJPG_YH2V2:
+N      {
+N         // MCU size: 16x16, 6 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               copyY(0);
+N               break;
+N            }
+N            case 1:
+N            {
+N               copyY(64);
+N               break;
+N            }
+N            case 2:
+N            {
+N               copyY(128);
+N               break;
+N            }
+N            case 3:
+N            {
+N               copyY(192);
+N               break;
+N            }
+N            case 4:
+N            {
+N               upsampleCb(0, 0);
+N               upsampleCb(4, 64);
+N               upsampleCb(4*8, 128);
+N               upsampleCb(4+4*8, 192);
+N               break;
+N            }
+N            case 5:
+N            {
+N               upsampleCr(0, 0);
+N               upsampleCr(4, 64);
+N               upsampleCr(4*8, 128);
+N               upsampleCr(4+4*8, 192);
+N               break;
+N            }
+N         }
+N
+N         break;
+N      }         
+N   }      
+N}
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic void transformBlockReduce(uint8 mcuBlock) __attribute__((noinline));
+N#endif
+Nstatic void transformBlockReduce(uint8 mcuBlock)
+N{
+N   uint8 c = clamp(PJPG_DESCALE(gCoeffBuf[0]) + 128);
+X   uint8 c = clamp(((((gCoeffBuf[0]) + (1U << (7 - 1)))) >> (7)) + 128);
+N   int16 cbG, cbB, crR, crG;
+N
+N   switch (gScanType)
+N   {
+N      case PJPG_GRAYSCALE:
+N      {
+N         // MCU size: 1, 1 block per MCU
+N         gMCUBufR[0] = c;
+N         break;
+N      }
+N      case PJPG_YH1V1:
+N      {
+N         // MCU size: 8x8, 3 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               gMCUBufR[0] = c;
+N               gMCUBufG[0] = c;
+N               gMCUBufB[0] = c;
+N               break;
+N            }
+N            case 1:
+N            {
+N               cbG = ((c * 88U) >> 8U) - 44U;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], cbG);
+N
+N               cbB = (c + ((c * 198U) >> 8U)) - 227U;
+N               gMCUBufB[0] = addAndClamp(gMCUBufB[0], cbB);
+N               break;
+N            }
+N            case 2:
+N            {
+N               crR = (c + ((c * 103U) >> 8U)) - 179;
+N               gMCUBufR[0] = addAndClamp(gMCUBufR[0], crR);
+N
+N               crG = ((c * 183U) >> 8U) - 91;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], crG);
+N               break;
+N            }
+N         }
+N
+N         break;
+N      }
+N      case PJPG_YH1V2:
+N      {
+N         // MCU size: 8x16, 4 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               gMCUBufR[0] = c;
+N               gMCUBufG[0] = c;
+N               gMCUBufB[0] = c;
+N               break;
+N            }
+N            case 1:
+N            {
+N               gMCUBufR[128] = c;
+N               gMCUBufG[128] = c;
+N               gMCUBufB[128] = c;
+N               break;
+N            }
+N            case 2:
+N            {
+N               cbG = ((c * 88U) >> 8U) - 44U;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], cbG);
+N               gMCUBufG[128] = subAndClamp(gMCUBufG[128], cbG);
+N
+N               cbB = (c + ((c * 198U) >> 8U)) - 227U;
+N               gMCUBufB[0] = addAndClamp(gMCUBufB[0], cbB);
+N               gMCUBufB[128] = addAndClamp(gMCUBufB[128], cbB);
+N
+N               break;
+N            }
+N            case 3:
+N            {
+N               crR = (c + ((c * 103U) >> 8U)) - 179;
+N               gMCUBufR[0] = addAndClamp(gMCUBufR[0], crR);
+N               gMCUBufR[128] = addAndClamp(gMCUBufR[128], crR);
+N
+N               crG = ((c * 183U) >> 8U) - 91;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], crG);
+N               gMCUBufG[128] = subAndClamp(gMCUBufG[128], crG);
+N
+N               break;
+N            }
+N         }
+N         break;
+N      }
+N      case PJPG_YH2V1:
+N      {
+N         // MCU size: 16x8, 4 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               gMCUBufR[0] = c;
+N               gMCUBufG[0] = c;
+N               gMCUBufB[0] = c;
+N               break;
+N            }
+N            case 1:
+N            {
+N               gMCUBufR[64] = c;
+N               gMCUBufG[64] = c;
+N               gMCUBufB[64] = c;
+N               break;
+N            }
+N            case 2:
+N            {
+N               cbG = ((c * 88U) >> 8U) - 44U;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], cbG);
+N               gMCUBufG[64] = subAndClamp(gMCUBufG[64], cbG);
+N
+N               cbB = (c + ((c * 198U) >> 8U)) - 227U;
+N               gMCUBufB[0] = addAndClamp(gMCUBufB[0], cbB);
+N               gMCUBufB[64] = addAndClamp(gMCUBufB[64], cbB);
+N
+N               break;
+N            }
+N            case 3:
+N            {
+N               crR = (c + ((c * 103U) >> 8U)) - 179;
+N               gMCUBufR[0] = addAndClamp(gMCUBufR[0], crR);
+N               gMCUBufR[64] = addAndClamp(gMCUBufR[64], crR);
+N
+N               crG = ((c * 183U) >> 8U) - 91;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], crG);
+N               gMCUBufG[64] = subAndClamp(gMCUBufG[64], crG);
+N
+N               break;
+N            }
+N         }
+N         break;
+N      }
+N      case PJPG_YH2V2:
+N      {
+N         // MCU size: 16x16, 6 blocks per MCU
+N         switch (mcuBlock)
+N         {
+N            case 0:
+N            {
+N               gMCUBufR[0] = c;
+N               gMCUBufG[0] = c;
+N               gMCUBufB[0] = c;
+N               break;
+N            }
+N            case 1:
+N            {
+N               gMCUBufR[64] = c;
+N               gMCUBufG[64] = c;
+N               gMCUBufB[64] = c;
+N               break;
+N            }
+N            case 2:
+N            {
+N               gMCUBufR[128] = c;
+N               gMCUBufG[128] = c;
+N               gMCUBufB[128] = c;
+N               break;
+N            }
+N            case 3:
+N            {
+N               gMCUBufR[192] = c;
+N               gMCUBufG[192] = c;
+N               gMCUBufB[192] = c;
+N               break;
+N            }
+N            case 4:
+N            {
+N               cbG = ((c * 88U) >> 8U) - 44U;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], cbG);
+N               gMCUBufG[64] = subAndClamp(gMCUBufG[64], cbG);
+N               gMCUBufG[128] = subAndClamp(gMCUBufG[128], cbG);
+N               gMCUBufG[192] = subAndClamp(gMCUBufG[192], cbG);
+N
+N               cbB = (c + ((c * 198U) >> 8U)) - 227U;
+N               gMCUBufB[0] = addAndClamp(gMCUBufB[0], cbB);
+N               gMCUBufB[64] = addAndClamp(gMCUBufB[64], cbB);
+N               gMCUBufB[128] = addAndClamp(gMCUBufB[128], cbB);
+N               gMCUBufB[192] = addAndClamp(gMCUBufB[192], cbB);
+N
+N               break;
+N            }
+N            case 5:
+N            {
+N               crR = (c + ((c * 103U) >> 8U)) - 179;
+N               gMCUBufR[0] = addAndClamp(gMCUBufR[0], crR);
+N               gMCUBufR[64] = addAndClamp(gMCUBufR[64], crR);
+N               gMCUBufR[128] = addAndClamp(gMCUBufR[128], crR);
+N               gMCUBufR[192] = addAndClamp(gMCUBufR[192], crR);
+N
+N               crG = ((c * 183U) >> 8U) - 91;
+N               gMCUBufG[0] = subAndClamp(gMCUBufG[0], crG);
+N               gMCUBufG[64] = subAndClamp(gMCUBufG[64], crG);
+N               gMCUBufG[128] = subAndClamp(gMCUBufG[128], crG);
+N               gMCUBufG[192] = subAndClamp(gMCUBufG[192], crG);
+N
+N               break;
+N            }
+N         }
+N         break;
+N      }
+N   }
+N}
+N
+N//------------------------------------------------------------------------------
+N#if LESS_INLINING
+X#if 1
+Nstatic uint8 decodeNextMCU(void) __attribute__((noinline));
+N#endif
+N
+Nstatic uint8 decodeNextMCU(void)
+N{
+N   uint8 status;
+N   uint8 mcuBlock;   
+N
+N   if (gRestartInterval) {
+N      if (gRestartsLeft == 0) {
+N         status = processRestart();
+N         if (status)
+N            return status;
+N      }
+N      gRestartsLeft--;
+N   }      
+N   
+N   for (mcuBlock = 0; mcuBlock < gMaxBlocksPerMCU; mcuBlock++) {
+N      uint8 componentID = gMCUOrg[mcuBlock];
+N      uint8 compQuant = gCompQuant[componentID];	
+N      uint8 compDCTab = gCompDCTab[componentID];
+N      uint8 numExtraBits, compACTab, k;
+N      const int16* pQ = compQuant ? gQuant1 : gQuant0;
+N      uint16 r, dc;
+N      uint8 s = huffDecode(compDCTab ? &gHuffTab1 : &gHuffTab0, compDCTab ? gHuffVal1 : gHuffVal0);
+N     
+N      r = 0;
+N      numExtraBits = s & 0xF;
+N      if (numExtraBits)
+N         r = getBits2(numExtraBits);
+N      dc = huffExtend(r, s);          
+N      dc = dc + gLastDC[componentID];
+N      gLastDC[componentID] = dc;
+N      gCoeffBuf[0] = dc * pQ[0];
+N      compACTab = gCompACTab[componentID];
+N
+N      if (gReduce) {
+N         // Decode, but throw out the AC coefficients in reduce mode.
+N         for (k = 1; k < 64; k++) {
+N            s = huffDecode(compACTab ? &gHuffTab3 : &gHuffTab2, compACTab ? gHuffVal3 : gHuffVal2);
+N            numExtraBits = s & 0xF;
+N            if (numExtraBits)
+N               getBits2(numExtraBits);
+N            r = s >> 4;
+N            s &= 15;
+N            if (s) {
+N               if (r) {
+N                  if ((k + r) > 63)
+N                     return PJPG_DECODE_ERROR;
+N                  k = (uint8)(k + r);
+N               }
+N            } else {
+N               if (r == 15) {
+N                  if ((k + 16) > 64)
+N                     return PJPG_DECODE_ERROR;
+N                  k += (16 - 1); // - 1 because the loop counter is k
+N               } else
+N                  break;
+N            }
+N         }
+N         transformBlockReduce(mcuBlock); 
+N      } else {
+N         // Decode and dequantize AC coefficients
+N         for (k = 1; k < 64; k++) {
+N            uint16 extraBits;
+N            s = huffDecode(compACTab ? &gHuffTab3 : &gHuffTab2, compACTab ? gHuffVal3 : gHuffVal2);
+N            extraBits = 0;
+N            numExtraBits = s & 0xF;
+N            if (numExtraBits)
+N               extraBits = getBits2(numExtraBits);
+N
+N            r = s >> 4;
+N            s &= 15;
+N            if (s) {
+N               int16 ac;
+N               if (r) {
+N                  if ((k + r) > 63)
+N                     return PJPG_DECODE_ERROR;
+N                  while (r) {
+N                     gCoeffBuf[ZAG[k++]] = 0;
+N                     r--;
+N                  }
+N               }
+N               ac = huffExtend(extraBits, s);
+N               gCoeffBuf[ZAG[k]] = ac * pQ[k]; 
+N            } else {
+N               if (r == 15) {
+N                  if ((k + 16) > 64)
+N                     return PJPG_DECODE_ERROR;
+N                  for (r = 16; r > 0; r--)
+N                     gCoeffBuf[ZAG[k++]] = 0;
+N                  k--; // - 1 because the loop counter is k
+N               } else
+N                  break;
+N            }
+N         }     
+N         while (k < 64)
+N            gCoeffBuf[ZAG[k++]] = 0;
+N         transformBlock(mcuBlock); 
+N      }
+N   }        
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nunsigned char pjpeg_decode_mcu(void)
+N{
+N   uint8 status;
+N   
+N   if (gCallbackStatus)
+N      return gCallbackStatus;
+N   
+N   if (!gNumMCUSRemaining)
+N      return PJPG_NO_MORE_BLOCKS;
+N      
+N   status = decodeNextMCU();
+N   if ((status) || (gCallbackStatus))
+N      return gCallbackStatus ? gCallbackStatus : status;
+N      
+N   gNumMCUSRemaining--;
+N   
+N   return 0;
+N}
+N//------------------------------------------------------------------------------
+Nunsigned char pjpeg_decode_init(pjpeg_image_info_t *pInfo, pjpeg_need_bytes_callback_t pNeed_bytes_callback, void *pCallback_data, unsigned char reduce)
+N{
+N   uint8 status;
+N   
+N   pInfo->m_width = 0; pInfo->m_height = 0; pInfo->m_comps = 0;
+N   pInfo->m_MCUSPerRow = 0; pInfo->m_MCUSPerCol = 0;
+N   pInfo->m_scanType = PJPG_GRAYSCALE;
+N   pInfo->m_MCUWidth = 0; pInfo->m_MCUHeight = 0;
+N   pInfo->m_pMCUBufR = (unsigned char*)0; pInfo->m_pMCUBufG = (unsigned char*)0; pInfo->m_pMCUBufB = (unsigned char*)0;
+N
+N   g_pNeedBytesCallback = pNeed_bytes_callback;
+N   g_pCallback_data = pCallback_data;
+N   gCallbackStatus = 0;
+N   gReduce = reduce;
+N    
+N   status = init();
+N   if ((status) || (gCallbackStatus))
+N      return gCallbackStatus ? gCallbackStatus : status;
+N   
+N   status = locateSOFMarker();
+N   if ((status) || (gCallbackStatus))
+N      return gCallbackStatus ? gCallbackStatus : status;
+N
+N   status = initFrame();
+N   if ((status) || (gCallbackStatus))
+N      return gCallbackStatus ? gCallbackStatus : status;
+N
+N   status = initScan();
+N   if ((status) || (gCallbackStatus))
+N      return gCallbackStatus ? gCallbackStatus : status;
+N
+N   pInfo->m_width = gImageXSize; pInfo->m_height = gImageYSize; pInfo->m_comps = gCompsInFrame;
+N   pInfo->m_scanType = gScanType;
+N   pInfo->m_MCUSPerRow = gMaxMCUSPerRow; pInfo->m_MCUSPerCol = gMaxMCUSPerCol;
+N   pInfo->m_MCUWidth = gMaxMCUXSize; pInfo->m_MCUHeight = gMaxMCUYSize;
+N   pInfo->m_pMCUBufR = gMCUBufR; pInfo->m_pMCUBufG = gMCUBufG; pInfo->m_pMCUBufB = gMCUBufB;
+N      
+N   return 0;
+N}
+W "Source\LCD\picojpeg.c" 1064 14 function "findEOI"  was declared but never referenced

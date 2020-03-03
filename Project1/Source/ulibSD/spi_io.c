@@ -97,7 +97,7 @@ inline void SPI_CS_High(void) {
 }
 
 inline void SPI_Freq_High(void) {
-	SPI1_BR = 0x05;								
+	SPI1_BR = 0x01;								
 }
 
 inline void SPI_Freq_Low(void) {
