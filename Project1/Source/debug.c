@@ -6,6 +6,7 @@ void Init_Debug_Signals(void) {
 	SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
 	
 	// Make pins GPIO
+	#if DEBUG_ENABLE
 	PORTB->PCR[DBG_1] &= ~PORT_PCR_MUX_MASK;          
 	PORTB->PCR[DBG_1] |= PORT_PCR_MUX(1);          
 	PORTB->PCR[DBG_2] &= ~PORT_PCR_MUX_MASK;          
@@ -20,7 +21,7 @@ void Init_Debug_Signals(void) {
 	PORTB->PCR[DBG_6] |= PORT_PCR_MUX(1);          
 	PORTB->PCR[DBG_7] &= ~PORT_PCR_MUX_MASK;          
 	PORTB->PCR[DBG_7] |= PORT_PCR_MUX(1);          
-
+	#endif
 	
 	// Set ports to outputs
 	FPTB->PDDR |= MASK(DBG_1) | MASK(DBG_2) | MASK(DBG_3) | MASK(DBG_4) | MASK(DBG_5) | MASK(DBG_6) | MASK(DBG_7);

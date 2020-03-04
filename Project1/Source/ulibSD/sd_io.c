@@ -95,21 +95,22 @@ inline void __SD_Deassert(void) {
 void __SD_Speed_Transfer(BYTE throttle) {
 	if (throttle == HIGH)
 		SPI_Freq_High();
-	else
-		SPI_Freq_Low();
 }
 
 BYTE __SD_Send_Cmd(BYTE cmd, DWORD arg) {
 	BYTE crc, res;
-
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_4);
+	#endif
 
 	// ACMD«n» is the command sequense of CMD55-CMD«n»
 	if (cmd & 0x80) {
 		cmd &= 0x7F;
 		res = __SD_Send_Cmd(CMD55, 0);
 		if (res > 1) {
+			#if DEBUG_ENABLE
 			DEBUG_STOP(DBG_4);
+			#endif
 			return (res);
 
 		}
@@ -139,14 +140,20 @@ BYTE __SD_Send_Cmd(BYTE cmd, DWORD arg) {
 	// Wait for a valid response in timeout of 5 milliseconds
 	SPI_Timer_On(5);
 	do {
+		#if DEBUG_ENABLE
 		DEBUG_TOGGLE(DBG_4);
+		#endif
 		res = SPI_RW(0xFF);
 	} while ((res & 0x80) && (SPI_Timer_Status() == TRUE));
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_4);
+	#endif
 	SPI_Timer_Off();
 
 	// Return with the response value
+	#if DEBUG_ENABLE
 	DEBUG_STOP(DBG_4)
+	#endif
 			return (res);
 }
 
@@ -208,13 +215,15 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 	BYTE n, cmd, ct, ocr[4];
 	BYTE idx;
 	BYTE init_trys;
-
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_5);
+	#endif
 	ct = 0;
 	for (init_trys = 0; ((init_trys != SD_INIT_TRYS) && (!ct));
 			 init_trys++) {
 		// Initialize SPI for use with the memory card
 		SPI_Init();
+		
 
 		SPI_CS_High();
 		SPI_Freq_High();
@@ -225,18 +234,26 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 
 		SPI_Timer_On(500);
 		while (SPI_Timer_Status() == TRUE) {
+			#if DEBUG_ENABLE
 			DEBUG_TOGGLE(DBG_5)
+			#endif
 		}
+		#if DEBUG_ENABLE
 		DEBUG_START(DBG_5);
+		#endif
 		SPI_Timer_Off();
 
 		dev->mount = FALSE;
 		SPI_Timer_On(500);
 		while ((__SD_Send_Cmd(CMD0, 0) != 1)
 					 && (SPI_Timer_Status() == TRUE)) {
-			DEBUG_TOGGLE(DBG_5);
+						#if DEBUG_ENABLE
+						DEBUG_TOGGLE(DBG_5);
+						#endif
 		}
+		#if DEBUG_ENABLE
 		DEBUG_START(DBG_5);
+		#endif
 		SPI_Timer_Off();
 		// Idle state
 		if (__SD_Send_Cmd(CMD0, 0) == 1) {
@@ -251,9 +268,13 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 					SPI_Timer_On(1000);
 					while ((SPI_Timer_Status() == TRUE)
 								 && (__SD_Send_Cmd(ACMD41, 1UL << 30))) {
+						#if DEBUG_ENABLE
 						DEBUG_TOGGLE(DBG_5);
+						#endif
 					}
+					#if DEBUG_ENABLE
 					DEBUG_START(DBG_5);
+					#endif
 					SPI_Timer_Off();
 					// CCS in the OCR? 
 					if ((SPI_Timer_Status() == TRUE)
@@ -279,9 +300,13 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 				SPI_Timer_On(250);
 				while ((SPI_Timer_Status() == TRUE)
 							 && (__SD_Send_Cmd(cmd, 0))) {
+					#if DEBUG_ENABLE
 					DEBUG_TOGGLE(DBG_5);
+					#endif								 
 				}
+				#if DEBUG_ENABLE
 				DEBUG_START(DBG_5);
+				#endif
 				SPI_Timer_Off();
 				if (SPI_Timer_Status() == FALSE)
 					ct = 0;
@@ -301,7 +326,9 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 		__SD_Speed_Transfer(HIGH);	// High speed transfer
 	}
 	SPI_Release();
+	#if DEBUG_ENABLE
 	DEBUG_STOP(DBG_5);
+	#endif
 	return (ct ? SD_OK : SD_NOINIT);
 }
 
@@ -314,11 +341,15 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 	BYTE tkn, data;
 	WORD byte_num;
 	volatile uint8_t dummy;
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_2);
+	#endif
 
 	res = SD_ERROR;
 	if ((sector > dev->last_sector) || (cnt == 0)) {
+		#if DEBUG_ENABLE
 		DEBUG_STOP(DBG_2);
+		#endif
 		return (SD_PARERR);
 	}
 	// Convert sector number to byte address (sector * SD_BLK_SIZE)
@@ -326,30 +357,40 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
 		SPI_Timer_On(100);
 		do {
+			#if DEBUG_ENABLE
 			DEBUG_TOGGLE(DBG_2);
+			#endif
 			tkn = SPI_RW(0xFF);
 		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
+		#if DEBUG_ENABLE
 		DEBUG_START(DBG_2);
+		#endif
 		SPI_Timer_Off();
 		// Token of single block?
 		if (tkn == 0xFE) {
 			// AGD: Loop fusion to simplify FSM formation
 			byte_num = 0;
 			do {
+				#if DEBUG_ENABLE
 				DEBUG_TOGGLE(DBG_2); 
+				#endif
 				data = SPI_RW(0xff);
 				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
 					*(BYTE *) dat = data;
 					((BYTE *) dat)++;
 				}												// else discard bytes before and after data
 			} while (++byte_num < SD_BLK_SIZE + 2);	// 512 byte block + 2 byte CRC
+			#if DEBUG_ENABLE
 			DEBUG_START(DBG_2);
+			#endif
 			res = SD_OK;
 		}
 	}
 	SPI_Release();
 	dev->debug.read++;
+	#if DEBUG_ENABLE
 	DEBUG_STOP(DBG_2);
+	#endif
 	return (res);
 }
 
@@ -358,12 +399,15 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 SDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
 	WORD idx;
 	BYTE line;
-
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_3);
+	#endif
 
 	// Query invalid?
 	if (sector > dev->last_sector) {
+		#if DEBUG_ENABLE
 		DEBUG_STOP(DBG_3);
+		#endif
 		return (SD_PARERR);
 	}
 	// Convert sector number to bytes address (sector * SD_BLK_SIZE)
@@ -379,28 +423,40 @@ SDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
 		SPI_RW(0xFF);
 		// If not accepted, returns the reject error
 		if ((SPI_RW(0xFF) & 0x1F) != 0x05) {
+			#if DEBUG_ENABLE
 			DEBUG_STOP(DBG_3);
+			#endif
 			return (SD_REJECT);
 		}
 		// Waits until finish of data programming with a timeout
 		SPI_Timer_On(SD_IO_WRITE_TIMEOUT_WAIT);
 		do {
+			#if DEBUG_ENABLE
 			DEBUG_TOGGLE(DBG_3);
+			#endif
 			line = SPI_RW(0xFF);
 		} while ((line == 0) && (SPI_Timer_Status() == TRUE));
+		#if DEBUG_ENABLE
 		DEBUG_START(DBG_3);
+		#endif
 		SPI_Timer_Off();
 		dev->debug.write++;
 
 		if (line == 0) {
+			#if DEBUG_ENABLE
 			DEBUG_STOP(DBG_3);
+			#endif
 			return (SD_BUSY);
 		} else {
+			#if DEBUG_ENABLE
 			DEBUG_STOP(DBG_3);
+			#endif
 			return (SD_OK);
 		}
 	} else {
+		#if DEBUG_ENABLE
 		DEBUG_STOP(DBG_3);
+		#endif
 		return (SD_ERROR);
 	}
 }

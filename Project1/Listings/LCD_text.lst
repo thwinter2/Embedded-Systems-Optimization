@@ -1026,6 +1026,7 @@ N
 N	bg.R = 0;
 N	bg.G = 0;
 N	bg.B = 0;
+R "Source\LCD\LCD_text.c" 50 28 parameter "font_num"  was never referenced
 N}
 N
 Nuint8_t LCD_Text_GetGlyphWidth(char ch) {
@@ -1241,11 +1242,13 @@ N	for (c = ' '; c <= '~'; c++) {
 N		LCD_Text_PrintChar(&pos, c);
 N		pos.X += CHAR_WIDTH + 2;
 X		pos.X += G_LCD_char_width + 2;
+R "Source\LCD\LCD_text.c" 275 13 comparison between signed and unsigned operands
 N		if (pos.X >= LCD_WIDTH - CHAR_WIDTH) {
 X		if (pos.X >= (240) - G_LCD_char_width) {
 N			pos.X = 0;
 N			pos.Y += CHAR_HEIGHT + 2;
 X			pos.Y += G_LCD_char_height + 2;
+R "Source\LCD\LCD_text.c" 278 14 comparison between signed and unsigned operands
 N			if (pos.Y >= LCD_HEIGHT - CHAR_HEIGHT) {
 X			if (pos.Y >= (320) - G_LCD_char_height) {
 N				pos.Y = 0;

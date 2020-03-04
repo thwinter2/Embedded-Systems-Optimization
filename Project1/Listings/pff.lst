@@ -593,6 +593,7 @@ X	DWORD	org_clust;
 N	CLUST	curr_clust;	/* File current cluster */
 X	DWORD	curr_clust;	 
 N	DWORD	dsect;		/* File current data sector */
+R "Source\FS\pff.h" 65 16 padding inserted in struct 'anonymous'
 N} FATFS;
 N
 N
@@ -607,6 +608,7 @@ X	DWORD	sclust;
 N	CLUST	clust;		/* Current cluster */
 X	DWORD	clust;		 
 N	DWORD	sect;		/* Current sector */
+R "Source\FS\pff.h" 86 16 padding inserted in struct 'anonymous'
 N} DIR;
 N
 N
@@ -619,6 +621,7 @@ N	WORD	fdate;		/* Last modified date */
 N	WORD	ftime;		/* Last modified time */
 N	BYTE	fattrib;	/* Attribute */
 N	char	fname[13];	/* File name */
+R "Source\FS\pff.h" 98 16 padding added to end of struct 'anonymous'
 N} FILINFO;
 N
 N
@@ -1576,6 +1579,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1592,6 +1596,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3079,6 +3084,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11667,9 +11673,11 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
+N#define DEBUG_ENABLE 0
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -12111,6 +12119,7 @@ N/* Compare memory block */
 Nstatic int mem_cmp (const void* dst, const void* src, int cnt) {
 N	const char *d = (const char *)dst, *s = (const char *)src;
 N	int r = 0;
+R "Source\FS\pff.c" 421 42 empty dependent statement in while-statement
 N	while (cnt-- && (r = *d++ - *s++) == 0) ;
 N	return r;
 N}
@@ -12688,9 +12697,10 @@ N	DWORD sect, remain;
 N	UINT rcnt;
 N	BYTE cs, *rbuff = buff;
 N	FATFS *fs = FatFs;
-N
-N	DEBUG_START(DBG_4);
-X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (8));};
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_4);
+N	#endif
 N
 N	*br = 0;
 N	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
@@ -12727,9 +12737,10 @@ N		fs->fptr += rcnt;							/* Advances file read pointer */
 N		btr -= rcnt; *br += rcnt;					/* Update read counter */
 N		if (rbuff) rbuff += rcnt;					/* Advances the data pointer if destination is memory */
 N	}
-N
-N	DEBUG_STOP(DBG_4);
-X	{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (8)); };
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_STOP(DBG_4);
+N	#endif
 N	return FR_OK;
 N}
 N#endif

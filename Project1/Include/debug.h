@@ -3,6 +3,7 @@
 #include <MKL25Z4.h>
 
 #define MASK(x) (1UL << (x))
+#define DEBUG_ENABLE 0
 
 // Debug Signals on port B
 #define DBG_1 1 	// SPI_RW

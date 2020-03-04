@@ -434,11 +434,15 @@ N/ The copyright owner or contributors be NOT LIABLE for any damages caused
 N/ by use of this software.
 N/----------------------------------------------------------------------------*/
 L 13 "Source\ulibSD\spi_io.h" 2
-N
+Nextern uint32_t DMA_Destination_Buffer[512];
+Nextern uint32_t * DMA_Destination;
+Nextern uint32_t DMA_Count;
 N
 N/******************************************************************************
 N Public methods
 N *****************************************************************************/
+Nvoid Init_DMA(uint32_t * destination, uint32_t count);
+Nvoid Start_DMA(void);
 N
 N/**
 N    \brief Initialize SPI hardware
@@ -1363,6 +1367,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1379,6 +1384,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2866,6 +2872,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11454,6 +11461,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 13 "Source\ulibSD\spi_io.c" 2
 N#include "debug.h"
 L 1 ".\Include\debug.h" 1
@@ -19617,9 +19625,11 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
+N#define DEBUG_ENABLE 0
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -19644,53 +19654,6 @@ N Module Public Functions - Low level SPI control functions
 N******************************************************************************/
 N
 NBYTE msgReceive;
-N
-Nvoid Init_DMA_Transmit(void){
-N	
-N	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
-X	((SIM_Type *)(0x40047000u))->SCGC7 |= 0x100u;
-N	SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;
-X	((SIM_Type *)(0x40047000u))->SCGC6 |= 0x2u;
-N	
-N	DMAMUX0->CHCFG[0] = 0;
-X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] = 0;
-N	
-N	DMA0->DMA[0].DCR = DMA_DCR_EINT_MASK | DMA_DCR_SINC_MASK | DMA_DCR_SSIZE(1) | DMA_DCR_DSIZE(1) | 
-X	((DMA_Type *)(0x40008000u))->DMA[0].DCR = 0x80000000u | 0x400000u | (((uint32_t)(((uint32_t)(1))<<20))&0x300000u) | (((uint32_t)(((uint32_t)(1))<<17))&0x60000u) | 
-N	DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK;
-X	0x40000000u | 0x20000000u;
-N	
-N	// Configure DMA ISR
-N	NVIC_SetPriority(DMA0_IRQn, 2);
-X	__NVIC_SetPriority(DMA0_IRQn, 2);
-N	NVIC_ClearPendingIRQ(DMA0_IRQn);
-X	__NVIC_ClearPendingIRQ(DMA0_IRQn);
-N	NVIC_EnableIRQ(DMA0_IRQn);
-X	__NVIC_EnableIRQ(DMA0_IRQn);
-N	
-N	// Set DMA MUX channel to use SPI1 Transmit as Trigger
-N	DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_SOURCE(19);
-X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] = (((uint8_t)(((uint8_t)(19))<<0))&0x3Fu);
-N	
-N}
-N
-Nvoid Start_DMA(uint32_t * source, uint32_t * destination, uint32_t count){
-N	// Initialize Source/Dest Pointers
-N	DMA0->DMA[0].SAR = DMA_SAR_SAR((uint32_t) source);
-X	((DMA_Type *)(0x40008000u))->DMA[0].SAR = (((uint32_t)(((uint32_t)((uint32_t) source))<<0))&0xFFFFFFFFu);
-N	DMA0->DMA[0].DAR = DMA_DAR_DAR((uint32_t) destination);
-X	((DMA_Type *)(0x40008000u))->DMA[0].DAR = (((uint32_t)(((uint32_t)((uint32_t) destination))<<0))&0xFFFFFFFFu);
-N	// byte count
-N	DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR(count);
-X	((DMA_Type *)(0x40008000u))->DMA[0].DSR_BCR = (((uint32_t)(((uint32_t)(count))<<0))&0xFFFFFFu);
-N	// clear done flag
-N	DMA0->DMA[0].DSR_BCR &= ~DMA_DSR_BCR_DONE_MASK;
-X	((DMA_Type *)(0x40008000u))->DMA[0].DSR_BCR &= ~0x1000000u;
-N	// set enable flag
-N	DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_ENBL_MASK;
-X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] |= 0x80u;
-N	
-N}
 N
 Nvoid SPI_Init(void) {
 N
@@ -19717,13 +19680,13 @@ N	PORTE_PCR3 = PORT_PCR_MUX(2) | PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;	// MISO
 X	((((PORT_Type *)(0x4004D000u)))->PCR[3]) = (((uint32_t)(((uint32_t)(2))<<8))&0x700u) | 0x2u | 0x1u;	
 N
 N	/*
-N	 * Bit 7 SPIE   = 0 Disables receive and mode fault interrupts
+N	 * Bit 7 SPIE   = 1 Disables receive and mode fault interrupts
 N	 * Bit 6 SPE    = 1 Enables the SPI system
 N	 * Bit 5 SPTIE  = 0 Disables SPI transmit interrupts
 N	 * Bit 4 MSTR   = 1 Sets the SPI module as a master SPI device
 N	 * Bit 3 CPOL   = 0 Configures SPI clock as active-high
 N	 * Bit 2 CPHA   = 0 First edge on SPSCK at start of first data transfer cycle
-N	 * Bit 1 SSOE   = 1 Determines SS pin function when mode fault enabled
+N	 * Bit 1 SSOE   = 0 Determines SS pin function when mode fault enabled
 N	 * Bit 0 LSBFE  = 0 SPI serial data transfers start with most significant bit
 N	 */
 N	SPI1_C1 = 0xD0;
@@ -19731,10 +19694,10 @@ X	((((SPI_Type *)(0x40077000u)))->C1) = 0xD0;
 N	/*
 N	 * Bit 7 PMIE       = 0 SPI hardware match interrupt disabled
 N	 * Bit 6            = 0 Unimplemented
-N	 * Bit 5 TXDMAE     = 0 DMA request disabled
-N	 * Bit 4 MODFEN     = 1 In master mode, ~SS pin function is automatic ~SS output
+N	 * Bit 5 TXDMAE     = 1 DMA request enabled
+N	 * Bit 4 MODFEN     = 0 In master mode, ~SS pin function is automatic ~SS output
 N	 * Bit 3 BIDIROE    = 0 SPI data I/O pin acts as input
-N	 * Bit 2 RXDMAE     = 0 DMA request disabled
+N	 * Bit 2 RXDMAE     = 1 DMA request enabled
 N	 * Bit 1 SPISWAI    = 0 SPI clocks operate in wait mode
 N	 * Bit 0 SPC0       = 0 uses separate pins for data input and output
 N	 */
@@ -19753,20 +19716,35 @@ X	((((SPI_Type *)(0x40077000u)))->S) = 0x00;
 N}
 N
 NBYTE SPI_RW(BYTE d) { 
-N	//DEBUG_START(DBG_1);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_1);
+N	#endif
 N
 N	while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 X	while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
-N		//DEBUG_TOGGLE(DBG_1);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_TOGGLE(DBG_1);
+N		#endif
 N	}
-N	//DEBUG_START(DBG_1);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_1);
+N	#endif
 N	SPI1_D = d;
 X	((((SPI_Type *)(0x40077000u)))->D) = d;
 N	while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 X	while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
-N		//DEBUG_TOGGLE(DBG_1);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_TOGGLE(DBG_1);
+N		#endif
 N	}
-N	//DEBUG_STOP(DBG_1);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_STOP(DBG_1);
+N	#endif
 N	return ((BYTE) (SPI1_D));
 X	return ((BYTE) (((((SPI_Type *)(0x40077000u)))->D)));
 N}

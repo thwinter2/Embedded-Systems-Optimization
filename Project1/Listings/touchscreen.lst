@@ -2289,6 +2289,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2305,6 +2306,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3792,6 +3794,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -12380,6 +12383,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 6 "Source\LCD\touchscreen.c" 2
 N
 N#include "LCD.h"
@@ -21169,6 +21173,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -21211,8 +21216,8 @@ Nvoid Init_ADC(void) {
 N	
 N	SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK; 
 X	((SIM_Type *)(0x40047000u))->SCGC6 |= 0x8000000u; 
-N	ADC0->CFG1 = 0x9C; // 16 bit
-X	((ADC_Type *)(0x4003B000u))->CFG1 = 0x9C; 
+N	ADC0->CFG1 = 0x1C; // 16 bit
+X	((ADC_Type *)(0x4003B000u))->CFG1 = 0x1C; 
 N	ADC0->SC2 = 0;
 X	((ADC_Type *)(0x4003B000u))->SC2 = 0;
 N}
@@ -21319,6 +21324,7 @@ N		ADC0->SC1[0] = LCD_TS_YU_CHANNEL; // start conversion on channel YU
 X		((ADC_Type *)(0x4003B000u))->SC1[0] = (3); 
 N		while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
 X		while (!(((ADC_Type *)(0x4003B000u))->SC1[0] & 0x80u))
+R "Source\LCD\touchscreen.c" 105 4 empty dependent statement in while-statement
 N			;
 N		yu = ADC0->R[0];
 X		yu = ((ADC_Type *)(0x4003B000u))->R[0];
@@ -21364,6 +21370,7 @@ N		ADC0->SC1[0] = LCD_TS_XL_CHANNEL; // start conversion on channel XL
 X		((ADC_Type *)(0x4003B000u))->SC1[0] = (15); 
 N		while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
 X		while (!(((ADC_Type *)(0x4003B000u))->SC1[0] & 0x80u))
+R "Source\LCD\touchscreen.c" 133 4 empty dependent statement in while-statement
 N			;
 N		xl = ADC0->R[0];
 X		xl = ((ADC_Type *)(0x4003B000u))->R[0];
@@ -21393,6 +21400,7 @@ Nvoid LCD_TS_Blocking_Read(PT_T * position) {
 N	PT_T temp;
 N	// Wait for screen press
 N	while (LCD_TS_Read(&temp) == 0)
+R "Source\LCD\touchscreen.c" 161 3 empty dependent statement in while-statement
 N		;
 N	// Wait for screen release
 N	while (LCD_TS_Read(&temp) == 1) {
@@ -21484,6 +21492,7 @@ N	p_bound.Y = 0xffff;
 N	for (i=0; i<TS_CALIB_SAMPLES; i++){
 X	for (i=0; i<(10); i++){
 N		while (!LCD_TS_Read(&p))
+R "Source\LCD\touchscreen.c" 245 4 empty dependent statement in while-statement
 N			;
 N		if (p.X < p_bound.X)
 N			p_bound.X = p.X;
@@ -21498,6 +21507,7 @@ N	TS_Min = p_bound;
 N	
 N	// Wait for release
 N	while (LCD_TS_Read(&p))
+R "Source\LCD\touchscreen.c" 259 3 empty dependent statement in while-statement
 N		;
 N	
 N	LCD_Erase();
@@ -21517,6 +21527,7 @@ N	p_bound.Y = 0;
 N	for (i=0; i<TS_CALIB_SAMPLES; i++){
 X	for (i=0; i<(10); i++){
 N		while (!LCD_TS_Read(&p))
+R "Source\LCD\touchscreen.c" 275 4 empty dependent statement in while-statement
 N			;
 N		if (p.X > p_bound.X)
 N			p_bound.X = p.X;
@@ -21533,6 +21544,7 @@ X	LCD_TS_Y_Scale = (p_bound.Y-LCD_TS_Y_Offset)/(320);
 N
 N	// Wait for release
 N	while (LCD_TS_Read(&p))
+R "Source\LCD\touchscreen.c" 289 3 empty dependent statement in while-statement
 N		;
 N	
 N	LCD_TS_Calibrated = 1;

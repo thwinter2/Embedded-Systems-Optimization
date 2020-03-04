@@ -1179,6 +1179,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1195,6 +1196,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2682,6 +2684,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11270,6 +11273,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8145 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\UART.h" 2
 N#include "queue.h"
 L 1 ".\Include\queue.h" 1
@@ -19435,6 +19439,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\queue.h" 2
 N
 N#define Q_MAX_SIZE (256)
@@ -20615,19 +20620,23 @@ N
 N
 N//Retarget the fputc method to use the UART0
 Nint fputc(int ch, FILE *f){
+R "Source\UART.c" 26 75 empty dependent statement in while-statement
 N	while(!(UART0->S1 & UART_S1_TDRE_MASK) && !(UART0->S1 & UART_S1_TC_MASK));
 X	while(!(((UART0_Type *)(0x4006A000u))->S1 & 0x80u) && !(((UART0_Type *)(0x4006A000u))->S1 & 0x40u));
 N	UART0->D = ch;
 X	((UART0_Type *)(0x4006A000u))->D = ch;
 N	return ch;
+R "Source\UART.c" 25 25 parameter "f"  was never referenced
 N}
 N
 N//Retarget the fgetc method to use the UART0
 Nint fgetc(FILE *f){
+R "Source\UART.c" 33 41 empty dependent statement in while-statement
 N	while(!(UART0->S1 & UART_S1_RDRF_MASK));
 X	while(!(((UART0_Type *)(0x4006A000u))->S1 & 0x20u));
 N	return UART0->D;
 X	return ((UART0_Type *)(0x4006A000u))->D;
+R "Source\UART.c" 32 17 parameter "f"  was never referenced
 N}
 N
 N#pragma push
@@ -20737,6 +20746,7 @@ N// Code listing 8.9, p. 233
 Nvoid UART0_Transmit_Poll(uint8_t data) {
 N		while (!(UART0->S1 & UART0_S1_TDRE_MASK))
 X		while (!(((UART0_Type *)(0x4006A000u))->S1 & 0x80u))
+R "Source\UART.c" 119 4 empty dependent statement in while-statement
 N			;
 N		UART0->D = data;
 X		((UART0_Type *)(0x4006A000u))->D = data;
@@ -20745,6 +20755,7 @@ N
 Nuint8_t UART0_Receive_Poll(void) {
 N		while (!(UART0->S1 & UART0_S1_RDRF_MASK))
 X		while (!(((UART0_Type *)(0x4006A000u))->S1 & 0x20u))
+R "Source\UART.c" 125 4 empty dependent statement in while-statement
 N			;
 N		return UART0->D;
 X		return ((UART0_Type *)(0x4006A000u))->D;
@@ -20806,6 +20817,7 @@ Nvoid Send_String(uint8_t * str) {
 N	// enqueue string
 N	while (*str != '\0') { // copy characters up to null terminator
 N		while (Q_Full(&TxQ))
+R "Source\UART.c" 174 4 empty dependent statement in while-statement
 N			; // wait for space to open up
 N		Q_Enqueue(&TxQ, *str);
 N		str++;

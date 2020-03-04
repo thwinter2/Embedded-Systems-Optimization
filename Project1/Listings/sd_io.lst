@@ -463,11 +463,15 @@ N/ The copyright owner or contributors be NOT LIABLE for any damages caused
 N/ by use of this software.
 N/----------------------------------------------------------------------------*/
 L 13 "Source\ulibSD\spi_io.h" 2
-N
+Nextern uint32_t DMA_Destination_Buffer[512];
+Nextern uint32_t * DMA_Destination;
+Nextern uint32_t DMA_Count;
 N
 N/******************************************************************************
 N Public methods
 N *****************************************************************************/
+Nvoid Init_DMA(uint32_t * destination, uint32_t count);
+Nvoid Start_DMA(void);
 N
 N/**
 N    \brief Initialize SPI hardware
@@ -598,6 +602,7 @@ N    BOOL mount;
 N    BYTE cardtype;
 N    DWORD last_sector;
 N    DBG_COUNT debug;
+R "Source\ulibSD\sd_io.h" 69 16 padding inserted in struct _SD_DEV
 N} SD_DEV;
 N
 N/*******************************************************************************
@@ -1515,6 +1520,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1531,6 +1537,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3018,6 +3025,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11606,6 +11614,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 17 "Source\ulibSD\sd_io.c" 2
 N#include "debug.h"
 L 1 ".\Include\debug.h" 1
@@ -19769,9 +19778,11 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
+N#define DEBUG_ENABLE 0
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -19879,14 +19890,14 @@ N
 Nvoid __SD_Speed_Transfer(BYTE throttle) {
 N	if (throttle == HIGH)
 N		SPI_Freq_High();
-N	else
-N		SPI_Freq_Low();
 N}
 N
 NBYTE __SD_Send_Cmd(BYTE cmd, DWORD arg) {
 N	BYTE crc, res;
-N
-N	//DEBUG_START(DBG_4);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_4);
+N	#endif
 N
 N	// ACMD«n» is the command sequense of CMD55-CMD«n»
 N	if (cmd & 0x80) {
@@ -19894,7 +19905,10 @@ N		cmd &= 0x7F;
 N		res = __SD_Send_Cmd(CMD55, 0);
 X		res = __SD_Send_Cmd((0x40+55), 0);
 N		if (res > 1) {
-N			//DEBUG_STOP(DBG_4);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_STOP(DBG_4);
+N			#endif
 N			return (res);
 N
 N		}
@@ -19926,14 +19940,23 @@ N	// Receive command response
 N	// Wait for a valid response in timeout of 5 milliseconds
 N	SPI_Timer_On(5);
 N	do {
-N		//DEBUG_TOGGLE(DBG_4);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_TOGGLE(DBG_4);
+N		#endif
 N		res = SPI_RW(0xFF);
 N	} while ((res & 0x80) && (SPI_Timer_Status() == TRUE));
-N	//DEBUG_START(DBG_4);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_4);
+N	#endif
 N	SPI_Timer_Off();
 N
 N	// Return with the response value
-N	//DEBUG_STOP(DBG_4)
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_STOP(DBG_4)
+N	#endif
 N			return (res);
 N}
 N
@@ -19947,6 +19970,7 @@ N	BYTE READ_BL_LEN = 0;
 N	if (__SD_Send_Cmd(CMD9, 0) == 0) {
 X	if (__SD_Send_Cmd((0x40+9), 0) == 0) {
 N		// Wait for response
+R "Source\ulibSD\sd_io.c" 169 31 empty dependent statement in while-statement
 N		while (SPI_RW(0xFF) == 0xFF);
 N		for (idx = 0; idx != 16; idx++)
 N			csd[idx] = SPI_RW(0xFF);
@@ -19998,14 +20022,17 @@ NSDRESULTS SD_Init(SD_DEV * dev) {
 N	BYTE n, cmd, ct, ocr[4];
 N	BYTE idx;
 N	BYTE init_trys;
-N
-N	//DEBUG_START(DBG_5);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_5);
+N	#endif
 N	ct = 0;
 N	for (init_trys = 0; ((init_trys != SD_INIT_TRYS) && (!ct));
 X	for (init_trys = 0; ((init_trys != 0x03) && (!ct));
 N			 init_trys++) {
 N		// Initialize SPI for use with the memory card
 N		SPI_Init();
+N		
 N
 N		SPI_CS_High();
 N		SPI_Freq_High();
@@ -20016,9 +20043,15 @@ N			SPI_RW(0xFF);
 N
 N		SPI_Timer_On(500);
 N		while (SPI_Timer_Status() == TRUE) {
-N			//DEBUG_TOGGLE(DBG_5)
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_TOGGLE(DBG_5)
+N			#endif
 N		}
-N		//DEBUG_START(DBG_5);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_START(DBG_5);
+N		#endif
 N		SPI_Timer_Off();
 N
 N		dev->mount = FALSE;
@@ -20026,9 +20059,15 @@ N		SPI_Timer_On(500);
 N		while ((__SD_Send_Cmd(CMD0, 0) != 1)
 X		while ((__SD_Send_Cmd((0x40+0), 0) != 1)
 N					 && (SPI_Timer_Status() == TRUE)) {
-N			//DEBUG_TOGGLE(DBG_5);
+N						#if DEBUG_ENABLE
+X						#if 0
+S						DEBUG_TOGGLE(DBG_5);
+N						#endif
 N		}
-N		//DEBUG_START(DBG_5);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_START(DBG_5);
+N		#endif
 N		SPI_Timer_Off();
 N		// Idle state
 N		if (__SD_Send_Cmd(CMD0, 0) == 1) {
@@ -20046,9 +20085,15 @@ N					SPI_Timer_On(1000);
 N					while ((SPI_Timer_Status() == TRUE)
 N								 && (__SD_Send_Cmd(ACMD41, 1UL << 30))) {
 X								 && (__SD_Send_Cmd((0xC0+41), 1UL << 30))) {
-N						//DEBUG_TOGGLE(DBG_5);
+N						#if DEBUG_ENABLE
+X						#if 0
+S						DEBUG_TOGGLE(DBG_5);
+N						#endif
 N					}
-N					//DEBUG_START(DBG_5);
+N					#if DEBUG_ENABLE
+X					#if 0
+S					DEBUG_START(DBG_5);
+N					#endif
 N					SPI_Timer_Off();
 N					// CCS in the OCR? 
 N					if ((SPI_Timer_Status() == TRUE)
@@ -20081,9 +20126,15 @@ N				// Wait for leaving idle state
 N				SPI_Timer_On(250);
 N				while ((SPI_Timer_Status() == TRUE)
 N							 && (__SD_Send_Cmd(cmd, 0))) {
-N					//DEBUG_TOGGLE(DBG_5);
+N					#if DEBUG_ENABLE
+X					#if 0
+S					DEBUG_TOGGLE(DBG_5);
+N					#endif								 
 N				}
-N				//DEBUG_START(DBG_5);
+N				#if DEBUG_ENABLE
+X				#if 0
+S				DEBUG_START(DBG_5);
+N				#endif
 N				SPI_Timer_Off();
 N				if (SPI_Timer_Status() == FALSE)
 N					ct = 0;
@@ -20105,7 +20156,10 @@ N		dev->debug.write = 0;
 N		__SD_Speed_Transfer(HIGH);	// High speed transfer
 N	}
 N	SPI_Release();
-N	//DEBUG_STOP(DBG_5);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_STOP(DBG_5);
+N	#endif
 N	return (ct ? SD_OK : SD_NOINIT);
 N}
 N
@@ -20118,11 +20172,17 @@ N	SDRESULTS res;
 N	BYTE tkn, data;
 N	WORD byte_num;
 N	volatile uint8_t dummy;
-N	//DEBUG_START(DBG_2);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_2);
+N	#endif
 N
 N	res = SD_ERROR;
 N	if ((sector > dev->last_sector) || (cnt == 0)) {
-N		//DEBUG_STOP(DBG_2);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_STOP(DBG_2);
+N		#endif
 N		return (SD_PARERR);
 N	}
 N	// Convert sector number to byte address (sector * SD_BLK_SIZE)
@@ -20131,17 +20191,26 @@ N	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC
 X	if (__SD_Send_Cmd((0x40+17), sector) == 0) {	
 N		SPI_Timer_On(100);
 N		do {
-N			//DEBUG_TOGGLE(DBG_2);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_TOGGLE(DBG_2);
+N			#endif
 N			tkn = SPI_RW(0xFF);
 N		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
-N		//DEBUG_START(DBG_2);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_START(DBG_2);
+N		#endif
 N		SPI_Timer_Off();
 N		// Token of single block?
 N		if (tkn == 0xFE) {
 N			// AGD: Loop fusion to simplify FSM formation
 N			byte_num = 0;
 N			do {
-N				//DEBUG_TOGGLE(DBG_2); 
+N				#if DEBUG_ENABLE
+X				#if 0
+S				DEBUG_TOGGLE(DBG_2); 
+N				#endif
 N				data = SPI_RW(0xff);
 N				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
 N					*(BYTE *) dat = data;
@@ -20149,13 +20218,19 @@ N					((BYTE *) dat)++;
 N				}												// else discard bytes before and after data
 N			} while (++byte_num < SD_BLK_SIZE + 2);	// 512 byte block + 2 byte CRC
 X			} while (++byte_num < 512 + 2);	
-N			//DEBUG_START(DBG_2);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_START(DBG_2);
+N			#endif
 N			res = SD_OK;
 N		}
 N	}
 N	SPI_Release();
 N	dev->debug.read++;
-N	//DEBUG_STOP(DBG_2);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_STOP(DBG_2);
+N	#endif
 N	return (res);
 N}
 N
@@ -20164,12 +20239,17 @@ N
 NSDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
 N	WORD idx;
 N	BYTE line;
-N
-N	//DEBUG_START(DBG_3);
+N	#if DEBUG_ENABLE
+X	#if 0
+S	DEBUG_START(DBG_3);
+N	#endif
 N
 N	// Query invalid?
 N	if (sector > dev->last_sector) {
-N		//DEBUG_STOP(DBG_3);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_STOP(DBG_3);
+N		#endif
 N		return (SD_PARERR);
 N	}
 N	// Convert sector number to bytes address (sector * SD_BLK_SIZE)
@@ -20187,29 +20267,47 @@ N		SPI_RW(0xFF);
 N		SPI_RW(0xFF);
 N		// If not accepted, returns the reject error
 N		if ((SPI_RW(0xFF) & 0x1F) != 0x05) {
-N			//DEBUG_STOP(DBG_3);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_STOP(DBG_3);
+N			#endif
 N			return (SD_REJECT);
 N		}
 N		// Waits until finish of data programming with a timeout
 N		SPI_Timer_On(SD_IO_WRITE_TIMEOUT_WAIT);
 X		SPI_Timer_On(250);
 N		do {
-N			//DEBUG_TOGGLE(DBG_3);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_TOGGLE(DBG_3);
+N			#endif
 N			line = SPI_RW(0xFF);
 N		} while ((line == 0) && (SPI_Timer_Status() == TRUE));
-N		//DEBUG_START(DBG_3);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_START(DBG_3);
+N		#endif
 N		SPI_Timer_Off();
 N		dev->debug.write++;
 N
 N		if (line == 0) {
-N			//DEBUG_STOP(DBG_3);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_STOP(DBG_3);
+N			#endif
 N			return (SD_BUSY);
 N		} else {
-N			//DEBUG_STOP(DBG_3);
+N			#if DEBUG_ENABLE
+X			#if 0
+S			DEBUG_STOP(DBG_3);
+N			#endif
 N			return (SD_OK);
 N		}
 N	} else {
-N		//DEBUG_STOP(DBG_3);
+N		#if DEBUG_ENABLE
+X		#if 0
+S		DEBUG_STOP(DBG_3);
+N		#endif
 N		return (SD_ERROR);
 N	}
 N}
@@ -20217,6 +20315,7 @@ N
 NSDRESULTS SD_Status(SD_DEV * dev) {
 N	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
 X	return (__SD_Send_Cmd((0x40+0), 0) ? SD_OK : SD_NORESPONSE);
+R "Source\ulibSD\sd_io.c" 464 30 parameter "dev"  was never referenced
 N}
 N
 N// «sd_io.c» is part of:

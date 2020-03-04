@@ -28,9 +28,59 @@ Project File Date:  03/03/2020
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling region.c...
-compiling sd_io.c...
+compiling touchscreen.c...
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
+  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
+  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
+  #endif 
+* __CMSIS_GENERIC */
+C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
+  #else /* #if !defined(MKL25Z4_H_) */
+C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
+  #endif  /* #if !defined(MKL25Z4_H_) */
+Source\LCD\touchscreen.c(105): warning: #2815-D: empty dependent statement in while-statement
+  			;
+Source\LCD\touchscreen.c(133): warning: #2815-D: empty dependent statement in while-statement
+  			;
+Source\LCD\touchscreen.c(161): warning: #2815-D: empty dependent statement in while-statement
+  		;
+Source\LCD\touchscreen.c(245): warning: #2815-D: empty dependent statement in while-statement
+  			;
+Source\LCD\touchscreen.c(259): warning: #2815-D: empty dependent statement in while-statement
+  		;
+Source\LCD\touchscreen.c(275): warning: #2815-D: empty dependent statement in while-statement
+  			;
+Source\LCD\touchscreen.c(289): warning: #2815-D: empty dependent statement in while-statement
+  		;
+Source\LCD\touchscreen.c(104): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\LCD\touchscreen.c(132): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\LCD\touchscreen.c(160): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(163): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(244): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(274): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(244): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(258): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(274): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+Source\LCD\touchscreen.c(288): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
+compiling spi_io.c...
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
+  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
+  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
+  #endif 
+* __CMSIS_GENERIC */
+C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
+  #else /* #if !defined(MKL25Z4_H_) */
+C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
+  #endif  /* #if !defined(MKL25Z4_H_) */
+Source\ulibSD\spi_io.c(76): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\ulibSD\spi_io.c(85): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\ulibSD\spi_io.c(98): warning: #2519-D: Unable to determine constant iteration count for this loop
 linking...
-Program Size: Code=15648 RO-data=8364 RW-data=196 ZI-data=6868  
+Program Size: Code=18732 RO-data=7276 RW-data=204 ZI-data=8644  
 After Build - User command #1: Scripts\update_regions_MDK.bat .\Objects\LCDs_Profiler.axf
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegions.exe .\Objects\LCDs_Profiler.axf -c -s -x__ -x_ -xQ_ -xPIT_ -oSource\Profiler\region.c 
 GetRegions.exe completed without errors
@@ -40,7 +90,7 @@ C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegi
 GetRegions.exe completed without errors
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>sort /R .\Objects\function_sizes.txt /O .\Objects\sorted_function_sizes.txt 
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>exit /b 0  
-".\Objects\LCDs_Profiler.axf" - 0 Error(s), 0 Warning(s).
+".\Objects\LCDs_Profiler.axf" - 0 Error(s), 30 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -67,10 +117,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.0.1
 
    * Component: Keil::Device:Startup:2.5.0
-      Include file:  Device\Source\system_MKL25Z4.h
-      Source file:   Device\Source\ARM\startup_MKL25Z4.s
       Source file:   Device\Source\system_MKL25Z4.c
-Build Time Elapsed:  00:00:01
+      Source file:   Device\Source\ARM\startup_MKL25Z4.s
+      Include file:  Device\Source\system_MKL25Z4.h
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

@@ -1,0 +1,115 @@
+;#<FEEDBACK># ARM Linker, 5060422: Last Updated: Wed Mar 04 15:37:50 2020
+;VERSION 0.2
+;FILE debug.o
+__asm___7_debug_c_ebb4e44d____REV16 <= USED 0
+__asm___7_debug_c_ebb4e44d____REVSH <= USED 0
+;FILE delay.o
+ShortDelay <= USED 0
+__asm___7_delay_c_Delay____REV16 <= USED 0
+__asm___7_delay_c_Delay____REVSH <= USED 0
+;FILE diskio.o
+disk_writep <= USED 0
+;FILE i2c.o
+__asm___5_I2C_c_5d19740c____REV16 <= USED 0
+__asm___5_I2C_c_5d19740c____REVSH <= USED 0
+i2c_busy <= USED 0
+i2c_init <= USED 0
+i2c_read_byte <= USED 0
+i2c_read_setup <= USED 0
+i2c_repeated_read <= USED 0
+i2c_start <= USED 0
+i2c_wait <= USED 0
+i2c_write_byte <= USED 0
+;FILE lcd_graphics.o
+Graphics_Test <= USED 0
+LCD_Draw_Circle <= USED 0
+LCD_Draw_Line <= USED 0
+;FILE lcd_jpeg.o
+__asm___10_LCD_JPEG_c_733496a3____REV16 <= USED 0
+__asm___10_LCD_JPEG_c_733496a3____REVSH <= USED 0
+;FILE lcd_text.o
+Bit_Reverse_Byte <= USED 0
+LCD_Text_Test <= USED 0
+;FILE leds.o
+__asm___6_LEDs_c_19292f37____REV16 <= USED 0
+__asm___6_LEDs_c_19292f37____REVSH <= USED 0
+;FILE main.o
+DMA_IRQHandler <= USED 0
+Start_DMA <= USED 0
+__asm___6_main_c_9c3e1791____REV16 <= USED 0
+__asm___6_main_c_9c3e1791____REVSH <= USED 0
+die <= USED 0
+;FILE mma8451.o
+__asm___9_MMA8451_c_acc_X____REV16 <= USED 0
+__asm___9_MMA8451_c_acc_X____REVSH <= USED 0
+approx_atan2f <= USED 0
+approx_sqrt <= USED 0
+convert_xyz_to_roll_pitch <= USED 0
+init_mma <= USED 0
+read_full_xyz <= USED 0
+read_xyz <= USED 0
+;FILE pff.o
+__asm___5_pff_c_pf_mount____REV16 <= USED 0
+__asm___5_pff_c_pf_mount____REVSH <= USED 0
+pf_lseek <= USED 0
+;FILE picojpeg.o
+;FILE pit.o
+PIT_Stop <= USED 0
+__asm___5_PIT_c_7e522465____REV16 <= USED 0
+__asm___5_PIT_c_7e522465____REVSH <= USED 0
+;FILE profile.o
+New_Display_Profile <= USED 0
+__asm___9_profile_c_adx_lost____REV16 <= USED 0
+__asm___9_profile_c_adx_lost____REVSH <= USED 0
+;FILE queue.o
+Q_Init <= USED 0
+Q_Size <= USED 0
+__asm___7_queue_c_Q_Init____REV16 <= USED 0
+__asm___7_queue_c_Q_Init____REVSH <= USED 0
+;FILE sd_io.o
+SD_Status <= USED 0
+SD_Write <= USED 0
+__asm___7_sd_io_c_timeout____REV16 <= USED 0
+__asm___7_sd_io_c_timeout____REVSH <= USED 0
+;FILE spi_io.o
+SPI_Freq_Low <= USED 0
+__asm___8_spi_io_c_SPI_Init____REV16 <= USED 0
+__asm___8_spi_io_c_SPI_Init____REVSH <= USED 0
+;FILE st7789.o
+LCD_Fill_Rectangle <= USED 0
+LCD_Refresh <= USED 0
+LCD_Set_BL <= USED 0
+LCD_Set_Backlight_Brightness <= USED 0
+LCD_Set_Controller_Brightness <= USED 0
+LCD_Write_Rectangle_Pixel_Components <= USED 0
+LCD_Write_Rectangle_Quad_Pixel_Components <= USED 0
+__asm___8_ST7789_c_3d2d791d____REV16 <= USED 0
+__asm___8_ST7789_c_3d2d791d____REVSH <= USED 0
+;FILE startup_mkl25z4.o
+;FILE system_mkl25z4.o
+SystemCoreClockUpdate <= USED 0
+__asm___16_system_MKL25Z4_c_5d646a67____REV16 <= USED 0
+__asm___16_system_MKL25Z4_c_5d646a67____REVSH <= USED 0
+;FILE timers.o
+Configure_TPM0_for_DMA <= USED 0
+PWM_Set_Value <= USED 0
+TPM0_Init <= USED 0
+TPM0_Start <= USED 0
+__asm___8_timers_c_PWM_Init____REV16 <= USED 0
+__asm___8_timers_c_PWM_Init____REVSH <= USED 0
+;FILE touchscreen.o
+LCD_TS_Calibrate <= USED 0
+__asm___13_touchscreen_c_bd69c1ad____REV16 <= USED 0
+__asm___13_touchscreen_c_bd69c1ad____REVSH <= USED 0
+;FILE uart.o
+Get_Rx_Char <= USED 0
+Init_UART0 <= USED 0
+Rx_Chars_Available <= USED 0
+Send_String <= USED 0
+Send_String_Poll <= USED 0
+UART0_Receive_Poll <= USED 0
+UART0_Transmit_Poll <= USED 0
+__asm___6_UART_c_fputc____REV16 <= USED 0
+__asm___6_UART_c_fputc____REVSH <= USED 0
+fgetc <= USED 0
+fputc <= USED 0

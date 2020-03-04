@@ -936,8 +936,9 @@ FRESULT pf_read (
 	UINT rcnt;
 	BYTE cs, *rbuff = buff;
 	FATFS *fs = FatFs;
-
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_4);
+	#endif
 
 	*br = 0;
 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
@@ -970,8 +971,9 @@ FRESULT pf_read (
 		btr -= rcnt; *br += rcnt;					/* Update read counter */
 		if (rbuff) rbuff += rcnt;					/* Advances the data pointer if destination is memory */
 	}
-
+	#if DEBUG_ENABLE
 	DEBUG_STOP(DBG_4);
+	#endif
 	return FR_OK;
 }
 #endif

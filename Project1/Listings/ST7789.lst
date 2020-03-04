@@ -2290,6 +2290,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2306,6 +2307,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3793,6 +3795,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -12381,6 +12384,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 7 "Source\LCD\ST7789.c" 2
 N
 N#include "LCD.h"
@@ -20807,9 +20811,11 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
+N#define DEBUG_ENABLE 0
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -29006,6 +29012,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -29703,6 +29710,7 @@ N		B = (B & 0xf8f8f8f8) >> 3;
 N
 N		W1 = R | GH;
 N		W2 = GL | B;
+R "Source\LCD\ST7789.c" 509 5 zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
 N#if DEBUG_LCD_OPS
 S		FPTB->PSOR = MASK(DBG_LCD_WR_PIXELS_POS);
 N#endif
@@ -29725,6 +29733,7 @@ N#endif
 N			W1 >>= 8;
 N			W2 >>= 8;
 N		}
+R "Source\LCD\ST7789.c" 530 5 zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
 N#if DEBUG_LCD_OPS
 S		FPTB->PCOR = MASK(DBG_LCD_WR_PIXELS_POS);
 N#endif

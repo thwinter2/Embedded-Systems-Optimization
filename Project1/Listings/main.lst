@@ -1175,6 +1175,7 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1191,6 +1192,7 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2678,6 +2680,7 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
+R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11266,6 +11269,7 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8145 1 Header file not guarded against multiple inclusion
 L 4 "Source\main.c" 2
 N#include <stdio.h>
 L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h" 1
@@ -20743,6 +20747,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -28934,6 +28939,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8152 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\UART.h" 2
 N#include "queue.h"
 L 1 ".\Include\queue.h" 1
@@ -37099,6 +37105,7 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\queue.h" 2
 N
 N#define Q_MAX_SIZE (256)
@@ -45305,9 +45312,11 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
+R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
+N#define DEBUG_ENABLE 0
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -45553,6 +45562,7 @@ X	DWORD	org_clust;
 N	CLUST	curr_clust;	/* File current cluster */
 X	DWORD	curr_clust;	 
 N	DWORD	dsect;		/* File current data sector */
+R ".\Source\FS\pff.h" 65 16 padding inserted in struct 'anonymous'
 N} FATFS;
 N
 N
@@ -45567,6 +45577,7 @@ X	DWORD	sclust;
 N	CLUST	clust;		/* Current cluster */
 X	DWORD	clust;		 
 N	DWORD	sect;		/* Current sector */
+R ".\Source\FS\pff.h" 86 16 padding inserted in struct 'anonymous'
 N} DIR;
 N
 N
@@ -45579,6 +45590,7 @@ N	WORD	fdate;		/* Last modified date */
 N	WORD	ftime;		/* Last modified time */
 N	BYTE	fattrib;	/* Attribute */
 N	char	fname[13];	/* File name */
+R ".\Source\FS\pff.h" 98 16 padding added to end of struct 'anonymous'
 N} FILINFO;
 N
 N
@@ -45674,6 +45686,7 @@ Nuint8_t i2c_repeated_read(uint8_t);
 N	
 Nuint8_t i2c_read_byte(uint8_t dev, uint8_t address);
 Nvoid i2c_write_byte(uint8_t dev, uint8_t address, uint8_t data);
+R ".\Include\I2C.h" 26 64 Header file not guarded against multiple inclusion
 L 18 "Source\main.c" 2
 N#include "mma8451.h"
 L 1 ".\Include\mma8451.h" 1
@@ -47357,6 +47370,9 @@ L 22 "Source\main.c" 2
 N
 Nextern int LCD_JPEG(void);
 N
+Nuint32_t DMA_Destination_Buffer[512];
+Nuint32_t * DMA_Destination = 0;
+Nuint32_t DMA_Count;
 N
 Nvoid die(												/* Stop with dying message */
 N					FRESULT rc						/* FatFs return value */
@@ -47364,6 +47380,7 @@ N		) {
 N//  printf("Failed with rc=%u.\n", rc);
 N	Control_RGB_LEDs(1, 0, 0);
 N	for (;;);
+R "Source\main.c" 30 14 parameter "rc"  was never referenced
 N}
 N
 N
@@ -47452,6 +47469,60 @@ S	for (;;);
 S}
 N#endif
 N
+Nvoid Init_DMA(uint32_t * destination, uint32_t count){
+N	DMA_Destination = destination;
+N	DMA_Count = count;
+N	
+N	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC7 |= 0x100u;
+N	SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC6 |= 0x2u;
+N	
+N	DMAMUX0->CHCFG[0] = 0;
+X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] = 0;
+N	
+N	DMA0->DMA[0].DCR = DMA_DCR_EINT_MASK | DMA_DCR_SINC_MASK | DMA_DCR_SSIZE(1) | DMA_DCR_DSIZE(1) | 
+X	((DMA_Type *)(0x40008000u))->DMA[0].DCR = 0x80000000u | 0x400000u | (((uint32_t)(((uint32_t)(1))<<20))&0x300000u) | (((uint32_t)(((uint32_t)(1))<<17))&0x60000u) | 
+N	DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK;
+X	0x40000000u | 0x20000000u;
+N	
+N	// Configure DMA ISR
+N	NVIC_SetPriority(DMA0_IRQn, 2);
+X	__NVIC_SetPriority(DMA0_IRQn, 2);
+N	NVIC_ClearPendingIRQ(DMA0_IRQn);
+X	__NVIC_ClearPendingIRQ(DMA0_IRQn);
+N	NVIC_EnableIRQ(DMA0_IRQn);
+X	__NVIC_EnableIRQ(DMA0_IRQn);
+N	
+N	// Set DMA MUX channel to use SPI1 Transmit Complete as Trigger
+N	DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_SOURCE(18);
+X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] = (((uint8_t)(((uint8_t)(18))<<0))&0x3Fu);
+N	
+N}
+N
+Nvoid Start_DMA(void){
+N	// Initialize Source/Dest Pointers
+N	DMA0->DMA[0].SAR = DMA_SAR_SAR((uint32_t) (SPI1_D));
+X	((DMA_Type *)(0x40008000u))->DMA[0].SAR = (((uint32_t)(((uint32_t)((uint32_t) (((((SPI_Type *)(0x40077000u)))->D))))<<0))&0xFFFFFFFFu);
+N	DMA0->DMA[0].DAR = DMA_DAR_DAR((uint32_t) DMA_Destination);
+X	((DMA_Type *)(0x40008000u))->DMA[0].DAR = (((uint32_t)(((uint32_t)((uint32_t) DMA_Destination))<<0))&0xFFFFFFFFu);
+N	// byte count
+N	DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR(DMA_Count);
+X	((DMA_Type *)(0x40008000u))->DMA[0].DSR_BCR = (((uint32_t)(((uint32_t)(DMA_Count))<<0))&0xFFFFFFu);
+N	// clear done flag
+N	DMA0->DMA[0].DSR_BCR &= ~DMA_DSR_BCR_DONE_MASK;
+X	((DMA_Type *)(0x40008000u))->DMA[0].DSR_BCR &= ~0x1000000u;
+N	// set enable flag
+N	DMAMUX0->CHCFG[0] |= DMAMUX_CHCFG_ENBL_MASK;
+X	((DMAMUX_Type *)(0x40021000u))->CHCFG[0] |= 0x80u;
+N}
+N
+Nvoid DMA_IRQHandler(void){
+N	DMA0->DMA[0].DSR_BCR |= DMA_DSR_BCR_DONE_MASK;
+X	((DMA_Type *)(0x40008000u))->DMA[0].DSR_BCR |= 0x1000000u;
+N	Start_DMA();
+N}
+N
 N/*----------------------------------------------------------------------------
 N  MAIN function
 N *----------------------------------------------------------------------------*/
@@ -47463,6 +47534,7 @@ N	PT_T p;
 N	char buf[16];
 N	
 N	Init_RGB_LEDs();
+N	Init_DMA(DMA_Destination_Buffer,512);
 N
 N#ifdef PROFILER_SERIAL_SUPPORT
 S	Init_UART0(115200);
@@ -47483,6 +47555,7 @@ N	rc = pf_mount(&fatfs);
 N	if (rc) {
 N		LCD_Text_PrintStr_RC(2, 0, "pf_mount failed");
 N		Control_RGB_LEDs(1, 0, 0);
+R "Source\main.c" 194 12 empty dependent statement in while-statement
 N		while (1);
 N	}
 N	LCD_Text_PrintStr_RC(2, 0, "Mounted uSD card");
@@ -47500,6 +47573,7 @@ N		if (error != 0) {
 N			sprintf(buf, "LCD_JPEG failure %d", error);
 N			LCD_Text_PrintStr_RC(0, 0, buf); 
 N			while (1)
+R "Source\main.c" 211 5 empty dependent statement in while-statement
 N				;
 N		}
 N		Sort_Profile_Regions();

@@ -36,23 +36,23 @@ void SPI_Init(void) {
 	PORTE_PCR3 = PORT_PCR_MUX(2) | PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;	// MISO
 
 	/*
-	 * Bit 7 SPIE   = 0 Disables receive and mode fault interrupts
+	 * Bit 7 SPIE   = 1 Disables receive and mode fault interrupts
 	 * Bit 6 SPE    = 1 Enables the SPI system
 	 * Bit 5 SPTIE  = 0 Disables SPI transmit interrupts
 	 * Bit 4 MSTR   = 1 Sets the SPI module as a master SPI device
 	 * Bit 3 CPOL   = 0 Configures SPI clock as active-high
 	 * Bit 2 CPHA   = 0 First edge on SPSCK at start of first data transfer cycle
-	 * Bit 1 SSOE   = 1 Determines SS pin function when mode fault enabled
+	 * Bit 1 SSOE   = 0 Determines SS pin function when mode fault enabled
 	 * Bit 0 LSBFE  = 0 SPI serial data transfers start with most significant bit
 	 */
 	SPI1_C1 = 0xD0;
 	/*
 	 * Bit 7 PMIE       = 0 SPI hardware match interrupt disabled
 	 * Bit 6            = 0 Unimplemented
-	 * Bit 5 TXDMAE     = 0 DMA request disabled
-	 * Bit 4 MODFEN     = 1 In master mode, ~SS pin function is automatic ~SS output
+	 * Bit 5 TXDMAE     = 1 DMA request enabled
+	 * Bit 4 MODFEN     = 0 In master mode, ~SS pin function is automatic ~SS output
 	 * Bit 3 BIDIROE    = 0 SPI data I/O pin acts as input
-	 * Bit 2 RXDMAE     = 0 DMA request disabled
+	 * Bit 2 RXDMAE     = 1 DMA request enabled
 	 * Bit 1 SPISWAI    = 0 SPI clocks operate in wait mode
 	 * Bit 0 SPC0       = 0 uses separate pins for data input and output
 	 */
@@ -69,17 +69,27 @@ void SPI_Init(void) {
 }
 
 BYTE SPI_RW(BYTE d) { 
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_1);
+	#endif
 
 	while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+		#if DEBUG_ENABLE
 		DEBUG_TOGGLE(DBG_1);
+		#endif
 	}
+	#if DEBUG_ENABLE
 	DEBUG_START(DBG_1);
+	#endif
 	SPI1_D = d;
 	while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+		#if DEBUG_ENABLE
 		DEBUG_TOGGLE(DBG_1);
+		#endif
 	}
+	#if DEBUG_ENABLE
 	DEBUG_STOP(DBG_1);
+	#endif
 	return ((BYTE) (SPI1_D));
 }
 

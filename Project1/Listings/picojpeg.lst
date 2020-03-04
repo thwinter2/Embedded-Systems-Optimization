@@ -117,6 +117,7 @@ N   // It is up to the caller to copy or blit these pixels from these buffers in
 N   unsigned char *m_pMCUBufR;
 N   unsigned char *m_pMCUBufG;
 N   unsigned char *m_pMCUBufB;
+R ".\Include\picojpeg.h" 65 1 padding inserted in struct 'anonymous'
 N} pjpeg_image_info_t;
 N
 Ntypedef unsigned char (*pjpeg_need_bytes_callback_t)(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data);

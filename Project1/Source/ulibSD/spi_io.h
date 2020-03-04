@@ -10,12 +10,14 @@
 #define _SPI_IO_H_
 
 #include "integer.h"        /* Type redefinition for portability */
-
+extern uint32_t DMA_Destination_Buffer[512];
+extern uint32_t * DMA_Destination;
+extern uint32_t DMA_Count;
 
 /******************************************************************************
  Public methods
  *****************************************************************************/
-void Init_DMA(void);
+void Init_DMA(uint32_t * destination, uint32_t count);
 void Start_DMA(void);
 
 /**

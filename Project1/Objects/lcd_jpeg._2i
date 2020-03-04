@@ -1,0 +1,7 @@
+--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections --asm --interleave --asm_dir ".\\Listings\\" -I .\Include -I .\Source\Profiler -I .\Source\LCD -I .\Source\FS -I .\Source\ulibSD --fpmode=fast
+-I.\RTE\Device\MKL25Z128xxx4
+-I.\RTE\_Target_1
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
+-IC:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include
+-D__UVISION_VERSION="523" -D_RTE_ -DMKL25Z128xxx4
+-o .\objects\lcd_jpeg.o --list_dir ".\\Listings\\" --list --omf_browse .\objects\lcd_jpeg.crf --depend .\objects\lcd_jpeg.d --feedback ".\Objects\LCDs_Profiler.fed" "Source\LCD\LCD_JPEG.c"

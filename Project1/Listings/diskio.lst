@@ -573,6 +573,7 @@ X	DWORD	org_clust;
 N	CLUST	curr_clust;	/* File current cluster */
 X	DWORD	curr_clust;	 
 N	DWORD	dsect;		/* File current data sector */
+R "Source\FS\pff.h" 65 16 padding inserted in struct 'anonymous'
 N} FATFS;
 N
 N
@@ -587,6 +588,7 @@ X	DWORD	sclust;
 N	CLUST	clust;		/* Current cluster */
 X	DWORD	clust;		 
 N	DWORD	sect;		/* Current sector */
+R "Source\FS\pff.h" 86 16 padding inserted in struct 'anonymous'
 N} DIR;
 N
 N
@@ -599,6 +601,7 @@ N	WORD	fdate;		/* Last modified date */
 N	WORD	ftime;		/* Last modified time */
 N	BYTE	fattrib;	/* Attribute */
 N	char	fname[13];	/* File name */
+R "Source\FS\pff.h" 98 16 padding added to end of struct 'anonymous'
 N} FILINFO;
 N
 N
@@ -734,11 +737,15 @@ N#ifndef _SPI_IO_H_
 N#define _SPI_IO_H_
 N
 N#include "integer.h"        /* Type redefinition for portability */
-N
+Nextern uint32_t DMA_Destination_Buffer[512];
+Nextern uint32_t * DMA_Destination;
+Nextern uint32_t DMA_Count;
 N
 N/******************************************************************************
 N Public methods
 N *****************************************************************************/
+Nvoid Init_DMA(uint32_t * destination, uint32_t count);
+Nvoid Start_DMA(void);
 N
 N/**
 N    \brief Initialize SPI hardware
@@ -869,6 +876,7 @@ N    BOOL mount;
 N    BYTE cardtype;
 N    DWORD last_sector;
 N    DBG_COUNT debug;
+R ".\Source\ulibSD\sd_io.h" 69 16 padding inserted in struct _SD_DEV
 N} SD_DEV;
 N
 N/*******************************************************************************

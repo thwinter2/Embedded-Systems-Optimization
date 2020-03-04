@@ -20,12 +20,11 @@
 #include "profile.h"
 #include "math.h"
 
-uint32_t * DMA_Source;
-uint32_t * DMA_Destination;
-uint32_t DMA_Count;
-
 extern int LCD_JPEG(void);
 
+uint32_t DMA_Destination_Buffer[512];
+uint32_t * DMA_Destination = 0;
+uint32_t DMA_Count;
 
 void die(												/* Stop with dying message */
 					FRESULT rc						/* FatFs return value */
@@ -121,8 +120,7 @@ void PFF_Test(void) {
 }
 #endif
 
-void Init_DMA(uint32_t * source, uint32_t * destination, uint32_t count){
-	DMA_Source = source;
+void Init_DMA(uint32_t * destination, uint32_t count){
 	DMA_Destination = destination;
 	DMA_Count = count;
 	
@@ -139,17 +137,17 @@ void Init_DMA(uint32_t * source, uint32_t * destination, uint32_t count){
 	NVIC_ClearPendingIRQ(DMA0_IRQn);
 	NVIC_EnableIRQ(DMA0_IRQn);
 	
-	// Set DMA MUX channel to use SPI1 Transmit as Trigger
-	DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_SOURCE(19);
+	// Set DMA MUX channel to use SPI1 Transmit Complete as Trigger
+	DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_SOURCE(18);
 	
 }
 
 void Start_DMA(void){
 	// Initialize Source/Dest Pointers
-	DMA0->DMA[0].SAR = DMA_SAR_SAR((uint32_t) DMA_Source);
+	DMA0->DMA[0].SAR = DMA_SAR_SAR((uint32_t) (SPI1_D));
 	DMA0->DMA[0].DAR = DMA_DAR_DAR((uint32_t) DMA_Destination);
 	// byte count
-	DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR(512);
+	DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR(DMA_Count);
 	// clear done flag
 	DMA0->DMA[0].DSR_BCR &= ~DMA_DSR_BCR_DONE_MASK;
 	// set enable flag
@@ -160,6 +158,7 @@ void DMA_IRQHandler(void){
 	DMA0->DMA[0].DSR_BCR |= DMA_DSR_BCR_DONE_MASK;
 	Start_DMA();
 }
+
 /*----------------------------------------------------------------------------
   MAIN function
  *----------------------------------------------------------------------------*/
@@ -171,7 +170,7 @@ int main(void) {
 	char buf[16];
 	
 	Init_RGB_LEDs();
-	Init_DMA(,&SPI1_D,512); //Init DMA Transfer
+	Init_DMA(DMA_Destination_Buffer,512);
 
 #ifdef PROFILER_SERIAL_SUPPORT
 	Init_UART0(115200);
