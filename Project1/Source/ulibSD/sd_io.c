@@ -175,8 +175,15 @@ DWORD __SD_Sectors(SD_DEV * dev) {
 	if (__SD_Send_Cmd(CMD9, 0) == 0) {
 		// Wait for response
 		while (SPI_RW(0xFF) == 0xFF);
-		for (idx = 0; idx != 16; idx++)
-			csd[idx] = SPI_RW(0xFF);
+		for (idx = 0; idx != 16; idx++){
+			//csd[idx] = SPI_RW(0xFF);
+			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+			}
+			SPI1_D = 0xFF;
+			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+			}
+			csd[idx] = SPI1_D;
+		}
 		// Dummy CRC
 		SPI_RW(0xFF);
 		SPI_RW(0xFF);
@@ -394,14 +401,14 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 			#endif
 			
 			//tkn = SPI_RW(0xFF);
+			SPI1_D = 0xFF;
 			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 			}
-			SPI1_D = 0xFF;
 			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 			}
 			tkn = SPI1_D;
 				
-		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
+		} while ((tkn == 0xFF) && (!(LPTMR0_CSR & LPTMR_CSR_TCF_MASK)));
 		#if DEBUG_ENABLE
 		DEBUG_START(DBG_2);
 		#endif
@@ -417,9 +424,9 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 				#endif
 				
 				//data = SPI_RW(0xff);
+				SPI1_D = 0xff;
 				while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 				}
-				SPI1_D = 0xff;
 				while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 				}
 				data = SPI1_D;

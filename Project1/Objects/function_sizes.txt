@@ -5,7 +5,7 @@
 00000120 getBits
 00000076 getChar
 00000058 getOctet
-00000178 huffDecode
+00000180 huffDecode
 00000200 huffExtend
 00000594 idctCols
 00000262 idctRows
@@ -70,7 +70,7 @@
 00000054 Q_Enqueue
 00000016 Q_Full
 00000436 SD_Init
-00000212 SD_Read
+00000200 SD_Read
 00000012 SPI_CS_High
 00000012 SPI_CS_Low
 00000008 SPI_Freq_High
@@ -86,7 +86,7 @@
 00000088 UART0_IRQHandler
 00000046 __0snprintf$6
 00000036 __0sprintf$6
-00000236 __SD_Sectors
+00000246 __SD_Sectors
 00000152 __SD_Send_Cmd
 00000014 __scatterload_copy
 00000014 __scatterload_zeroinit

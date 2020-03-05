@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\LCDs_Profiler.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\LCDs_Profiler.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Mar 05 14:59:57 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Mar 05 16:18:10 2020
 <BR><P>
 <H3>Maximum Stack Usage =        528 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -490,7 +490,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[4f]"></a>SD_Init</STRONG> (Thumb, 436 bytes, Stack size 40 bytes, sd_io.o(i.SD_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_On
@@ -506,11 +506,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_initialize
 </UL>
 
-<P><STRONG><a name="[5a]"></a>SD_Read</STRONG> (Thumb, 212 bytes, Stack size 40 bytes, sd_io.o(i.SD_Read))
+<P><STRONG><a name="[5a]"></a>SD_Read</STRONG> (Thumb, 200 bytes, Stack size 40 bytes, sd_io.o(i.SD_Read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = SD_Read &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Timer_Status
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
+<BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_readp
@@ -554,7 +553,6 @@ Global Symbols
 
 <P><STRONG><a name="[55]"></a>SPI_Timer_Status</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, spi_io.o(i.SPI_Timer_Status))
 <BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Read
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
 
@@ -605,8 +603,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[58]"></a>__SD_Sectors</STRONG> (Thumb, 236 bytes, Stack size 56 bytes, sd_io.o(i.__SD_Sectors))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<P><STRONG><a name="[58]"></a>__SD_Sectors</STRONG> (Thumb, 246 bytes, Stack size 40 bytes, sd_io.o(i.__SD_Sectors))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_RW
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__SD_Send_Cmd
@@ -635,7 +633,7 @@ Global Symbols
 <P><STRONG><a name="[96]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[6a]"></a>disk_initialize</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, diskio.o(i.disk_initialize))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Init
 </UL>
@@ -689,7 +687,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[70]"></a>pf_mount</STRONG> (Thumb, 436 bytes, Stack size 64 bytes, pff.o(i.pf_mount))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = pf_mount &rArr; disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = pf_mount &rArr; disk_initialize &rArr; SD_Init &rArr; __SD_Sectors &rArr; __SD_Send_Cmd &rArr;  __SD_Send_Cmd (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_readp
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_initialize
@@ -830,7 +828,7 @@ Local Symbols
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getBits
 </UL>
 
-<P><STRONG><a name="[64]"></a>huffDecode</STRONG> (Thumb, 178 bytes, Stack size 32 bytes, picojpeg.o(i.huffDecode))
+<P><STRONG><a name="[64]"></a>huffDecode</STRONG> (Thumb, 180 bytes, Stack size 32 bytes, picojpeg.o(i.huffDecode))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = huffDecode &rArr; getOctet &rArr; getChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getOctet

@@ -5,355 +5,355 @@
                           AREA ||i.SD_Init||, CODE, READONLY, ALIGN=2
 
                   SD_Init PROC
-;;;221    
-;;;222    SDRESULTS SD_Init(SD_DEV * dev) {
+;;;228    
+;;;229    SDRESULTS SD_Init(SD_DEV * dev) {
 000000  b5f1              PUSH     {r0,r4-r7,lr}
 000002  b084              SUB      sp,sp,#0x10
-;;;223    	BYTE n, cmd, ct, ocr[4];
-;;;224    	BYTE idx;
-;;;225    	BYTE init_trys;
-;;;226    	#if DEBUG_ENABLE
-;;;227    	DEBUG_START(DBG_5);
-;;;228    	#endif
-;;;229    	ct = 0;
+;;;230    	BYTE n, cmd, ct, ocr[4];
+;;;231    	BYTE idx;
+;;;232    	BYTE init_trys;
+;;;233    	#if DEBUG_ENABLE
+;;;234    	DEBUG_START(DBG_5);
+;;;235    	#endif
+;;;236    	ct = 0;
 000004  2000              MOVS     r0,#0
-;;;230    	for (init_trys = 0; ((init_trys != SD_INIT_TRYS) && (!ct));
+;;;237    	for (init_trys = 0; ((init_trys != SD_INIT_TRYS) && (!ct));
 000006  4607              MOV      r7,r0
-;;;231    			 init_trys++) {
-;;;232    		// Initialize SPI for use with the memory card
-;;;233    		SPI_Init();
-;;;234    		
-;;;235    
-;;;236    		SPI_CS_High();
-;;;237    		SPI_Freq_High();
-;;;238    
-;;;239    		// 80 dummy clocks
-;;;240    		for (idx = 0; idx != 10; idx++){
-;;;241    			SPI_RW(0xFF);
+;;;238    			 init_trys++) {
+;;;239    		// Initialize SPI for use with the memory card
+;;;240    		SPI_Init();
+;;;241    		
+;;;242    
+;;;243    		SPI_CS_High();
+;;;244    		SPI_Freq_High();
+;;;245    
+;;;246    		// 80 dummy clocks
+;;;247    		for (idx = 0; idx != 10; idx++){
+;;;248    			SPI_RW(0xFF);
 000008  25ff              MOVS     r5,#0xff
-00000a  466e              MOV      r6,sp                 ;223
-00000c  9001              STR      r0,[sp,#4]            ;223
+00000a  466e              MOV      r6,sp                 ;230
+00000c  9001              STR      r0,[sp,#4]            ;230
                   |L1.14|
 00000e  f7fffffe          BL       SPI_Init
 000012  f7fffffe          BL       SPI_CS_High
 000016  f7fffffe          BL       SPI_Freq_High
-00001a  2400              MOVS     r4,#0                 ;240
+00001a  2400              MOVS     r4,#0                 ;247
                   |L1.28|
 00001c  20ff              MOVS     r0,#0xff
 00001e  f7fffffe          BL       SPI_RW
 000022  1c64              ADDS     r4,r4,#1
-000024  b2e4              UXTB     r4,r4                 ;240
-000026  2c0a              CMP      r4,#0xa               ;240
+000024  b2e4              UXTB     r4,r4                 ;247
+000026  2c0a              CMP      r4,#0xa               ;247
 000028  d1f8              BNE      |L1.28|
-;;;242    		}
-;;;243    		SPI_Timer_On(500);
+;;;249    		}
+;;;250    		SPI_Timer_On(500);
 00002a  24ff              MOVS     r4,#0xff
 00002c  34f5              ADDS     r4,r4,#0xf5
 00002e  4620              MOV      r0,r4
 000030  f7fffffe          BL       SPI_Timer_On
                   |L1.52|
-;;;244    		while (SPI_Timer_Status() == TRUE) {
+;;;251    		while (SPI_Timer_Status() == TRUE) {
 000034  f7fffffe          BL       SPI_Timer_Status
 000038  2801              CMP      r0,#1
 00003a  d0fb              BEQ      |L1.52|
-;;;245    			#if DEBUG_ENABLE
-;;;246    			DEBUG_TOGGLE(DBG_5)
-;;;247    			#endif
-;;;248    		}
-;;;249    		#if DEBUG_ENABLE
-;;;250    		DEBUG_START(DBG_5);
-;;;251    		#endif
-;;;252    		SPI_Timer_Off();
+;;;252    			#if DEBUG_ENABLE
+;;;253    			DEBUG_TOGGLE(DBG_5)
+;;;254    			#endif
+;;;255    		}
+;;;256    		#if DEBUG_ENABLE
+;;;257    		DEBUG_START(DBG_5);
+;;;258    		#endif
+;;;259    		SPI_Timer_Off();
 00003c  f7fffffe          BL       SPI_Timer_Off
-;;;253    
-;;;254    		dev->mount = FALSE;
+;;;260    
+;;;261    		dev->mount = FALSE;
 000040  9804              LDR      r0,[sp,#0x10]
 000042  2100              MOVS     r1,#0
 000044  7001              STRB     r1,[r0,#0]
-;;;255    		SPI_Timer_On(500);
+;;;262    		SPI_Timer_On(500);
 000046  4620              MOV      r0,r4
 000048  f7fffffe          BL       SPI_Timer_On
                   |L1.76|
-;;;256    		while ((__SD_Send_Cmd(CMD0, 0) != 1)
+;;;263    		while ((__SD_Send_Cmd(CMD0, 0) != 1)
 00004c  2100              MOVS     r1,#0
 00004e  2040              MOVS     r0,#0x40
 000050  f7fffffe          BL       __SD_Send_Cmd
 000054  2801              CMP      r0,#1
 000056  d003              BEQ      |L1.96|
-;;;257    					 && (SPI_Timer_Status() == TRUE)) {
+;;;264    					 && (SPI_Timer_Status() == TRUE)) {
 000058  f7fffffe          BL       SPI_Timer_Status
 00005c  2801              CMP      r0,#1
 00005e  d0f5              BEQ      |L1.76|
                   |L1.96|
-;;;258    						#if DEBUG_ENABLE
-;;;259    						DEBUG_TOGGLE(DBG_5);
-;;;260    						#endif
-;;;261    		}
-;;;262    		#if DEBUG_ENABLE
-;;;263    		DEBUG_START(DBG_5);
-;;;264    		#endif
-;;;265    		SPI_Timer_Off();
+;;;265    						#if DEBUG_ENABLE
+;;;266    						DEBUG_TOGGLE(DBG_5);
+;;;267    						#endif
+;;;268    		}
+;;;269    		#if DEBUG_ENABLE
+;;;270    		DEBUG_START(DBG_5);
+;;;271    		#endif
+;;;272    		SPI_Timer_Off();
 000060  f7fffffe          BL       SPI_Timer_Off
-;;;266    		// Idle state
-;;;267    		if (__SD_Send_Cmd(CMD0, 0) == 1) {
+;;;273    		// Idle state
+;;;274    		if (__SD_Send_Cmd(CMD0, 0) == 1) {
 000064  2100              MOVS     r1,#0
 000066  2040              MOVS     r0,#0x40
 000068  f7fffffe          BL       __SD_Send_Cmd
 00006c  2801              CMP      r0,#1
 00006e  d17a              BNE      |L1.358|
-;;;268    			// SD version 2?
-;;;269    			if (__SD_Send_Cmd(CMD8, 0x1AA) == 1) {
+;;;275    			// SD version 2?
+;;;276    			if (__SD_Send_Cmd(CMD8, 0x1AA) == 1) {
 000070  21ff              MOVS     r1,#0xff
 000072  31ab              ADDS     r1,r1,#0xab
 000074  2048              MOVS     r0,#0x48
 000076  f7fffffe          BL       __SD_Send_Cmd
 00007a  2801              CMP      r0,#1
 00007c  d009              BEQ      |L1.146|
-;;;270    				// Get trailing return value of R7 resp
-;;;271    				for (n = 0; n < 4; n++){
-;;;272    					//ocr[n] = SPI_RW(0xFF);
-;;;273    					while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-;;;274    					}
-;;;275    					SPI1_D = 0xff;
-;;;276    					while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-;;;277    					}
-;;;278    					ocr[n] = SPI1_D;
-;;;279    				}
-;;;280    				// VDD range of 2.7-3.6V is OK?  
-;;;281    				if ((ocr[2] == 0x01) && (ocr[3] == 0xAA)) {
-;;;282    					// Wait for leaving idle state (ACMD41 with HCS bit)...
-;;;283    					SPI_Timer_On(1000);
-;;;284    					while ((SPI_Timer_Status() == TRUE)
-;;;285    								 && (__SD_Send_Cmd(ACMD41, 1UL << 30))) {
-;;;286    						#if DEBUG_ENABLE
-;;;287    						DEBUG_TOGGLE(DBG_5);
-;;;288    						#endif
-;;;289    					}
-;;;290    					#if DEBUG_ENABLE
-;;;291    					DEBUG_START(DBG_5);
-;;;292    					#endif
-;;;293    					SPI_Timer_Off();
-;;;294    					// CCS in the OCR? 
-;;;295    					if ((SPI_Timer_Status() == TRUE)
-;;;296    							&& (__SD_Send_Cmd(CMD58, 0) == 0)) {
-;;;297    						for (n = 0; n < 4; n++){
-;;;298    	
-;;;299    							//ocr[n] = SPI_RW(0xFF);
-;;;300    							while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-;;;301    							}
-;;;302    							SPI1_D = 0xff;
-;;;303    							while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-;;;304    							}
-;;;305    							ocr[n] = SPI1_D;
-;;;306    						}
-;;;307    						// SD version 2?
-;;;308    						ct = (ocr[0] & 0x40) ? SDCT_SD2 | SDCT_BLOCK : SDCT_SD2;
-;;;309    					}
-;;;310    				}
-;;;311    			} else {
-;;;312    				// SD version 1 or MMC?
-;;;313    				if (__SD_Send_Cmd(ACMD41, 0) <= 1) {
+;;;277    				// Get trailing return value of R7 resp
+;;;278    				for (n = 0; n < 4; n++){
+;;;279    					//ocr[n] = SPI_RW(0xFF);
+;;;280    					while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+;;;281    					}
+;;;282    					SPI1_D = 0xff;
+;;;283    					while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+;;;284    					}
+;;;285    					ocr[n] = SPI1_D;
+;;;286    				}
+;;;287    				// VDD range of 2.7-3.6V is OK?  
+;;;288    				if ((ocr[2] == 0x01) && (ocr[3] == 0xAA)) {
+;;;289    					// Wait for leaving idle state (ACMD41 with HCS bit)...
+;;;290    					SPI_Timer_On(1000);
+;;;291    					while ((SPI_Timer_Status() == TRUE)
+;;;292    								 && (__SD_Send_Cmd(ACMD41, 1UL << 30))) {
+;;;293    						#if DEBUG_ENABLE
+;;;294    						DEBUG_TOGGLE(DBG_5);
+;;;295    						#endif
+;;;296    					}
+;;;297    					#if DEBUG_ENABLE
+;;;298    					DEBUG_START(DBG_5);
+;;;299    					#endif
+;;;300    					SPI_Timer_Off();
+;;;301    					// CCS in the OCR? 
+;;;302    					if ((SPI_Timer_Status() == TRUE)
+;;;303    							&& (__SD_Send_Cmd(CMD58, 0) == 0)) {
+;;;304    						for (n = 0; n < 4; n++){
+;;;305    	
+;;;306    							//ocr[n] = SPI_RW(0xFF);
+;;;307    							while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+;;;308    							}
+;;;309    							SPI1_D = 0xff;
+;;;310    							while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+;;;311    							}
+;;;312    							ocr[n] = SPI1_D;
+;;;313    						}
+;;;314    						// SD version 2?
+;;;315    						ct = (ocr[0] & 0x40) ? SDCT_SD2 | SDCT_BLOCK : SDCT_SD2;
+;;;316    					}
+;;;317    				}
+;;;318    			} else {
+;;;319    				// SD version 1 or MMC?
+;;;320    				if (__SD_Send_Cmd(ACMD41, 0) <= 1) {
 00007e  2100              MOVS     r1,#0
 000080  20e9              MOVS     r0,#0xe9
 000082  f7fffffe          BL       __SD_Send_Cmd
 000086  2801              CMP      r0,#1
 000088  d84a              BHI      |L1.288|
-;;;314    					// SD version 1
-;;;315    					ct = SDCT_SD1;
+;;;321    					// SD version 1
+;;;322    					ct = SDCT_SD1;
 00008a  2002              MOVS     r0,#2
-;;;316    					cmd = ACMD41;
+;;;323    					cmd = ACMD41;
 00008c  24e9              MOVS     r4,#0xe9
 00008e  9001              STR      r0,[sp,#4]
 000090  e049              B        |L1.294|
                   |L1.146|
 000092  4c48              LDR      r4,|L1.436|
-000094  2000              MOVS     r0,#0                 ;271
+000094  2000              MOVS     r0,#0                 ;278
                   |L1.150|
-000096  78e1              LDRB     r1,[r4,#3]            ;273
-000098  0689              LSLS     r1,r1,#26             ;273
+000096  78e1              LDRB     r1,[r4,#3]            ;280
+000098  0689              LSLS     r1,r1,#26             ;280
 00009a  d5fc              BPL      |L1.150|
-00009c  7165              STRB     r5,[r4,#5]            ;275
+00009c  7165              STRB     r5,[r4,#5]            ;282
                   |L1.158|
-00009e  78e1              LDRB     r1,[r4,#3]            ;276
-0000a0  0609              LSLS     r1,r1,#24             ;276
+00009e  78e1              LDRB     r1,[r4,#3]            ;283
+0000a0  0609              LSLS     r1,r1,#24             ;283
 0000a2  d5fc              BPL      |L1.158|
-0000a4  7961              LDRB     r1,[r4,#5]            ;278
-0000a6  5431              STRB     r1,[r6,r0]            ;278
-0000a8  1c40              ADDS     r0,r0,#1              ;278
-0000aa  b2c0              UXTB     r0,r0                 ;271
-0000ac  2804              CMP      r0,#4                 ;271
+0000a4  7961              LDRB     r1,[r4,#5]            ;285
+0000a6  5431              STRB     r1,[r6,r0]            ;285
+0000a8  1c40              ADDS     r0,r0,#1              ;285
+0000aa  b2c0              UXTB     r0,r0                 ;278
+0000ac  2804              CMP      r0,#4                 ;278
 0000ae  d3f2              BCC      |L1.150|
-0000b0  4668              MOV      r0,sp                 ;281
-0000b2  7880              LDRB     r0,[r0,#2]            ;281
-0000b4  2801              CMP      r0,#1                 ;281
+0000b0  4668              MOV      r0,sp                 ;288
+0000b2  7880              LDRB     r0,[r0,#2]            ;288
+0000b4  2801              CMP      r0,#1                 ;288
 0000b6  d156              BNE      |L1.358|
-0000b8  4668              MOV      r0,sp                 ;281
-0000ba  78c0              LDRB     r0,[r0,#3]            ;281
-0000bc  28aa              CMP      r0,#0xaa              ;281
+0000b8  4668              MOV      r0,sp                 ;288
+0000ba  78c0              LDRB     r0,[r0,#3]            ;288
+0000bc  28aa              CMP      r0,#0xaa              ;288
 0000be  d152              BNE      |L1.358|
-0000c0  207d              MOVS     r0,#0x7d              ;283
-0000c2  00c0              LSLS     r0,r0,#3              ;283
+0000c0  207d              MOVS     r0,#0x7d              ;290
+0000c2  00c0              LSLS     r0,r0,#3              ;290
 0000c4  f7fffffe          BL       SPI_Timer_On
                   |L1.200|
 0000c8  f7fffffe          BL       SPI_Timer_Status
-0000cc  2801              CMP      r0,#1                 ;284
+0000cc  2801              CMP      r0,#1                 ;291
 0000ce  d105              BNE      |L1.220|
-0000d0  0781              LSLS     r1,r0,#30             ;285
-0000d2  20e9              MOVS     r0,#0xe9              ;285
+0000d0  0781              LSLS     r1,r0,#30             ;292
+0000d2  20e9              MOVS     r0,#0xe9              ;292
 0000d4  f7fffffe          BL       __SD_Send_Cmd
-0000d8  2800              CMP      r0,#0                 ;285
+0000d8  2800              CMP      r0,#0                 ;292
 0000da  d1f5              BNE      |L1.200|
                   |L1.220|
 0000dc  f7fffffe          BL       SPI_Timer_Off
 0000e0  f7fffffe          BL       SPI_Timer_Status
-0000e4  2801              CMP      r0,#1                 ;295
+0000e4  2801              CMP      r0,#1                 ;302
 0000e6  d13e              BNE      |L1.358|
-0000e8  2100              MOVS     r1,#0                 ;296
-0000ea  207a              MOVS     r0,#0x7a              ;296
+0000e8  2100              MOVS     r1,#0                 ;303
+0000ea  207a              MOVS     r0,#0x7a              ;303
 0000ec  f7fffffe          BL       __SD_Send_Cmd
-0000f0  2800              CMP      r0,#0                 ;296
+0000f0  2800              CMP      r0,#0                 ;303
 0000f2  d138              BNE      |L1.358|
                   |L1.244|
-0000f4  78e1              LDRB     r1,[r4,#3]            ;300
-0000f6  0689              LSLS     r1,r1,#26             ;300
+0000f4  78e1              LDRB     r1,[r4,#3]            ;307
+0000f6  0689              LSLS     r1,r1,#26             ;307
 0000f8  d5fc              BPL      |L1.244|
-0000fa  7165              STRB     r5,[r4,#5]            ;302
+0000fa  7165              STRB     r5,[r4,#5]            ;309
                   |L1.252|
-0000fc  78e1              LDRB     r1,[r4,#3]            ;303
-0000fe  0609              LSLS     r1,r1,#24             ;303
+0000fc  78e1              LDRB     r1,[r4,#3]            ;310
+0000fe  0609              LSLS     r1,r1,#24             ;310
 000100  d5fc              BPL      |L1.252|
-000102  7961              LDRB     r1,[r4,#5]            ;305
-000104  5431              STRB     r1,[r6,r0]            ;305
-000106  1c40              ADDS     r0,r0,#1              ;305
-000108  b2c0              UXTB     r0,r0                 ;297
-00010a  2804              CMP      r0,#4                 ;297
+000102  7961              LDRB     r1,[r4,#5]            ;312
+000104  5431              STRB     r1,[r6,r0]            ;312
+000106  1c40              ADDS     r0,r0,#1              ;312
+000108  b2c0              UXTB     r0,r0                 ;304
+00010a  2804              CMP      r0,#4                 ;304
 00010c  d3f2              BCC      |L1.244|
-00010e  4668              MOV      r0,sp                 ;308
-000110  7800              LDRB     r0,[r0,#0]            ;308
-000112  0640              LSLS     r0,r0,#25             ;308
+00010e  4668              MOV      r0,sp                 ;315
+000110  7800              LDRB     r0,[r0,#0]            ;315
+000112  0640              LSLS     r0,r0,#25             ;315
 000114  d501              BPL      |L1.282|
-000116  200c              MOVS     r0,#0xc               ;308
+000116  200c              MOVS     r0,#0xc               ;315
 000118  e000              B        |L1.284|
                   |L1.282|
-00011a  2004              MOVS     r0,#4                 ;308
+00011a  2004              MOVS     r0,#4                 ;315
                   |L1.284|
-00011c  9001              STR      r0,[sp,#4]            ;308
+00011c  9001              STR      r0,[sp,#4]            ;315
 00011e  e022              B        |L1.358|
                   |L1.288|
-;;;317    				} else {
-;;;318    					// MMC version 3
-;;;319    					ct = SDCT_MMC;
+;;;324    				} else {
+;;;325    					// MMC version 3
+;;;326    					ct = SDCT_MMC;
 000120  2001              MOVS     r0,#1
-;;;320    					cmd = CMD1;
+;;;327    					cmd = CMD1;
 000122  2441              MOVS     r4,#0x41
 000124  9001              STR      r0,[sp,#4]
                   |L1.294|
-;;;321    				}
-;;;322    				// Wait for leaving idle state
-;;;323    				SPI_Timer_On(250);
+;;;328    				}
+;;;329    				// Wait for leaving idle state
+;;;330    				SPI_Timer_On(250);
 000126  20fa              MOVS     r0,#0xfa
 000128  f7fffffe          BL       SPI_Timer_On
                   |L1.300|
-;;;324    				while ((SPI_Timer_Status() == TRUE)
+;;;331    				while ((SPI_Timer_Status() == TRUE)
 00012c  f7fffffe          BL       SPI_Timer_Status
 000130  2801              CMP      r0,#1
 000132  d105              BNE      |L1.320|
-;;;325    							 && (__SD_Send_Cmd(cmd, 0))) {
+;;;332    							 && (__SD_Send_Cmd(cmd, 0))) {
 000134  2100              MOVS     r1,#0
 000136  4620              MOV      r0,r4
 000138  f7fffffe          BL       __SD_Send_Cmd
 00013c  2800              CMP      r0,#0
 00013e  d1f5              BNE      |L1.300|
                   |L1.320|
-;;;326    					#if DEBUG_ENABLE
-;;;327    					DEBUG_TOGGLE(DBG_5);
-;;;328    					#endif								 
-;;;329    				}
-;;;330    				#if DEBUG_ENABLE
-;;;331    				DEBUG_START(DBG_5);
-;;;332    				#endif
-;;;333    				SPI_Timer_Off();
+;;;333    					#if DEBUG_ENABLE
+;;;334    					DEBUG_TOGGLE(DBG_5);
+;;;335    					#endif								 
+;;;336    				}
+;;;337    				#if DEBUG_ENABLE
+;;;338    				DEBUG_START(DBG_5);
+;;;339    				#endif
+;;;340    				SPI_Timer_Off();
 000140  f7fffffe          BL       SPI_Timer_Off
-;;;334    				//if (SPI_Timer_Status() == FALSE)
-;;;335    					//ct = 0;
-;;;336    				if (__SD_Send_Cmd(CMD59, 0))
+;;;341    				//if (SPI_Timer_Status() == FALSE)
+;;;342    					//ct = 0;
+;;;343    				if (__SD_Send_Cmd(CMD59, 0))
 000144  2100              MOVS     r1,#0
 000146  207b              MOVS     r0,#0x7b
 000148  f7fffffe          BL       __SD_Send_Cmd
 00014c  2800              CMP      r0,#0
 00014e  d001              BEQ      |L1.340|
-;;;337    					ct = 0;								// Deactivate CRC check (default)
+;;;344    					ct = 0;								// Deactivate CRC check (default)
 000150  2000              MOVS     r0,#0
 000152  9001              STR      r0,[sp,#4]
                   |L1.340|
-;;;338    				if (__SD_Send_Cmd(CMD16, 512))
+;;;345    				if (__SD_Send_Cmd(CMD16, 512))
 000154  2101              MOVS     r1,#1
 000156  0249              LSLS     r1,r1,#9
 000158  2050              MOVS     r0,#0x50
 00015a  f7fffffe          BL       __SD_Send_Cmd
 00015e  2800              CMP      r0,#0
 000160  d001              BEQ      |L1.358|
-;;;339    					ct = 0;								// Set R/W block length to 512 bytes
+;;;346    					ct = 0;								// Set R/W block length to 512 bytes
 000162  2000              MOVS     r0,#0
 000164  9001              STR      r0,[sp,#4]
                   |L1.358|
 000166  1c7f              ADDS     r7,r7,#1
-000168  b2ff              UXTB     r7,r7                 ;231
-00016a  9801              LDR      r0,[sp,#4]            ;231
-00016c  2f03              CMP      r7,#3                 ;230
+000168  b2ff              UXTB     r7,r7                 ;238
+00016a  9801              LDR      r0,[sp,#4]            ;238
+00016c  2f03              CMP      r7,#3                 ;237
 00016e  d003              BEQ      |L1.376|
-000170  2800              CMP      r0,#0                 ;230
+000170  2800              CMP      r0,#0                 ;237
 000172  d100              BNE      |L1.374|
 000174  e74b              B        |L1.14|
                   |L1.374|
 000176  e001              B        |L1.380|
                   |L1.376|
-;;;340    			}
-;;;341    		}
-;;;342    	}
-;;;343    	if (ct) {
+;;;347    			}
+;;;348    		}
+;;;349    	}
+;;;350    	if (ct) {
 000178  2800              CMP      r0,#0
 00017a  d016              BEQ      |L1.426|
                   |L1.380|
-;;;344    		dev->cardtype = ct;
+;;;351    		dev->cardtype = ct;
 00017c  9904              LDR      r1,[sp,#0x10]
 00017e  7048              STRB     r0,[r1,#1]
-;;;345    		dev->mount = TRUE;
+;;;352    		dev->mount = TRUE;
 000180  9904              LDR      r1,[sp,#0x10]
 000182  2001              MOVS     r0,#1
 000184  7008              STRB     r0,[r1,#0]
-;;;346    		dev->last_sector = __SD_Sectors(dev) - 1;
+;;;353    		dev->last_sector = __SD_Sectors(dev) - 1;
 000186  9804              LDR      r0,[sp,#0x10]
 000188  f7fffffe          BL       __SD_Sectors
 00018c  9904              LDR      r1,[sp,#0x10]
 00018e  1e40              SUBS     r0,r0,#1
-;;;347    		dev->debug.read = 0;
+;;;354    		dev->debug.read = 0;
 000190  6048              STR      r0,[r1,#4]
 000192  9904              LDR      r1,[sp,#0x10]
 000194  2000              MOVS     r0,#0
 000196  8108              STRH     r0,[r1,#8]
-;;;348    		dev->debug.write = 0;
+;;;355    		dev->debug.write = 0;
 000198  9904              LDR      r1,[sp,#0x10]
 00019a  8148              STRH     r0,[r1,#0xa]
 00019c  f7fffffe          BL       SPI_Freq_High
-;;;349    		__SD_Speed_Transfer(HIGH);	// High speed transfer
-;;;350    	}
-;;;351    	SPI_Release();
+;;;356    		__SD_Speed_Transfer(HIGH);	// High speed transfer
+;;;357    	}
+;;;358    	SPI_Release();
 0001a0  f7fffffe          BL       SPI_Release
-;;;352    	#if DEBUG_ENABLE
-;;;353    	DEBUG_STOP(DBG_5);
-;;;354    	#endif
-;;;355    	return (ct ? SD_OK : SD_NOINIT);
+;;;359    	#if DEBUG_ENABLE
+;;;360    	DEBUG_STOP(DBG_5);
+;;;361    	#endif
+;;;362    	return (ct ? SD_OK : SD_NOINIT);
 0001a4  2000              MOVS     r0,#0
-;;;356    }
+;;;363    }
 0001a6  b005              ADD      sp,sp,#0x14
 0001a8  bdf0              POP      {r4-r7,pc}
                   |L1.426|
 0001aa  f7fffffe          BL       SPI_Release
-0001ae  2001              MOVS     r0,#1                 ;355
+0001ae  2001              MOVS     r0,#1                 ;362
 0001b0  b005              ADD      sp,sp,#0x14
 0001b2  bdf0              POP      {r4-r7,pc}
-;;;357    
+;;;364    
                           ENDP
 
                   |L1.436|
@@ -362,375 +362,372 @@
                           AREA ||i.SD_Read||, CODE, READONLY, ALIGN=2
 
                   SD_Read PROC
-;;;360    #pragma diag_suppress 1441
-;;;361    SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
+;;;367    #pragma diag_suppress 1441
+;;;368    SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 000000  b5ff              PUSH     {r0-r7,lr}
-;;;362    									WORD cnt) {
+;;;369    									WORD cnt) {
 000002  b081              SUB      sp,sp,#4
-;;;363    	SDRESULTS res;
-;;;364    	WORD byte_num;
-;;;365    	BYTE tkn, data;
-;;;366    	volatile uint8_t dummy;
-;;;367    	#if DEBUG_ENABLE
-;;;368    	DEBUG_START(DBG_2);
-;;;369    	#endif
-;;;370    
-;;;371    	res = SD_ERROR;
+;;;370    	SDRESULTS res;
+;;;371    	WORD byte_num;
+;;;372    	BYTE tkn, data;
+;;;373    	volatile uint8_t dummy;
+;;;374    	#if DEBUG_ENABLE
+;;;375    	DEBUG_START(DBG_2);
+;;;376    	#endif
+;;;377    
+;;;378    	res = SD_ERROR;
 000004  2002              MOVS     r0,#2
-;;;372    	if ((sector > dev->last_sector) || (cnt == 0)) {
-000006  9000              STR      r0,[sp,#0]
-000008  9801              LDR      r0,[sp,#4]
-00000a  461f              MOV      r7,r3                 ;362
-00000c  6840              LDR      r0,[r0,#4]
-00000e  460d              MOV      r5,r1                 ;362
-000010  4290              CMP      r0,r2
-000012  d309              BCC      |L2.40|
-000014  980a              LDR      r0,[sp,#0x28]
-000016  2800              CMP      r0,#0
+000006  9e0a              LDR      r6,[sp,#0x28]
+;;;379    	if ((sector > dev->last_sector) || (cnt == 0)) {
+000008  9000              STR      r0,[sp,#0]
+00000a  9801              LDR      r0,[sp,#4]
+00000c  461d              MOV      r5,r3                 ;369
+00000e  6840              LDR      r0,[r0,#4]
+000010  460c              MOV      r4,r1                 ;369
+000012  4290              CMP      r0,r2
+000014  d308              BCC      |L2.40|
+000016  2e00              CMP      r6,#0
 000018  d006              BEQ      |L2.40|
-;;;373    		#if DEBUG_ENABLE
-;;;374    		DEBUG_STOP(DBG_2);
-;;;375    		#endif
-;;;376    		return (SD_PARERR);
-;;;377    	}
-;;;378    	// Convert sector number to byte address (sector * SD_BLK_SIZE)
-;;;379    	//    if (__SD_Send_Cmd(CMD17, sector * SD_BLK_SIZE) == 0) { // Only for SDSC
-;;;380    	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
+;;;380    		#if DEBUG_ENABLE
+;;;381    		DEBUG_STOP(DBG_2);
+;;;382    		#endif
+;;;383    		return (SD_PARERR);
+;;;384    	}
+;;;385    	// Convert sector number to byte address (sector * SD_BLK_SIZE)
+;;;386    	//    if (__SD_Send_Cmd(CMD17, sector * SD_BLK_SIZE) == 0) { // Only for SDSC
+;;;387    	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
 00001a  4611              MOV      r1,r2
 00001c  2051              MOVS     r0,#0x51
 00001e  f7fffffe          BL       __SD_Send_Cmd
 000022  2800              CMP      r0,#0
 000024  d003              BEQ      |L2.46|
-000026  e028              B        |L2.122|
+000026  e023              B        |L2.112|
                   |L2.40|
-000028  2003              MOVS     r0,#3                 ;376
-;;;381    		
-;;;382    		//SPI_Timer_On(100);
-;;;383    		SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
-;;;384    		LPTMR0_CSR = 0;								// Reset LPTMR settings
-;;;385    		LPTMR0_CMR = 100;							// Set compare value (in ms)
-;;;386    		// Use 1kHz LPO with no prescaler
-;;;387    		LPTMR0_PSR = LPTMR_PSR_PCS(1) | LPTMR_PSR_PBYP_MASK;
-;;;388    		// Start the timer and wait for it to reach the compare value
-;;;389    		LPTMR0_CSR = LPTMR_CSR_TEN_MASK;
-;;;390    		
-;;;391    		do {
-;;;392    			#if DEBUG_ENABLE
-;;;393    			DEBUG_TOGGLE(DBG_2);
-;;;394    			#endif
-;;;395    			
-;;;396    			//tkn = SPI_RW(0xFF);
-;;;397    			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-;;;398    			}
-;;;399    			SPI1_D = 0xFF;
-;;;400    			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-;;;401    			}
-;;;402    			tkn = SPI1_D;
-;;;403    				
-;;;404    		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
-;;;405    		#if DEBUG_ENABLE
-;;;406    		DEBUG_START(DBG_2);
-;;;407    		#endif
-;;;408    		//SPI_Timer_Off();
-;;;409    		LPTMR0_CSR = 0;
-;;;410    		// Token of single block?
-;;;411    		if (tkn == 0xFE) {
-;;;412    			// AGD: Loop fusion to simplify FSM formation
-;;;413    			byte_num = 0;
-;;;414    			do {
-;;;415    				#if DEBUG_ENABLE
-;;;416    				DEBUG_TOGGLE(DBG_2); 
-;;;417    				#endif
-;;;418    				
-;;;419    				//data = SPI_RW(0xff);
-;;;420    				while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-;;;421    				}
-;;;422    				SPI1_D = 0xff;
-;;;423    				while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-;;;424    				}
-;;;425    				data = SPI1_D;
-;;;426    	
-;;;427    				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
-;;;428    					*(BYTE *) dat = data;
-;;;429    					((BYTE *) dat)++;
-;;;430    				}												// else discard bytes before and after data
-;;;431    			} while (++byte_num < SD_BLK_SIZE + 2);	// 512 byte block + 2 byte CRC
-;;;432    			#if DEBUG_ENABLE
-;;;433    			DEBUG_START(DBG_2);
-;;;434    			#endif
-;;;435    			res = SD_OK;
-;;;436    		}
-;;;437    	}
-;;;438    	//SPI_Release();
-;;;439    	for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
-;;;440    	dev->debug.read++;
-;;;441    	#if DEBUG_ENABLE
-;;;442    	DEBUG_STOP(DBG_2);
-;;;443    	#endif
-;;;444    	return (res);
-;;;445    }
+000028  2003              MOVS     r0,#3                 ;383
+;;;388    		
+;;;389    		//SPI_Timer_On(100);
+;;;390    		SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
+;;;391    		LPTMR0_CSR = 0;								// Reset LPTMR settings
+;;;392    		LPTMR0_CMR = 100;							// Set compare value (in ms)
+;;;393    		// Use 1kHz LPO with no prescaler
+;;;394    		LPTMR0_PSR = LPTMR_PSR_PCS(1) | LPTMR_PSR_PBYP_MASK;
+;;;395    		// Start the timer and wait for it to reach the compare value
+;;;396    		LPTMR0_CSR = LPTMR_CSR_TEN_MASK;
+;;;397    		
+;;;398    		do {
+;;;399    			#if DEBUG_ENABLE
+;;;400    			DEBUG_TOGGLE(DBG_2);
+;;;401    			#endif
+;;;402    			
+;;;403    			//tkn = SPI_RW(0xFF);
+;;;404    			SPI1_D = 0xFF;
+;;;405    			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+;;;406    			}
+;;;407    			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+;;;408    			}
+;;;409    			tkn = SPI1_D;
+;;;410    				
+;;;411    		} while ((tkn == 0xFF) && (!(LPTMR0_CSR & LPTMR_CSR_TCF_MASK)));
+;;;412    		#if DEBUG_ENABLE
+;;;413    		DEBUG_START(DBG_2);
+;;;414    		#endif
+;;;415    		//SPI_Timer_Off();
+;;;416    		LPTMR0_CSR = 0;
+;;;417    		// Token of single block?
+;;;418    		if (tkn == 0xFE) {
+;;;419    			// AGD: Loop fusion to simplify FSM formation
+;;;420    			byte_num = 0;
+;;;421    			do {
+;;;422    				#if DEBUG_ENABLE
+;;;423    				DEBUG_TOGGLE(DBG_2); 
+;;;424    				#endif
+;;;425    				
+;;;426    				//data = SPI_RW(0xff);
+;;;427    				SPI1_D = 0xff;
+;;;428    				while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+;;;429    				}
+;;;430    				while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+;;;431    				}
+;;;432    				data = SPI1_D;
+;;;433    	
+;;;434    				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
+;;;435    					*(BYTE *) dat = data;
+;;;436    					((BYTE *) dat)++;
+;;;437    				}												// else discard bytes before and after data
+;;;438    			} while (++byte_num < SD_BLK_SIZE + 2);	// 512 byte block + 2 byte CRC
+;;;439    			#if DEBUG_ENABLE
+;;;440    			DEBUG_START(DBG_2);
+;;;441    			#endif
+;;;442    			res = SD_OK;
+;;;443    		}
+;;;444    	}
+;;;445    	//SPI_Release();
+;;;446    	for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
+;;;447    	dev->debug.read++;
+;;;448    	#if DEBUG_ENABLE
+;;;449    	DEBUG_STOP(DBG_2);
+;;;450    	#endif
+;;;451    	return (res);
+;;;452    }
 00002a  b005              ADD      sp,sp,#0x14
 00002c  bdf0              POP      {r4-r7,pc}
                   |L2.46|
-00002e  4829              LDR      r0,|L2.212|
-000030  6b81              LDR      r1,[r0,#0x38]         ;383
-000032  2201              MOVS     r2,#1                 ;383
-000034  4311              ORRS     r1,r1,r2              ;383
-000036  6381              STR      r1,[r0,#0x38]         ;383
-000038  4827              LDR      r0,|L2.216|
-00003a  2100              MOVS     r1,#0                 ;384
-00003c  6001              STR      r1,[r0,#0]            ;384
-00003e  2164              MOVS     r1,#0x64              ;385
-000040  6081              STR      r1,[r0,#8]            ;385
-000042  2105              MOVS     r1,#5                 ;387
-000044  6041              STR      r1,[r0,#4]            ;387
-000046  6002              STR      r2,[r0,#0]            ;389
-000048  4c24              LDR      r4,|L2.220|
-00004a  26ff              MOVS     r6,#0xff              ;399
+00002e  4926              LDR      r1,|L2.200|
+000030  6b8a              LDR      r2,[r1,#0x38]         ;390
+000032  2001              MOVS     r0,#1                 ;390
+000034  4302              ORRS     r2,r2,r0              ;390
+000036  638a              STR      r2,[r1,#0x38]         ;390
+000038  4a24              LDR      r2,|L2.204|
+00003a  2700              MOVS     r7,#0                 ;391
+00003c  6017              STR      r7,[r2,#0]            ;391
+00003e  2164              MOVS     r1,#0x64              ;392
+000040  6091              STR      r1,[r2,#8]            ;392
+000042  2105              MOVS     r1,#5                 ;394
+000044  6051              STR      r1,[r2,#4]            ;394
+000046  6010              STR      r0,[r2,#0]            ;396
+000048  4821              LDR      r0,|L2.208|
+00004a  23ff              MOVS     r3,#0xff              ;404
                   |L2.76|
-00004c  78e0              LDRB     r0,[r4,#3]            ;397
-00004e  0680              LSLS     r0,r0,#26             ;397
-000050  d5fc              BPL      |L2.76|
-000052  7166              STRB     r6,[r4,#5]            ;399
+00004c  7143              STRB     r3,[r0,#5]            ;404
+                  |L2.78|
+00004e  78c1              LDRB     r1,[r0,#3]            ;405
+000050  0689              LSLS     r1,r1,#26             ;405
+000052  d5fc              BPL      |L2.78|
                   |L2.84|
-000054  78e0              LDRB     r0,[r4,#3]            ;400
-000056  0600              LSLS     r0,r0,#24             ;400
+000054  78c1              LDRB     r1,[r0,#3]            ;407
+000056  0609              LSLS     r1,r1,#24             ;407
 000058  d5fc              BPL      |L2.84|
-00005a  7960              LDRB     r0,[r4,#5]            ;402
-00005c  28ff              CMP      r0,#0xff              ;404
-00005e  d005              BEQ      |L2.108|
-000060  491d              LDR      r1,|L2.216|
-000062  2200              MOVS     r2,#0                 ;409
-000064  600a              STR      r2,[r1,#0]            ;409
-000066  28fe              CMP      r0,#0xfe              ;411
-000068  d00a              BEQ      |L2.128|
-00006a  e006              B        |L2.122|
-                  |L2.108|
-00006c  f7fffffe          BL       SPI_Timer_Status
-000070  2801              CMP      r0,#1                 ;404
-000072  d0eb              BEQ      |L2.76|
-000074  4918              LDR      r1,|L2.216|
-000076  2200              MOVS     r2,#0                 ;409
-000078  600a              STR      r2,[r1,#0]            ;409
-                  |L2.122|
-00007a  2401              MOVS     r4,#1                 ;439
-00007c  0264              LSLS     r4,r4,#9              ;439
-00007e  e01c              B        |L2.186|
-                  |L2.128|
-000080  980a              LDR      r0,[sp,#0x28]         ;427
-000082  2100              MOVS     r1,#0                 ;413
-000084  4b16              LDR      r3,|L2.224|
-000086  183a              ADDS     r2,r7,r0              ;427
-                  |L2.136|
-000088  78e0              LDRB     r0,[r4,#3]            ;420
-00008a  0680              LSLS     r0,r0,#26             ;420
-00008c  d5fc              BPL      |L2.136|
-00008e  7166              STRB     r6,[r4,#5]            ;422
-                  |L2.144|
-000090  78e0              LDRB     r0,[r4,#3]            ;423
-000092  0600              LSLS     r0,r0,#24             ;423
-000094  d5fc              BPL      |L2.144|
-000096  7960              LDRB     r0,[r4,#5]            ;425
-000098  42b9              CMP      r1,r7                 ;427
-00009a  d303              BCC      |L2.164|
-00009c  428a              CMP      r2,r1                 ;427
-00009e  d901              BLS      |L2.164|
-0000a0  7028              STRB     r0,[r5,#0]            ;428
-0000a2  1c6d              ADDS     r5,r5,#1              ;428
-                  |L2.164|
-0000a4  1c49              ADDS     r1,r1,#1              ;428
-0000a6  b289              UXTH     r1,r1                 ;431
-0000a8  4299              CMP      r1,r3                 ;431
-0000aa  d3ed              BCC      |L2.136|
-0000ac  2000              MOVS     r0,#0                 ;435
-0000ae  9000              STR      r0,[sp,#0]            ;435
-0000b0  e7e3              B        |L2.122|
-                  |L2.178|
-0000b2  1e64              SUBS     r4,r4,#1              ;435
-0000b4  0424              LSLS     r4,r4,#16             ;439
-0000b6  0c24              LSRS     r4,r4,#16             ;439
-0000b8  d004              BEQ      |L2.196|
-                  |L2.186|
-0000ba  20ff              MOVS     r0,#0xff              ;439
-0000bc  f7fffffe          BL       SPI_RW
-0000c0  28ff              CMP      r0,#0xff              ;439
-0000c2  d1f6              BNE      |L2.178|
-                  |L2.196|
-0000c4  9801              LDR      r0,[sp,#4]            ;440
-0000c6  9901              LDR      r1,[sp,#4]            ;440
-0000c8  8900              LDRH     r0,[r0,#8]            ;440
-0000ca  1c40              ADDS     r0,r0,#1              ;440
-0000cc  8108              STRH     r0,[r1,#8]            ;440
-0000ce  9800              LDR      r0,[sp,#0]            ;444
-0000d0  b005              ADD      sp,sp,#0x14
-0000d2  bdf0              POP      {r4-r7,pc}
-;;;446    
+00005a  7941              LDRB     r1,[r0,#5]            ;409
+00005c  29ff              CMP      r1,#0xff              ;411
+00005e  d003              BEQ      |L2.104|
+000060  6017              STR      r7,[r2,#0]            ;416
+000062  29fe              CMP      r1,#0xfe              ;418
+000064  d007              BEQ      |L2.118|
+000066  e003              B        |L2.112|
+                  |L2.104|
+000068  6811              LDR      r1,[r2,#0]            ;411
+00006a  0609              LSLS     r1,r1,#24             ;411
+00006c  d5ee              BPL      |L2.76|
+00006e  6017              STR      r7,[r2,#0]            ;416
+                  |L2.112|
+000070  2401              MOVS     r4,#1                 ;446
+000072  0264              LSLS     r4,r4,#9              ;446
+000074  e01b              B        |L2.174|
+                  |L2.118|
+000076  2200              MOVS     r2,#0                 ;420
+000078  4f16              LDR      r7,|L2.212|
+00007a  19ae              ADDS     r6,r5,r6              ;434
+                  |L2.124|
+00007c  7143              STRB     r3,[r0,#5]            ;427
+                  |L2.126|
+00007e  78c1              LDRB     r1,[r0,#3]            ;428
+000080  0689              LSLS     r1,r1,#26             ;428
+000082  d5fc              BPL      |L2.126|
+                  |L2.132|
+000084  78c1              LDRB     r1,[r0,#3]            ;430
+000086  0609              LSLS     r1,r1,#24             ;430
+000088  d5fc              BPL      |L2.132|
+00008a  7941              LDRB     r1,[r0,#5]            ;432
+00008c  42aa              CMP      r2,r5                 ;434
+00008e  d303              BCC      |L2.152|
+000090  4296              CMP      r6,r2                 ;434
+000092  d901              BLS      |L2.152|
+000094  7021              STRB     r1,[r4,#0]            ;435
+000096  1c64              ADDS     r4,r4,#1              ;435
+                  |L2.152|
+000098  1c52              ADDS     r2,r2,#1              ;435
+00009a  b292              UXTH     r2,r2                 ;438
+00009c  42ba              CMP      r2,r7                 ;438
+00009e  d3ed              BCC      |L2.124|
+0000a0  2000              MOVS     r0,#0                 ;442
+0000a2  9000              STR      r0,[sp,#0]            ;442
+0000a4  e7e4              B        |L2.112|
+                  |L2.166|
+0000a6  1e64              SUBS     r4,r4,#1              ;442
+0000a8  0424              LSLS     r4,r4,#16             ;446
+0000aa  0c24              LSRS     r4,r4,#16             ;446
+0000ac  d004              BEQ      |L2.184|
+                  |L2.174|
+0000ae  20ff              MOVS     r0,#0xff              ;446
+0000b0  f7fffffe          BL       SPI_RW
+0000b4  28ff              CMP      r0,#0xff              ;446
+0000b6  d1f6              BNE      |L2.166|
+                  |L2.184|
+0000b8  9801              LDR      r0,[sp,#4]            ;447
+0000ba  9901              LDR      r1,[sp,#4]            ;447
+0000bc  8900              LDRH     r0,[r0,#8]            ;447
+0000be  1c40              ADDS     r0,r0,#1              ;447
+0000c0  8108              STRH     r0,[r1,#8]            ;447
+0000c2  9800              LDR      r0,[sp,#0]            ;451
+0000c4  b005              ADD      sp,sp,#0x14
+0000c6  bdf0              POP      {r4-r7,pc}
+;;;453    
                           ENDP
 
-                  |L2.212|
+                  |L2.200|
                           DCD      0x40048000
-                  |L2.216|
+                  |L2.204|
                           DCD      0x40040000
-                  |L2.220|
+                  |L2.208|
                           DCD      0x40077000
-                  |L2.224|
+                  |L2.212|
                           DCD      0x00000202
 
                           AREA ||i.SD_Status||, CODE, READONLY, ALIGN=1
 
                   SD_Status PROC
-;;;513    
-;;;514    SDRESULTS SD_Status(SD_DEV * dev) {
+;;;520    
+;;;521    SDRESULTS SD_Status(SD_DEV * dev) {
 000000  b510              PUSH     {r4,lr}
-;;;515    	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
+;;;522    	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
 000002  2100              MOVS     r1,#0
 000004  2040              MOVS     r0,#0x40
 000006  f7fffffe          BL       __SD_Send_Cmd
 00000a  2800              CMP      r0,#0
 00000c  d001              BEQ      |L3.18|
 00000e  2000              MOVS     r0,#0
-;;;516    }
+;;;523    }
 000010  bd10              POP      {r4,pc}
                   |L3.18|
-000012  2006              MOVS     r0,#6                 ;515
+000012  2006              MOVS     r0,#6                 ;522
 000014  bd10              POP      {r4,pc}
-;;;517    
+;;;524    
                           ENDP
 
 
                           AREA ||i.SD_Write||, CODE, READONLY, ALIGN=1
 
                   SD_Write PROC
-;;;448    
-;;;449    SDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
+;;;455    
+;;;456    SDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
 000000  b5f8              PUSH     {r3-r7,lr}
 000002  4605              MOV      r5,r0
-;;;450    	WORD idx;
-;;;451    	BYTE line;
-;;;452    	#if DEBUG_ENABLE
-;;;453    	DEBUG_START(DBG_3);
-;;;454    	#endif
-;;;455    
-;;;456    	// Query invalid?
-;;;457    	if (sector > dev->last_sector) {
+;;;457    	WORD idx;
+;;;458    	BYTE line;
+;;;459    	#if DEBUG_ENABLE
+;;;460    	DEBUG_START(DBG_3);
+;;;461    	#endif
+;;;462    
+;;;463    	// Query invalid?
+;;;464    	if (sector > dev->last_sector) {
 000004  6840              LDR      r0,[r0,#4]
-000006  460e              MOV      r6,r1                 ;449
+000006  460e              MOV      r6,r1                 ;456
 000008  4290              CMP      r0,r2
 00000a  d201              BCS      |L4.16|
-;;;458    		#if DEBUG_ENABLE
-;;;459    		DEBUG_STOP(DBG_3);
-;;;460    		#endif
-;;;461    		return (SD_PARERR);
+;;;465    		#if DEBUG_ENABLE
+;;;466    		DEBUG_STOP(DBG_3);
+;;;467    		#endif
+;;;468    		return (SD_PARERR);
 00000c  2003              MOVS     r0,#3
-;;;462    	}
-;;;463    	// Convert sector number to bytes address (sector * SD_BLK_SIZE)
-;;;464    	//    if(__SD_Send_Cmd(CMD24, sector * SD_BLK_SIZE)==0) { // Only for SDSC
-;;;465    	if (__SD_Send_Cmd(CMD24, sector) == 0) {	// Only for SDHC or SDXC   
-;;;466    		// Send token (single block write)
-;;;467    		SPI_RW(0xFE);
-;;;468    		// Send block data
-;;;469    		for (idx = 0; idx != SD_BLK_SIZE; idx++)
-;;;470    			SPI_RW(*((BYTE *) dat + idx));
-;;;471    		/* Dummy CRC */
-;;;472    		SPI_RW(0xFF);
-;;;473    		SPI_RW(0xFF);
-;;;474    		// If not accepted, returns the reject error
-;;;475    		if ((SPI_RW(0xFF) & 0x1F) != 0x05) {
-;;;476    			#if DEBUG_ENABLE
-;;;477    			DEBUG_STOP(DBG_3);
-;;;478    			#endif
-;;;479    			return (SD_REJECT);
-;;;480    		}
-;;;481    		// Waits until finish of data programming with a timeout
-;;;482    		SPI_Timer_On(SD_IO_WRITE_TIMEOUT_WAIT);
-;;;483    		do {
-;;;484    			#if DEBUG_ENABLE
-;;;485    			DEBUG_TOGGLE(DBG_3);
-;;;486    			#endif
-;;;487    			line = SPI_RW(0xFF);
-;;;488    		} while ((line == 0) && (SPI_Timer_Status() == TRUE));
-;;;489    		#if DEBUG_ENABLE
-;;;490    		DEBUG_START(DBG_3);
-;;;491    		#endif
-;;;492    		SPI_Timer_Off();
-;;;493    		dev->debug.write++;
-;;;494    
-;;;495    		if (line == 0) {
-;;;496    			#if DEBUG_ENABLE
-;;;497    			DEBUG_STOP(DBG_3);
-;;;498    			#endif
-;;;499    			return (SD_BUSY);
-;;;500    		} else {
-;;;501    			#if DEBUG_ENABLE
-;;;502    			DEBUG_STOP(DBG_3);
-;;;503    			#endif
-;;;504    			return (SD_OK);
-;;;505    		}
-;;;506    	} else {
-;;;507    		#if DEBUG_ENABLE
-;;;508    		DEBUG_STOP(DBG_3);
-;;;509    		#endif
-;;;510    		return (SD_ERROR);
-;;;511    	}
-;;;512    }
+;;;469    	}
+;;;470    	// Convert sector number to bytes address (sector * SD_BLK_SIZE)
+;;;471    	//    if(__SD_Send_Cmd(CMD24, sector * SD_BLK_SIZE)==0) { // Only for SDSC
+;;;472    	if (__SD_Send_Cmd(CMD24, sector) == 0) {	// Only for SDHC or SDXC   
+;;;473    		// Send token (single block write)
+;;;474    		SPI_RW(0xFE);
+;;;475    		// Send block data
+;;;476    		for (idx = 0; idx != SD_BLK_SIZE; idx++)
+;;;477    			SPI_RW(*((BYTE *) dat + idx));
+;;;478    		/* Dummy CRC */
+;;;479    		SPI_RW(0xFF);
+;;;480    		SPI_RW(0xFF);
+;;;481    		// If not accepted, returns the reject error
+;;;482    		if ((SPI_RW(0xFF) & 0x1F) != 0x05) {
+;;;483    			#if DEBUG_ENABLE
+;;;484    			DEBUG_STOP(DBG_3);
+;;;485    			#endif
+;;;486    			return (SD_REJECT);
+;;;487    		}
+;;;488    		// Waits until finish of data programming with a timeout
+;;;489    		SPI_Timer_On(SD_IO_WRITE_TIMEOUT_WAIT);
+;;;490    		do {
+;;;491    			#if DEBUG_ENABLE
+;;;492    			DEBUG_TOGGLE(DBG_3);
+;;;493    			#endif
+;;;494    			line = SPI_RW(0xFF);
+;;;495    		} while ((line == 0) && (SPI_Timer_Status() == TRUE));
+;;;496    		#if DEBUG_ENABLE
+;;;497    		DEBUG_START(DBG_3);
+;;;498    		#endif
+;;;499    		SPI_Timer_Off();
+;;;500    		dev->debug.write++;
+;;;501    
+;;;502    		if (line == 0) {
+;;;503    			#if DEBUG_ENABLE
+;;;504    			DEBUG_STOP(DBG_3);
+;;;505    			#endif
+;;;506    			return (SD_BUSY);
+;;;507    		} else {
+;;;508    			#if DEBUG_ENABLE
+;;;509    			DEBUG_STOP(DBG_3);
+;;;510    			#endif
+;;;511    			return (SD_OK);
+;;;512    		}
+;;;513    	} else {
+;;;514    		#if DEBUG_ENABLE
+;;;515    		DEBUG_STOP(DBG_3);
+;;;516    		#endif
+;;;517    		return (SD_ERROR);
+;;;518    	}
+;;;519    }
 00000e  bdf8              POP      {r3-r7,pc}
                   |L4.16|
-000010  4611              MOV      r1,r2                 ;465
-000012  2058              MOVS     r0,#0x58              ;465
+000010  4611              MOV      r1,r2                 ;472
+000012  2058              MOVS     r0,#0x58              ;472
 000014  f7fffffe          BL       __SD_Send_Cmd
-000018  2800              CMP      r0,#0                 ;465
+000018  2800              CMP      r0,#0                 ;472
 00001a  d001              BEQ      |L4.32|
-00001c  2002              MOVS     r0,#2                 ;510
+00001c  2002              MOVS     r0,#2                 ;517
 00001e  bdf8              POP      {r3-r7,pc}
                   |L4.32|
-000020  20fe              MOVS     r0,#0xfe              ;467
+000020  20fe              MOVS     r0,#0xfe              ;474
 000022  f7fffffe          BL       SPI_RW
-000026  2400              MOVS     r4,#0                 ;469
-000028  2701              MOVS     r7,#1                 ;469
-00002a  027f              LSLS     r7,r7,#9              ;469
+000026  2400              MOVS     r4,#0                 ;476
+000028  2701              MOVS     r7,#1                 ;476
+00002a  027f              LSLS     r7,r7,#9              ;476
                   |L4.44|
-00002c  5d30              LDRB     r0,[r6,r4]            ;470
+00002c  5d30              LDRB     r0,[r6,r4]            ;477
 00002e  f7fffffe          BL       SPI_RW
-000032  1c64              ADDS     r4,r4,#1              ;470
-000034  b2a4              UXTH     r4,r4                 ;469
-000036  42bc              CMP      r4,r7                 ;469
+000032  1c64              ADDS     r4,r4,#1              ;477
+000034  b2a4              UXTH     r4,r4                 ;476
+000036  42bc              CMP      r4,r7                 ;476
 000038  d1f8              BNE      |L4.44|
-00003a  20ff              MOVS     r0,#0xff              ;472
+00003a  20ff              MOVS     r0,#0xff              ;479
 00003c  f7fffffe          BL       SPI_RW
-000040  20ff              MOVS     r0,#0xff              ;473
+000040  20ff              MOVS     r0,#0xff              ;480
 000042  f7fffffe          BL       SPI_RW
-000046  20ff              MOVS     r0,#0xff              ;475
+000046  20ff              MOVS     r0,#0xff              ;482
 000048  f7fffffe          BL       SPI_RW
-00004c  06c0              LSLS     r0,r0,#27             ;475
-00004e  0ec0              LSRS     r0,r0,#27             ;475
-000050  2805              CMP      r0,#5                 ;475
+00004c  06c0              LSLS     r0,r0,#27             ;482
+00004e  0ec0              LSRS     r0,r0,#27             ;482
+000050  2805              CMP      r0,#5                 ;482
 000052  d001              BEQ      |L4.88|
-000054  2005              MOVS     r0,#5                 ;479
+000054  2005              MOVS     r0,#5                 ;486
 000056  bdf8              POP      {r3-r7,pc}
                   |L4.88|
-000058  20fa              MOVS     r0,#0xfa              ;482
+000058  20fa              MOVS     r0,#0xfa              ;489
 00005a  f7fffffe          BL       SPI_Timer_On
                   |L4.94|
-00005e  20ff              MOVS     r0,#0xff              ;487
+00005e  20ff              MOVS     r0,#0xff              ;494
 000060  f7fffffe          BL       SPI_RW
-000064  0004              MOVS     r4,r0                 ;487
+000064  0004              MOVS     r4,r0                 ;494
 000066  d103              BNE      |L4.112|
 000068  f7fffffe          BL       SPI_Timer_Status
-00006c  2801              CMP      r0,#1                 ;488
+00006c  2801              CMP      r0,#1                 ;495
 00006e  d0f6              BEQ      |L4.94|
                   |L4.112|
 000070  f7fffffe          BL       SPI_Timer_Off
-000074  8968              LDRH     r0,[r5,#0xa]          ;493
-000076  1c40              ADDS     r0,r0,#1              ;493
-000078  8168              STRH     r0,[r5,#0xa]          ;493
-00007a  2c00              CMP      r4,#0                 ;495
+000074  8968              LDRH     r0,[r5,#0xa]          ;500
+000076  1c40              ADDS     r0,r0,#1              ;500
+000078  8168              STRH     r0,[r5,#0xa]          ;500
+00007a  2c00              CMP      r4,#0                 ;502
 00007c  d001              BEQ      |L4.130|
-00007e  2000              MOVS     r0,#0                 ;504
+00007e  2000              MOVS     r0,#0                 ;511
 000080  bdf8              POP      {r3-r7,pc}
                   |L4.130|
-000082  2004              MOVS     r0,#4                 ;499
+000082  2004              MOVS     r0,#4                 ;506
 000084  bdf8              POP      {r3-r7,pc}
-;;;513    
+;;;520    
                           ENDP
 
 
@@ -765,7 +762,7 @@
                           ENDP
 
 
-                          AREA ||i.__SD_Sectors||, CODE, READONLY, ALIGN=1
+                          AREA ||i.__SD_Sectors||, CODE, READONLY, ALIGN=2
 
                   __SD_Sectors PROC
 ;;;167    
@@ -775,177 +772,194 @@
 ;;;170    	BYTE idx;
 ;;;171    	DWORD ss = 0;
 ;;;172    	WORD C_SIZE = 0;
-000002  2600              MOVS     r6,#0
-000004  b088              SUB      sp,sp,#0x20           ;168
+000002  2500              MOVS     r5,#0
+000004  b084              SUB      sp,sp,#0x10           ;168
 ;;;173    	BYTE C_SIZE_MULT = 0;
-000006  4635              MOV      r5,r6
+000006  462c              MOV      r4,r5
 ;;;174    	BYTE READ_BL_LEN = 0;
+000008  462f              MOV      r7,r5
 ;;;175    	if (__SD_Send_Cmd(CMD9, 0) == 0) {
-000008  4631              MOV      r1,r6
-00000a  2049              MOVS     r0,#0x49
-00000c  9606              STR      r6,[sp,#0x18]
+00000a  4629              MOV      r1,r5
+00000c  2049              MOVS     r0,#0x49
 00000e  f7fffffe          BL       __SD_Send_Cmd
 000012  2800              CMP      r0,#0
 000014  d002              BEQ      |L6.28|
 ;;;176    		// Wait for response
 ;;;177    		while (SPI_RW(0xFF) == 0xFF);
-;;;178    		for (idx = 0; idx != 16; idx++)
-;;;179    			csd[idx] = SPI_RW(0xFF);
-;;;180    		// Dummy CRC
-;;;181    		SPI_RW(0xFF);
-;;;182    		SPI_RW(0xFF);
-;;;183    		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
-;;;184    		if (dev->cardtype & SDCT_SD1) {
-;;;185    			ss = csd[0];
-;;;186    			// READ_BL_LEN[83:80]: max. read data block length
-;;;187    			READ_BL_LEN = (csd[5] & 0x0F);
-;;;188    			// C_SIZE [73:62]
-;;;189    			C_SIZE = (csd[6] & 0x03);
-;;;190    			C_SIZE <<= 8;
-;;;191    			C_SIZE |= (csd[7]);
-;;;192    			C_SIZE <<= 2;
-;;;193    			C_SIZE |= ((csd[8] >> 6) & 0x03);
-;;;194    			// C_SIZE_MULT [49:47]
-;;;195    			C_SIZE_MULT = (csd[9] & 0x03);
-;;;196    			C_SIZE_MULT <<= 1;
-;;;197    			C_SIZE_MULT |= ((csd[10] >> 7) & 0x01);
-;;;198    		} else if (dev->cardtype & SDCT_SD2) {
-;;;199    			// READ_BL_LEN = 9;
-;;;200    			// C_SIZE [69:48]
-;;;201    			C_SIZE = (csd[7] & 0x3F);
-;;;202    			C_SIZE <<= 8;
-;;;203    			C_SIZE |= (csd[8] & 0xFF);
-;;;204    			C_SIZE <<= 8;
-;;;205    			C_SIZE |= (csd[9] & 0xFF);
-;;;206    			C_SIZE_MULT = 8;					// AD changed
-;;;207    		}
-;;;208    		ss = (C_SIZE + 1);
-;;;209    		ss *= __SD_Power_Of_Two(C_SIZE_MULT + 2);
-;;;210    		ss *= __SD_Power_Of_Two(READ_BL_LEN);
-;;;211    		// ss /= SD_BLK_SIZE; ?? Bug in original code?
-;;;212    
-;;;213    		return (ss);
-;;;214    	} else
-;;;215    		return (0);									// Error
+;;;178    		for (idx = 0; idx != 16; idx++){
+;;;179    			//csd[idx] = SPI_RW(0xFF);
+;;;180    			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+;;;181    			}
+;;;182    			SPI1_D = 0xFF;
+;;;183    			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+;;;184    			}
+;;;185    			csd[idx] = SPI1_D;
+;;;186    		}
+;;;187    		// Dummy CRC
+;;;188    		SPI_RW(0xFF);
+;;;189    		SPI_RW(0xFF);
+;;;190    		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
+;;;191    		if (dev->cardtype & SDCT_SD1) {
+;;;192    			ss = csd[0];
+;;;193    			// READ_BL_LEN[83:80]: max. read data block length
+;;;194    			READ_BL_LEN = (csd[5] & 0x0F);
+;;;195    			// C_SIZE [73:62]
+;;;196    			C_SIZE = (csd[6] & 0x03);
+;;;197    			C_SIZE <<= 8;
+;;;198    			C_SIZE |= (csd[7]);
+;;;199    			C_SIZE <<= 2;
+;;;200    			C_SIZE |= ((csd[8] >> 6) & 0x03);
+;;;201    			// C_SIZE_MULT [49:47]
+;;;202    			C_SIZE_MULT = (csd[9] & 0x03);
+;;;203    			C_SIZE_MULT <<= 1;
+;;;204    			C_SIZE_MULT |= ((csd[10] >> 7) & 0x01);
+;;;205    		} else if (dev->cardtype & SDCT_SD2) {
+;;;206    			// READ_BL_LEN = 9;
+;;;207    			// C_SIZE [69:48]
+;;;208    			C_SIZE = (csd[7] & 0x3F);
+;;;209    			C_SIZE <<= 8;
+;;;210    			C_SIZE |= (csd[8] & 0xFF);
+;;;211    			C_SIZE <<= 8;
+;;;212    			C_SIZE |= (csd[9] & 0xFF);
+;;;213    			C_SIZE_MULT = 8;					// AD changed
+;;;214    		}
+;;;215    		ss = (C_SIZE + 1);
+;;;216    		ss *= __SD_Power_Of_Two(C_SIZE_MULT + 2);
+;;;217    		ss *= __SD_Power_Of_Two(READ_BL_LEN);
+;;;218    		// ss /= SD_BLK_SIZE; ?? Bug in original code?
+;;;219    
+;;;220    		return (ss);
+;;;221    	} else
+;;;222    		return (0);									// Error
 000016  2000              MOVS     r0,#0
-;;;216    }
-000018  b009              ADD      sp,sp,#0x24
+;;;223    }
+000018  b005              ADD      sp,sp,#0x14
 00001a  bdf0              POP      {r4-r7,pc}
                   |L6.28|
 00001c  20ff              MOVS     r0,#0xff              ;177
 00001e  f7fffffe          BL       SPI_RW
 000022  28ff              CMP      r0,#0xff              ;177
 000024  d0fa              BEQ      |L6.28|
-000026  2400              MOVS     r4,#0                 ;178
-000028  466f              MOV      r7,sp                 ;169
-                  |L6.42|
-00002a  20ff              MOVS     r0,#0xff              ;179
-00002c  f7fffffe          BL       SPI_RW
-000030  5538              STRB     r0,[r7,r4]            ;179
-000032  1c64              ADDS     r4,r4,#1              ;179
-000034  b2e4              UXTB     r4,r4                 ;178
-000036  2c10              CMP      r4,#0x10              ;178
-000038  d1f7              BNE      |L6.42|
-00003a  20ff              MOVS     r0,#0xff              ;181
-00003c  f7fffffe          BL       SPI_RW
-000040  20ff              MOVS     r0,#0xff              ;182
-000042  f7fffffe          BL       SPI_RW
-000046  0164              LSLS     r4,r4,#5              ;183
-000048  e003              B        |L6.82|
-                  |L6.74|
-00004a  1e64              SUBS     r4,r4,#1              ;183
-00004c  0424              LSLS     r4,r4,#16             ;183
-00004e  0c24              LSRS     r4,r4,#16             ;183
-000050  d004              BEQ      |L6.92|
-                  |L6.82|
-000052  20ff              MOVS     r0,#0xff              ;183
-000054  f7fffffe          BL       SPI_RW
-000058  28ff              CMP      r0,#0xff              ;183
-00005a  d1f6              BNE      |L6.74|
-                  |L6.92|
-00005c  9808              LDR      r0,[sp,#0x20]         ;184
-00005e  7840              LDRB     r0,[r0,#1]            ;184
-000060  0781              LSLS     r1,r0,#30             ;184
-000062  d519              BPL      |L6.152|
-000064  4668              MOV      r0,sp                 ;187
-000066  7940              LDRB     r0,[r0,#5]            ;187
-000068  0700              LSLS     r0,r0,#28             ;187
-00006a  0f00              LSRS     r0,r0,#28             ;187
-00006c  9006              STR      r0,[sp,#0x18]         ;189
-00006e  4668              MOV      r0,sp                 ;189
-000070  7980              LDRB     r0,[r0,#6]            ;189
-000072  0780              LSLS     r0,r0,#30             ;189
-000074  0d81              LSRS     r1,r0,#22             ;190
-000076  4668              MOV      r0,sp                 ;191
-000078  79c0              LDRB     r0,[r0,#7]            ;191
-00007a  4308              ORRS     r0,r0,r1              ;191
-00007c  0081              LSLS     r1,r0,#2              ;191
-00007e  4668              MOV      r0,sp                 ;193
-000080  7a00              LDRB     r0,[r0,#8]            ;193
-000082  0986              LSRS     r6,r0,#6              ;193
-000084  4668              MOV      r0,sp                 ;195
-000086  7a40              LDRB     r0,[r0,#9]            ;195
-000088  430e              ORRS     r6,r6,r1              ;193
-00008a  0780              LSLS     r0,r0,#30             ;195
-00008c  0f41              LSRS     r1,r0,#29             ;196
-00008e  4668              MOV      r0,sp                 ;197
-000090  7a80              LDRB     r0,[r0,#0xa]          ;197
-000092  09c5              LSRS     r5,r0,#7              ;197
-000094  430d              ORRS     r5,r5,r1              ;197
-000096  e00c              B        |L6.178|
-                  |L6.152|
-000098  0740              LSLS     r0,r0,#29             ;198
-00009a  d50a              BPL      |L6.178|
-00009c  4669              MOV      r1,sp                 ;201
-00009e  79c8              LDRB     r0,[r1,#7]            ;201
-0000a0  7a09              LDRB     r1,[r1,#8]            ;203
-0000a2  0200              LSLS     r0,r0,#8              ;202
-0000a4  4301              ORRS     r1,r1,r0              ;203
-0000a6  0608              LSLS     r0,r1,#24             ;204
-0000a8  4669              MOV      r1,sp                 ;205
-0000aa  7a4e              LDRB     r6,[r1,#9]            ;205
-0000ac  0c00              LSRS     r0,r0,#16             ;204
-0000ae  4306              ORRS     r6,r6,r0              ;205
-0000b0  2508              MOVS     r5,#8                 ;206
-                  |L6.178|
-0000b2  2101              MOVS     r1,#1                 ;206
-0000b4  1cad              ADDS     r5,r5,#2              ;206
-0000b6  1c76              ADDS     r6,r6,#1              ;206
-0000b8  2d00              CMP      r5,#0                 ;206
-0000ba  d007              BEQ      |L6.204|
-0000bc  07e8              LSLS     r0,r5,#31             ;206
-0000be  d000              BEQ      |L6.194|
-0000c0  2102              MOVS     r1,#2                 ;206
-                  |L6.194|
-0000c2  0868              LSRS     r0,r5,#1              ;206
-0000c4  d002              BEQ      |L6.204|
-                  |L6.198|
-0000c6  0089              LSLS     r1,r1,#2              ;206
-0000c8  1e40              SUBS     r0,r0,#1              ;206
-0000ca  d1fc              BNE      |L6.198|
+000026  2100              MOVS     r1,#0                 ;178
+000028  4833              LDR      r0,|L6.248|
+00002a  23ff              MOVS     r3,#0xff              ;177
+00002c  466e              MOV      r6,sp                 ;169
+                  |L6.46|
+00002e  78c2              LDRB     r2,[r0,#3]            ;180
+000030  0692              LSLS     r2,r2,#26             ;180
+000032  d5fc              BPL      |L6.46|
+000034  7143              STRB     r3,[r0,#5]            ;182
+                  |L6.54|
+000036  78c2              LDRB     r2,[r0,#3]            ;183
+000038  0612              LSLS     r2,r2,#24             ;183
+00003a  d5fc              BPL      |L6.54|
+00003c  7942              LDRB     r2,[r0,#5]            ;185
+00003e  5472              STRB     r2,[r6,r1]            ;185
+000040  1c49              ADDS     r1,r1,#1              ;185
+000042  b2c9              UXTB     r1,r1                 ;178
+000044  2910              CMP      r1,#0x10              ;178
+000046  d1f2              BNE      |L6.46|
+000048  20ff              MOVS     r0,#0xff              ;188
+00004a  f7fffffe          BL       SPI_RW
+00004e  20ff              MOVS     r0,#0xff              ;189
+000050  f7fffffe          BL       SPI_RW
+000054  2601              MOVS     r6,#1                 ;190
+000056  0276              LSLS     r6,r6,#9              ;190
+000058  e003              B        |L6.98|
+                  |L6.90|
+00005a  1e76              SUBS     r6,r6,#1              ;190
+00005c  0436              LSLS     r6,r6,#16             ;190
+00005e  0c36              LSRS     r6,r6,#16             ;190
+000060  d004              BEQ      |L6.108|
+                  |L6.98|
+000062  20ff              MOVS     r0,#0xff              ;190
+000064  f7fffffe          BL       SPI_RW
+000068  28ff              CMP      r0,#0xff              ;190
+00006a  d1f6              BNE      |L6.90|
+                  |L6.108|
+00006c  9804              LDR      r0,[sp,#0x10]         ;191
+00006e  7840              LDRB     r0,[r0,#1]            ;191
+000070  0781              LSLS     r1,r0,#30             ;191
+000072  d515              BPL      |L6.160|
+000074  4669              MOV      r1,sp                 ;194
+000076  7948              LDRB     r0,[r1,#5]            ;194
+000078  0707              LSLS     r7,r0,#28             ;194
+00007a  7988              LDRB     r0,[r1,#6]            ;196
+00007c  79c9              LDRB     r1,[r1,#7]            ;198
+00007e  0780              LSLS     r0,r0,#30             ;196
+000080  0d80              LSRS     r0,r0,#22             ;197
+000082  4301              ORRS     r1,r1,r0              ;198
+000084  0088              LSLS     r0,r1,#2              ;198
+000086  4669              MOV      r1,sp                 ;200
+000088  7a09              LDRB     r1,[r1,#8]            ;200
+00008a  0f3f              LSRS     r7,r7,#28             ;194
+00008c  098d              LSRS     r5,r1,#6              ;200
+00008e  4305              ORRS     r5,r5,r0              ;200
+000090  4669              MOV      r1,sp                 ;202
+000092  7a48              LDRB     r0,[r1,#9]            ;202
+000094  7a89              LDRB     r1,[r1,#0xa]          ;204
+000096  0780              LSLS     r0,r0,#30             ;202
+000098  0f40              LSRS     r0,r0,#29             ;203
+00009a  09cc              LSRS     r4,r1,#7              ;204
+00009c  4304              ORRS     r4,r4,r0              ;204
+00009e  e00d              B        |L6.188|
+                  |L6.160|
+0000a0  0740              LSLS     r0,r0,#29             ;205
+0000a2  d50b              BPL      |L6.188|
+0000a4  4668              MOV      r0,sp                 ;208
+0000a6  79c0              LDRB     r0,[r0,#7]            ;208
+0000a8  0201              LSLS     r1,r0,#8              ;209
+0000aa  4668              MOV      r0,sp                 ;210
+0000ac  7a00              LDRB     r0,[r0,#8]            ;210
+0000ae  4308              ORRS     r0,r0,r1              ;210
+0000b0  0600              LSLS     r0,r0,#24             ;211
+0000b2  0c01              LSRS     r1,r0,#16             ;211
+0000b4  4668              MOV      r0,sp                 ;212
+0000b6  7a45              LDRB     r5,[r0,#9]            ;212
+0000b8  430d              ORRS     r5,r5,r1              ;212
+0000ba  2408              MOVS     r4,#8                 ;213
+                  |L6.188|
+0000bc  2101              MOVS     r1,#1                 ;213
+0000be  1ca4              ADDS     r4,r4,#2              ;213
+0000c0  1c6d              ADDS     r5,r5,#1              ;213
+0000c2  2c00              CMP      r4,#0                 ;213
+0000c4  d007              BEQ      |L6.214|
+0000c6  07e0              LSLS     r0,r4,#31             ;213
+0000c8  d000              BEQ      |L6.204|
+0000ca  2102              MOVS     r1,#2                 ;213
                   |L6.204|
-0000cc  9a06              LDR      r2,[sp,#0x18]         ;206
-0000ce  4371              MULS     r1,r6,r1              ;209
-0000d0  2001              MOVS     r0,#1                 ;209
-0000d2  2a00              CMP      r2,#0                 ;209
-0000d4  d007              BEQ      |L6.230|
-0000d6  07d3              LSLS     r3,r2,#31             ;209
-0000d8  d000              BEQ      |L6.220|
-0000da  2002              MOVS     r0,#2                 ;209
-                  |L6.220|
-0000dc  0852              LSRS     r2,r2,#1              ;209
-0000de  d002              BEQ      |L6.230|
-                  |L6.224|
-0000e0  0080              LSLS     r0,r0,#2              ;209
-0000e2  1e52              SUBS     r2,r2,#1              ;209
-0000e4  d1fc              BNE      |L6.224|
+0000cc  0860              LSRS     r0,r4,#1              ;213
+0000ce  d002              BEQ      |L6.214|
+                  |L6.208|
+0000d0  0089              LSLS     r1,r1,#2              ;213
+0000d2  1e40              SUBS     r0,r0,#1              ;213
+0000d4  d1fc              BNE      |L6.208|
+                  |L6.214|
+0000d6  4369              MULS     r1,r5,r1              ;216
+0000d8  2001              MOVS     r0,#1                 ;216
+0000da  463a              MOV      r2,r7                 ;217
+0000dc  2f00              CMP      r7,#0                 ;217
+0000de  d007              BEQ      |L6.240|
+0000e0  07d3              LSLS     r3,r2,#31             ;217
+0000e2  d000              BEQ      |L6.230|
+0000e4  2002              MOVS     r0,#2                 ;217
                   |L6.230|
-0000e6  4348              MULS     r0,r1,r0              ;210
-0000e8  b009              ADD      sp,sp,#0x24
-0000ea  bdf0              POP      {r4-r7,pc}
-;;;217    
+0000e6  087a              LSRS     r2,r7,#1              ;217
+0000e8  d002              BEQ      |L6.240|
+                  |L6.234|
+0000ea  0080              LSLS     r0,r0,#2              ;217
+0000ec  1e52              SUBS     r2,r2,#1              ;217
+0000ee  d1fc              BNE      |L6.234|
+                  |L6.240|
+0000f0  4348              MULS     r0,r1,r0              ;217
+0000f2  b005              ADD      sp,sp,#0x14
+0000f4  bdf0              POP      {r4-r7,pc}
+;;;224    
                           ENDP
 
+0000f6  0000              DCW      0x0000
+                  |L6.248|
+                          DCD      0x40077000
 
                           AREA ||i.__SD_Send_Cmd||, CODE, READONLY, ALIGN=2
 

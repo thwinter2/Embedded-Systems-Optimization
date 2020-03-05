@@ -18,10 +18,10 @@
 00000278 pf_read
 00000262 idctRows
 00000254 LCD_Start_Rectangle
-00000236 __SD_Sectors
-00000212 SD_Read
+00000246 __SD_Sectors
 00000208 LCD_Fill_Buffer
 00000202 LCD_Plot_Pixel
+00000200 SD_Read
 00000200 huffExtend
 00000196 upsampleCrV
 00000196 upsampleCbV
@@ -31,7 +31,7 @@
 00000184 SystemInit
 00000182 main
 00000182 dir_next
-00000178 huffDecode
+00000180 huffDecode
 00000152 Sort_Profile_Regions
 00000152 __SD_Send_Cmd
 00000150 LCD_JPEG

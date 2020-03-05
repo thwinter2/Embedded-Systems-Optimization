@@ -924,13 +924,12 @@ N      if (i == 16)
 N         return 0;
 N
 N      maxCode = pHuffTable->mMaxCode[i];
-N      
+N      if ((code <= maxCode) && (maxCode != 0xFFFF))
+N         break;
 N
 N      i++;
 N      code <<= 1;
 N      code |= getBit();
-N			if ((code <= maxCode) && (maxCode != 0xFFFF))
-N         break;
 N   }
 N
 N   j = pHuffTable->mValPtr[i];
@@ -2856,4 +2855,4 @@ N   return 0;
 N}
 W "Source\LCD\picojpeg.c" 329 15 function "getBits1"  was declared but never referenced
 W "Source\LCD\picojpeg.c" 337 15 function "getBits2"  was declared but never referenced
-W "Source\LCD\picojpeg.c" 1065 14 function "findEOI"  was declared but never referenced
+W "Source\LCD\picojpeg.c" 1064 14 function "findEOI"  was declared but never referenced

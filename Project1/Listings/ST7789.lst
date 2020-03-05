@@ -29260,8 +29260,8 @@ N		PORTC->PCR[i] &= ~PORT_PCR_MUX_MASK;
 X		((PORT_Type *)(0x4004B000u))->PCR[i] &= ~0x700u;
 N		PORTC->PCR[i] |= PORT_PCR_MUX(1);
 X		((PORT_Type *)(0x4004B000u))->PCR[i] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
-N		PTC->PDDR |= MASK(i);
-X		((GPIO_Type *)(0x400FF080u))->PDDR |= (1UL << (i));
+N		FPTC->PDDR |= MASK(i);
+X		((FGPIO_Type *)(0xF80FF080u))->PDDR |= (1UL << (i));
 N	}
 N
 N	// Data/Command
@@ -29286,24 +29286,24 @@ N	PORTC->PCR[LCD_NRST_POS] |= PORT_PCR_MUX(1);
 X	((PORT_Type *)(0x4004B000u))->PCR[(17)] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
 N
 N	// Set port directions to outputs
-N	PTC->PDDR |= MASK(LCD_D_NC_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDDR |= (1UL << ((12)));
-N	PTC->PDDR |= MASK(LCD_NWR_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDDR |= (1UL << ((13)));
-N	PTC->PDDR |= MASK(LCD_NRD_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDDR |= (1UL << ((16)));
-N	PTC->PDDR |= MASK(LCD_NRST_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDDR |= (1UL << ((17)));
+N	FPTC->PDDR |= MASK(LCD_D_NC_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDDR |= (1UL << ((12)));
+N	FPTC->PDDR |= MASK(LCD_NWR_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDDR |= (1UL << ((13)));
+N	FPTC->PDDR |= MASK(LCD_NRD_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDDR |= (1UL << ((16)));
+N	FPTC->PDDR |= MASK(LCD_NRST_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDDR |= (1UL << ((17)));
 N
 N	// Set initial control line values to inactive (1)
-N	PTC->PDOR |= MASK(LCD_D_NC_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDOR |= (1UL << ((12)));
-N	PTC->PDOR |= MASK(LCD_NWR_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDOR |= (1UL << ((13)));
-N	PTC->PDOR |= MASK(LCD_NRD_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDOR |= (1UL << ((16)));
-N	PTC->PDOR |= MASK(LCD_NRST_POS);
-X	((GPIO_Type *)(0x400FF080u))->PDOR |= (1UL << ((17)));
+N	FPTC->PDOR |= MASK(LCD_D_NC_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDOR |= (1UL << ((12)));
+N	FPTC->PDOR |= MASK(LCD_NWR_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDOR |= (1UL << ((13)));
+N	FPTC->PDOR |= MASK(LCD_NRD_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDOR |= (1UL << ((16)));
+N	FPTC->PDOR |= MASK(LCD_NRST_POS);
+X	((FGPIO_Type *)(0xF80FF080u))->PDOR |= (1UL << ((17)));
 N}
 N
 N/* Initialize hardware for LCD backlight control and set to default value. */

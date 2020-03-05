@@ -19986,12 +19986,23 @@ X	if (__SD_Send_Cmd((0x40+9), 0) == 0) {
 N		// Wait for response
 R "Source\ulibSD\sd_io.c" 177 31 empty dependent statement in while-statement
 N		while (SPI_RW(0xFF) == 0xFF);
-N		for (idx = 0; idx != 16; idx++)
-N			csd[idx] = SPI_RW(0xFF);
+N		for (idx = 0; idx != 16; idx++){
+N			//csd[idx] = SPI_RW(0xFF);
+N			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N			}
+N			SPI1_D = 0xFF;
+X			((((SPI_Type *)(0x40077000u)))->D) = 0xFF;
+N			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
+N			}
+N			csd[idx] = SPI1_D;
+X			csd[idx] = ((((SPI_Type *)(0x40077000u)))->D);
+N		}
 N		// Dummy CRC
 N		SPI_RW(0xFF);
 N		SPI_RW(0xFF);
-R "Source\ulibSD\sd_io.c" 183 13 declaration hides variable "idx"  (declared at line 170)
+R "Source\ulibSD\sd_io.c" 190 13 declaration hides variable "idx"  (declared at line 170)
 N		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N		if (dev->cardtype & SDCT_SD1) {
 X		if (dev->cardtype & 0x02) {
@@ -20249,18 +20260,19 @@ S			DEBUG_TOGGLE(DBG_2);
 N			#endif
 N			
 N			//tkn = SPI_RW(0xFF);
+N			SPI1_D = 0xFF;
+X			((((SPI_Type *)(0x40077000u)))->D) = 0xFF;
 N			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
 N			}
-N			SPI1_D = 0xFF;
-X			((((SPI_Type *)(0x40077000u)))->D) = 0xFF;
 N			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
 N			}
 N			tkn = SPI1_D;
 X			tkn = ((((SPI_Type *)(0x40077000u)))->D);
 N				
-N		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
+N		} while ((tkn == 0xFF) && (!(LPTMR0_CSR & LPTMR_CSR_TCF_MASK)));
+X		} while ((tkn == 0xFF) && (!(((((LPTMR_Type *)(0x40040000u)))->CSR) & 0x80u)));
 N		#if DEBUG_ENABLE
 X		#if 0
 S		DEBUG_START(DBG_2);
@@ -20279,11 +20291,11 @@ S				DEBUG_TOGGLE(DBG_2);
 N				#endif
 N				
 N				//data = SPI_RW(0xff);
+N				SPI1_D = 0xff;
+X				((((SPI_Type *)(0x40077000u)))->D) = 0xff;
 N				while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 X				while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
 N				}
-N				SPI1_D = 0xff;
-X				((((SPI_Type *)(0x40077000u)))->D) = 0xff;
 N				while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 X				while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
 N				}
@@ -20394,7 +20406,7 @@ N
 NSDRESULTS SD_Status(SD_DEV * dev) {
 N	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
 X	return (__SD_Send_Cmd((0x40+0), 0) ? SD_OK : SD_NORESPONSE);
-R "Source\ulibSD\sd_io.c" 514 30 parameter "dev"  was never referenced
+R "Source\ulibSD\sd_io.c" 521 30 parameter "dev"  was never referenced
 N}
 N
 N// «sd_io.c» is part of:

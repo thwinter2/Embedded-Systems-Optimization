@@ -115,7 +115,7 @@ void LCD_GPIO_Init(void) {
 	for (i = LCD_DB8_POS; i <= LCD_DB15_POS; i++) {
 		PORTC->PCR[i] &= ~PORT_PCR_MUX_MASK;
 		PORTC->PCR[i] |= PORT_PCR_MUX(1);
-		PTC->PDDR |= MASK(i);
+		FPTC->PDDR |= MASK(i);
 	}
 
 	// Data/Command
@@ -132,16 +132,16 @@ void LCD_GPIO_Init(void) {
 	PORTC->PCR[LCD_NRST_POS] |= PORT_PCR_MUX(1);
 
 	// Set port directions to outputs
-	PTC->PDDR |= MASK(LCD_D_NC_POS);
-	PTC->PDDR |= MASK(LCD_NWR_POS);
-	PTC->PDDR |= MASK(LCD_NRD_POS);
-	PTC->PDDR |= MASK(LCD_NRST_POS);
+	FPTC->PDDR |= MASK(LCD_D_NC_POS);
+	FPTC->PDDR |= MASK(LCD_NWR_POS);
+	FPTC->PDDR |= MASK(LCD_NRD_POS);
+	FPTC->PDDR |= MASK(LCD_NRST_POS);
 
 	// Set initial control line values to inactive (1)
-	PTC->PDOR |= MASK(LCD_D_NC_POS);
-	PTC->PDOR |= MASK(LCD_NWR_POS);
-	PTC->PDOR |= MASK(LCD_NRD_POS);
-	PTC->PDOR |= MASK(LCD_NRST_POS);
+	FPTC->PDOR |= MASK(LCD_D_NC_POS);
+	FPTC->PDOR |= MASK(LCD_NWR_POS);
+	FPTC->PDOR |= MASK(LCD_NRD_POS);
+	FPTC->PDOR |= MASK(LCD_NRST_POS);
 }
 
 /* Initialize hardware for LCD backlight control and set to default value. */

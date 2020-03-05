@@ -1,28 +1,28 @@
 // Automatically generated file. Do not edit if you plan to regenerate it.
 #include "region.h"
 const REGION_T RegionTable[] = {
-	{0x00001c5d, 0x00001ccc, "convertCb"}, // 0
-	{0x00001cd9, 0x00001d48, "convertCr"}, // 1
-	{0x00001d55, 0x00001d7e, "copyY"}, // 2
-	{0x00001d91, 0x00002024, "decodeNextMCU"}, // 3
-	{0x00002401, 0x00002478, "getBits"}, // 4
-	{0x0000247d, 0x000024c8, "getChar"}, // 5
-	{0x000024d5, 0x0000250e, "getOctet"}, // 6
-	{0x00002519, 0x000025ca, "huffDecode"}, // 7
-	{0x000025d5, 0x0000269c, "huffExtend"}, // 8
-	{0x000026b9, 0x0000290a, "idctCols"}, // 9
-	{0x00002915, 0x00002a1a, "idctRows"}, // 10
-	{0x000039e1, 0x00003cb6, "processMarkers"}, // 11
-	{0x00003ced, 0x00003e02, "transformBlock"}, // 12
-	{0x00003e09, 0x00004434, "transformBlockReduce"}, // 13
-	{0x0000443d, 0x0000457e, "upsampleCb"}, // 14
-	{0x0000458d, 0x0000464e, "upsampleCbH"}, // 15
-	{0x0000465d, 0x00004720, "upsampleCbV"}, // 16
-	{0x0000472d, 0x0000486e, "upsampleCr"}, // 17
-	{0x0000487d, 0x0000493e, "upsampleCrH"}, // 18
-	{0x0000494d, 0x00004a10, "upsampleCrV"}, // 19
-	{0x0000206d, 0x00002122, "dir_next"}, // 20
-	{0x00002159, 0x000023a4, "follow_path"}, // 21
+	{0x00001c61, 0x00001cd0, "convertCb"}, // 0
+	{0x00001cdd, 0x00001d4c, "convertCr"}, // 1
+	{0x00001d59, 0x00001d82, "copyY"}, // 2
+	{0x00001d95, 0x00002028, "decodeNextMCU"}, // 3
+	{0x00002405, 0x0000247c, "getBits"}, // 4
+	{0x00002481, 0x000024cc, "getChar"}, // 5
+	{0x000024d9, 0x00002512, "getOctet"}, // 6
+	{0x0000251d, 0x000025d0, "huffDecode"}, // 7
+	{0x000025d9, 0x000026a0, "huffExtend"}, // 8
+	{0x000026bd, 0x0000290e, "idctCols"}, // 9
+	{0x00002919, 0x00002a1e, "idctRows"}, // 10
+	{0x000039e5, 0x00003cba, "processMarkers"}, // 11
+	{0x00003cf1, 0x00003e06, "transformBlock"}, // 12
+	{0x00003e0d, 0x00004438, "transformBlockReduce"}, // 13
+	{0x00004441, 0x00004582, "upsampleCb"}, // 14
+	{0x00004591, 0x00004652, "upsampleCbH"}, // 15
+	{0x00004661, 0x00004724, "upsampleCbV"}, // 16
+	{0x00004731, 0x00004872, "upsampleCr"}, // 17
+	{0x00004881, 0x00004942, "upsampleCrH"}, // 18
+	{0x00004951, 0x00004a14, "upsampleCrV"}, // 19
+	{0x00002071, 0x00002126, "dir_next"}, // 20
+	{0x0000215d, 0x000023a8, "follow_path"}, // 21
 	{0x000000d5, 0x000000e0, "Reset_Handler"}, // 22
 	{0x000000e1, 0x000000e2, "NMI_Handler"}, // 23
 	{0x000000e3, 0x000000e4, "HardFault_Handler"}, // 24
@@ -58,34 +58,34 @@ const REGION_T RegionTable[] = {
 	{0x00000fd9, 0x00001034, "PWM_Init"}, // 54
 	{0x00001045, 0x000010a2, "Process_Profile_Sample"}, // 55
 	{0x00001145, 0x000012f8, "SD_Init"}, // 56
-	{0x000012fd, 0x000013d0, "SD_Read"}, // 57
-	{0x000013e1, 0x000013ec, "SPI_CS_High"}, // 58
-	{0x000013f1, 0x000013fc, "SPI_CS_Low"}, // 59
-	{0x00001401, 0x00001408, "SPI_Freq_High"}, // 60
-	{0x0000140d, 0x0000144c, "SPI_Init"}, // 61
-	{0x00001461, 0x00001474, "SPI_RW"}, // 62
-	{0x00001479, 0x000014a0, "SPI_Release"}, // 63
-	{0x000014a5, 0x000014ac, "SPI_Timer_Off"}, // 64
-	{0x000014b1, 0x000014ca, "SPI_Timer_On"}, // 65
-	{0x000014d5, 0x000014e0, "SPI_Timer_Status"}, // 66
-	{0x000014e5, 0x0000157c, "Sort_Profile_Regions"}, // 67
-	{0x0000158d, 0x00001644, "SystemInit"}, // 68
-	{0x00001675, 0x00001680, "TPM0_IRQHandler"}, // 69
-	{0x00001685, 0x000016dc, "UART0_IRQHandler"}, // 70
-	{0x00002129, 0x00002138, "disk_initialize"}, // 71
-	{0x0000213d, 0x00002154, "disk_readp"}, // 72
-	{0x000023ad, 0x000023fc, "free"}, // 73
-	{0x00002a25, 0x00002ada, "main"}, // 74
-	{0x00002b41, 0x00002b9c, "malloc"}, // 75
-	{0x00002bad, 0x00002d60, "pf_mount"}, // 76
-	{0x00002d71, 0x00002df6, "pf_open"}, // 77
-	{0x00002dfd, 0x00002e8e, "pf_opendir"}, // 78
-	{0x00002e95, 0x00002faa, "pf_read"}, // 79
-	{0x00002fb1, 0x000031a6, "pf_readdir"}, // 80
-	{0x000031ad, 0x00003676, "pjpeg_decode_init"}, // 81
-	{0x00003691, 0x000036c4, "pjpeg_decode_mcu"}, // 82
-	{0x000036c9, 0x000039ac, "pjpeg_load_from_file"}, // 83
-	{0x000039b5, 0x000039da, "pjpeg_need_bytes_callbac"}, // 84
+	{0x000012fd, 0x000013c4, "SD_Read"}, // 57
+	{0x000013d5, 0x000013e0, "SPI_CS_High"}, // 58
+	{0x000013e5, 0x000013f0, "SPI_CS_Low"}, // 59
+	{0x000013f5, 0x000013fc, "SPI_Freq_High"}, // 60
+	{0x00001401, 0x00001440, "SPI_Init"}, // 61
+	{0x00001455, 0x00001468, "SPI_RW"}, // 62
+	{0x0000146d, 0x00001494, "SPI_Release"}, // 63
+	{0x00001499, 0x000014a0, "SPI_Timer_Off"}, // 64
+	{0x000014a5, 0x000014be, "SPI_Timer_On"}, // 65
+	{0x000014c9, 0x000014d4, "SPI_Timer_Status"}, // 66
+	{0x000014d9, 0x00001570, "Sort_Profile_Regions"}, // 67
+	{0x00001581, 0x00001638, "SystemInit"}, // 68
+	{0x00001669, 0x00001674, "TPM0_IRQHandler"}, // 69
+	{0x00001679, 0x000016d0, "UART0_IRQHandler"}, // 70
+	{0x0000212d, 0x0000213c, "disk_initialize"}, // 71
+	{0x00002141, 0x00002158, "disk_readp"}, // 72
+	{0x000023b1, 0x00002400, "free"}, // 73
+	{0x00002a29, 0x00002ade, "main"}, // 74
+	{0x00002b45, 0x00002ba0, "malloc"}, // 75
+	{0x00002bb1, 0x00002d64, "pf_mount"}, // 76
+	{0x00002d75, 0x00002dfa, "pf_open"}, // 77
+	{0x00002e01, 0x00002e92, "pf_opendir"}, // 78
+	{0x00002e99, 0x00002fae, "pf_read"}, // 79
+	{0x00002fb5, 0x000031aa, "pf_readdir"}, // 80
+	{0x000031b1, 0x0000367a, "pjpeg_decode_init"}, // 81
+	{0x00003695, 0x000036c8, "pjpeg_decode_mcu"}, // 82
+	{0x000036cd, 0x000039b0, "pjpeg_load_from_file"}, // 83
+	{0x000039b9, 0x000039de, "pjpeg_need_bytes_callbac"}, // 84
 }; 
 const unsigned NumProfileRegions=85;
 volatile unsigned RegionCount[85];
