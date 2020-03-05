@@ -19701,8 +19701,8 @@ N	 * Bit 2 RXDMAE     = 1 DMA request enabled
 N	 * Bit 1 SPISWAI    = 0 SPI clocks operate in wait mode
 N	 * Bit 0 SPC0       = 0 uses separate pins for data input and output
 N	 */
-N	SPI1_C2 = 0x24;
-X	((((SPI_Type *)(0x40077000u)))->C2) = 0x24;
+N	SPI1_C2 = 0x00;
+X	((((SPI_Type *)(0x40077000u)))->C2) = 0x00;
 N
 N	/*
 N	 * Bit 7    SPRF    = 0 Flag is set when receive data buffer is full
@@ -19755,13 +19755,13 @@ N	for (idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N}
 N
 Ninline void SPI_CS_Low(void) {
-N	GPIOE_PDOR &= ~(1 << 4);			//CS LOW
-X	((((GPIO_Type *)(0x400FF100u)))->PDOR) &= ~(1 << 4);			
+N	FGPIOE_PDOR &= ~(1 << 4);			//CS LOW
+X	((((FGPIO_Type *)(0xF80FF100u)))->PDOR) &= ~(1 << 4);			
 N}
 N
 Ninline void SPI_CS_High(void) {
-N	GPIOE_PDOR |= (1 << 4);				//CS HIGH
-X	((((GPIO_Type *)(0x400FF100u)))->PDOR) |= (1 << 4);				
+N	FGPIOE_PDOR |= (1 << 4);				//CS HIGH
+X	((((FGPIO_Type *)(0xF80FF100u)))->PDOR) |= (1 << 4);				
 N}
 N
 Ninline void SPI_Freq_High(void) {

@@ -529,7 +529,7 @@ static uint16 getMaxHuffCodes(uint8 index)
 static uint8 readDHTMarker(void)
 {
    uint8 bits[16];
-   uint16 left = getBits1(16);
+   uint16 left = getBits(16,0);
 
    if (left < 2)
       return PJPG_BAD_DHT_MARKER;
@@ -543,7 +543,7 @@ static uint8 readDHTMarker(void)
       HuffTable* pHuffTable;
       uint16 count, totalRead;
             
-      index = (uint8)getBits1(8);
+      index = (uint8)getBits(8,0);
       
       if ( ((index & 0xF) > 1) || ((index & 0xF0) > 0x10) )
          return PJPG_BAD_DHT_INDEX;
@@ -558,7 +558,7 @@ static uint8 readDHTMarker(void)
       count = 0;
       for (i = 0; i <= 15; i++)
       {
-         uint8 n = (uint8)getBits1(8);
+         uint8 n = (uint8)getBits(8,0);
          bits[i] = n;
          count = (uint16)(count + n);
       }
@@ -567,7 +567,7 @@ static uint8 readDHTMarker(void)
          return PJPG_BAD_DHT_COUNTS;
 
       for (i = 0; i < count; i++)
-         pHuffVal[i] = (uint8)getBits1(8);
+         pHuffVal[i] = (uint8)getBits(8,0);
 
       totalRead = 1 + 16 + count;
 
@@ -586,7 +586,7 @@ static void createWinogradQuant(int16* pQuant);
 
 static uint8 readDQTMarker(void)
 {
-   uint16 left = getBits1(16);
+   uint16 left = getBits(16,0);
 
    if (left < 2)
       return PJPG_BAD_DQT_MARKER;
@@ -596,7 +596,7 @@ static uint8 readDQTMarker(void)
    while (left)
    {
       uint8 i;
-      uint8 n = (uint8)getBits1(8);
+      uint8 n = (uint8)getBits(8,0);
       uint8 prec = n >> 4;
       uint16 totalRead;
 
@@ -610,10 +610,10 @@ static uint8 readDQTMarker(void)
       // read quantization entries, in zag order
       for (i = 0; i < 64; i++)
       {
-         uint16 temp = getBits1(8);
+         uint16 temp = getBits(8,0);
 
          if (prec)
-            temp = (temp << 8) + getBits1(8);
+            temp = (temp << 8) + getBits(8,0);
 
          if (n)
             gQuant1[i] = (int16)temp;            
@@ -640,22 +640,22 @@ static uint8 readDQTMarker(void)
 static uint8 readSOFMarker(void)
 {
    uint8 i;
-   uint16 left = getBits1(16);
+   uint16 left = getBits(16,0);
 
-   if (getBits1(8) != 8)   
+   if (getBits(8,0) != 8)   
       return PJPG_BAD_PRECISION;
 
-   gImageYSize = getBits1(16);
+   gImageYSize = getBits(16,0);
 
    if ((!gImageYSize) || (gImageYSize > PJPG_MAX_HEIGHT))
       return PJPG_BAD_HEIGHT;
 
-   gImageXSize = getBits1(16);
+   gImageXSize = getBits(16,0);
 
    if ((!gImageXSize) || (gImageXSize > PJPG_MAX_WIDTH))
       return PJPG_BAD_WIDTH;
 
-   gCompsInFrame = (uint8)getBits1(8);
+   gCompsInFrame = (uint8)getBits(8,0);
 
    if (gCompsInFrame > 3)
       return PJPG_TOO_MANY_COMPONENTS;
@@ -665,10 +665,10 @@ static uint8 readSOFMarker(void)
    
    for (i = 0; i < gCompsInFrame; i++)
    {
-      gCompIdent[i] = (uint8)getBits1(8);
-      gCompHSamp[i] = (uint8)getBits1(4);
-      gCompVSamp[i] = (uint8)getBits1(4);
-      gCompQuant[i] = (uint8)getBits1(8);
+      gCompIdent[i] = (uint8)getBits(8,0);
+      gCompHSamp[i] = (uint8)getBits(4,0);
+      gCompVSamp[i] = (uint8)getBits(4,0);
+      gCompQuant[i] = (uint8)getBits(8,0);
       
       if (gCompQuant[i] > 1)
          return PJPG_UNSUPPORTED_QUANT_TABLE;
@@ -680,7 +680,7 @@ static uint8 readSOFMarker(void)
 // Used to skip unrecognized markers.
 static uint8 skipVariableMarker(void)
 {
-   uint16 left = getBits1(16);
+   uint16 left = getBits(16,0);
 
    if (left < 2)
       return PJPG_BAD_VARIABLE_MARKER;
@@ -689,7 +689,7 @@ static uint8 skipVariableMarker(void)
 
    while (left)
    {
-      getBits1(8);
+      getBits(8,0);
       left--;
    }
    
@@ -699,10 +699,10 @@ static uint8 skipVariableMarker(void)
 // Read a define restart interval (DRI) marker.
 static uint8 readDRIMarker(void)
 {
-   if (getBits1(16) != 4)
+   if (getBits(16,0) != 4)
       return PJPG_BAD_DRI_LENGTH;
 
-   gRestartInterval = getBits1(16);
+   gRestartInterval = getBits(16,0);
    
    return 0;
 }
@@ -715,10 +715,10 @@ static uint8 readDRIMarker(void)
 static uint8 readSOSMarker(void)
 {
    uint8 i;
-   uint16 left = getBits1(16);
+   uint16 left = getBits(16,0);
    uint8 spectral_start, spectral_end, successive_high, successive_low;
 
-   gCompsInScan = (uint8)getBits1(8);
+   gCompsInScan = (uint8)getBits(8,0);
 
    left -= 3;
 
@@ -727,8 +727,8 @@ static uint8 readSOSMarker(void)
    
    for (i = 0; i < gCompsInScan; i++)
    {
-      uint8 cc = (uint8)getBits1(8);
-      uint8 c = (uint8)getBits1(8);
+      uint8 cc = (uint8)getBits(8,0);
+      uint8 c = (uint8)getBits(8,0);
       uint8 ci;
       
       left -= 2;
@@ -745,16 +745,16 @@ static uint8 readSOSMarker(void)
       gCompACTab[ci] = (c & 15);
    }
 
-   spectral_start  = (uint8)getBits1(8);
-   spectral_end    = (uint8)getBits1(8);
-   successive_high = (uint8)getBits1(4);
-   successive_low  = (uint8)getBits1(4);
+   spectral_start  = (uint8)getBits(8,0);
+   spectral_end    = (uint8)getBits(8,0);
+   successive_high = (uint8)getBits(4,0);
+   successive_low  = (uint8)getBits(4,0);
 
    left -= 3;
 
    while (left)                  
    {
-      getBits1(8);
+      getBits(8,0);
       left--;
    }
    
@@ -774,13 +774,13 @@ static uint8 nextMarker(void)
       {
          bytes++;
 
-         c = (uint8)getBits1(8);
+         c = (uint8)getBits(8,0);
 
       } while (c != 0xFF);
 
       do
       {
-         c = (uint8)getBits1(8);
+         c = (uint8)getBits(8,0);
 
       } while (c == 0xFF);
 
@@ -872,9 +872,9 @@ static uint8 locateSOIMarker(void)
 {
    uint16 bytesleft;
    
-   uint8 lastchar = (uint8)getBits1(8);
+   uint8 lastchar = (uint8)getBits(8,0);
 
-   uint8 thischar = (uint8)getBits1(8);
+   uint8 thischar = (uint8)getBits(8,0);
 
    /* ok if it's a normal JPEG file without a special header */
 
@@ -890,7 +890,7 @@ static uint8 locateSOIMarker(void)
 
       lastchar = thischar;
 
-      thischar = (uint8)getBits1(8);
+      thischar = (uint8)getBits(8,0);
 
       if (lastchar == 0xFF) 
       {
@@ -993,8 +993,8 @@ static uint8 init(void)
    gBitBuf = 0;
    gBitsLeft = 8;
 
-   getBits1(8);
-   getBits1(8);
+   getBits(8,0);
+   getBits(8,0);
 
    return 0;
 }
@@ -1011,8 +1011,8 @@ static void fixInBuffer(void)
    stuffChar((uint8)(gBitBuf >> 8));
    
    gBitsLeft = 8;
-   getBits2(8);
-   getBits2(8);
+   getBits(8,1);
+   getBits(8,1);
 }
 //------------------------------------------------------------------------------
 // Restart interval processing.
@@ -1053,8 +1053,8 @@ static uint8 processRestart(void)
    // Get the bit buffer going again
 
    gBitsLeft = 8;
-   getBits2(8);
-   getBits2(8);
+   getBits(8,1);
+   getBits(8,1);
    
    return 0;
 }
@@ -1068,8 +1068,8 @@ static uint8 findEOI(void)
 
    // Prime the bit buffer
    gBitsLeft = 8;
-   getBits1(8);
-   getBits1(8);
+   getBits(8,0);
+   getBits(8,0);
 
    // The next marker _should_ be EOI
    status = processMarkers(&c);
@@ -2205,7 +2205,7 @@ static uint8 decodeNextMCU(void)
       r = 0;
       numExtraBits = s & 0xF;
       if (numExtraBits)
-         r = getBits2(numExtraBits);
+         r = getBits(numExtraBits,1);
       dc = huffExtend(r, s);          
       dc = dc + gLastDC[componentID];
       gLastDC[componentID] = dc;
@@ -2218,7 +2218,7 @@ static uint8 decodeNextMCU(void)
             s = huffDecode(compACTab ? &gHuffTab3 : &gHuffTab2, compACTab ? gHuffVal3 : gHuffVal2);
             numExtraBits = s & 0xF;
             if (numExtraBits)
-               getBits2(numExtraBits);
+               getBits(numExtraBits,1);
             r = s >> 4;
             s &= 15;
             if (s) {
@@ -2245,7 +2245,7 @@ static uint8 decodeNextMCU(void)
             extraBits = 0;
             numExtraBits = s & 0xF;
             if (numExtraBits)
-               extraBits = getBits2(numExtraBits);
+               extraBits = getBits(numExtraBits,1);
 
             r = s >> 4;
             s &= 15;

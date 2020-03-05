@@ -56,7 +56,7 @@ void SPI_Init(void) {
 	 * Bit 1 SPISWAI    = 0 SPI clocks operate in wait mode
 	 * Bit 0 SPC0       = 0 uses separate pins for data input and output
 	 */
-	SPI1_C2 = 0x24;
+	SPI1_C2 = 0x00;
 
 	/*
 	 * Bit 7    SPRF    = 0 Flag is set when receive data buffer is full
@@ -99,11 +99,11 @@ void SPI_Release(void) {
 }
 
 inline void SPI_CS_Low(void) {
-	GPIOE_PDOR &= ~(1 << 4);			//CS LOW
+	FGPIOE_PDOR &= ~(1 << 4);			//CS LOW
 }
 
 inline void SPI_CS_High(void) {
-	GPIOE_PDOR |= (1 << 4);				//CS HIGH
+	FGPIOE_PDOR |= (1 << 4);				//CS HIGH
 }
 
 inline void SPI_Freq_High(void) {

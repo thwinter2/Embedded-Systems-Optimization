@@ -21216,8 +21216,8 @@ Nvoid Init_ADC(void) {
 N	
 N	SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK; 
 X	((SIM_Type *)(0x40047000u))->SCGC6 |= 0x8000000u; 
-N	ADC0->CFG1 = 0x1C; // 16 bit
-X	((ADC_Type *)(0x4003B000u))->CFG1 = 0x1C; 
+N	ADC0->CFG1 = 0x9C; // 16 bit
+X	((ADC_Type *)(0x4003B000u))->CFG1 = 0x9C; 
 N	ADC0->SC2 = 0;
 X	((ADC_Type *)(0x4003B000u))->SC2 = 0;
 N}

@@ -19938,7 +19938,20 @@ N	SPI_RW(crc);
 N
 N	// Receive command response
 N	// Wait for a valid response in timeout of 5 milliseconds
-N	SPI_Timer_On(5);
+N	//SPI_Timer_On(5);
+N	SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
+X	((((SIM_Type *)(0x40047000u)))->SCGC5) |= 0x1u;	
+N	LPTMR0_CSR = 0;								// Reset LPTMR settings
+X	((((LPTMR_Type *)(0x40040000u)))->CSR) = 0;								
+N	LPTMR0_CMR = 5;							// Set compare value (in ms)
+X	((((LPTMR_Type *)(0x40040000u)))->CMR) = 5;							
+N	// Use 1kHz LPO with no prescaler
+N	LPTMR0_PSR = LPTMR_PSR_PCS(1) | LPTMR_PSR_PBYP_MASK;
+X	((((LPTMR_Type *)(0x40040000u)))->PSR) = (((uint32_t)(((uint32_t)(1))<<0))&0x3u) | 0x4u;
+N	// Start the timer and wait for it to reach the compare value
+N	LPTMR0_CSR = LPTMR_CSR_TEN_MASK;
+X	((((LPTMR_Type *)(0x40040000u)))->CSR) = 0x1u;
+N	
 N	do {
 N		#if DEBUG_ENABLE
 X		#if 0
@@ -19950,7 +19963,8 @@ N	#if DEBUG_ENABLE
 X	#if 0
 S	DEBUG_START(DBG_4);
 N	#endif
-N	SPI_Timer_Off();
+N	LPTMR0_CSR = 0;
+X	((((LPTMR_Type *)(0x40040000u)))->CSR) = 0;
 N
 N	// Return with the response value
 N	#if DEBUG_ENABLE
@@ -19970,14 +19984,15 @@ N	BYTE READ_BL_LEN = 0;
 N	if (__SD_Send_Cmd(CMD9, 0) == 0) {
 X	if (__SD_Send_Cmd((0x40+9), 0) == 0) {
 N		// Wait for response
-R "Source\ulibSD\sd_io.c" 169 31 empty dependent statement in while-statement
+R "Source\ulibSD\sd_io.c" 177 31 empty dependent statement in while-statement
 N		while (SPI_RW(0xFF) == 0xFF);
 N		for (idx = 0; idx != 16; idx++)
 N			csd[idx] = SPI_RW(0xFF);
 N		// Dummy CRC
 N		SPI_RW(0xFF);
 N		SPI_RW(0xFF);
-N		SPI_Release();
+R "Source\ulibSD\sd_io.c" 183 13 declaration hides variable "idx"  (declared at line 170)
+N		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N		if (dev->cardtype & SDCT_SD1) {
 X		if (dev->cardtype & 0x02) {
 N			ss = csd[0];
@@ -20038,9 +20053,9 @@ N		SPI_CS_High();
 N		SPI_Freq_High();
 N
 N		// 80 dummy clocks
-N		for (idx = 0; idx != 10; idx++)
+N		for (idx = 0; idx != 10; idx++){
 N			SPI_RW(0xFF);
-N
+N		}
 N		SPI_Timer_On(500);
 N		while (SPI_Timer_Status() == TRUE) {
 N			#if DEBUG_ENABLE
@@ -20076,8 +20091,19 @@ N			// SD version 2?
 N			if (__SD_Send_Cmd(CMD8, 0x1AA) == 1) {
 X			if (__SD_Send_Cmd((0x40+8), 0x1AA) == 1) {
 N				// Get trailing return value of R7 resp
-N				for (n = 0; n < 4; n++)
-N					ocr[n] = SPI_RW(0xFF);
+N				for (n = 0; n < 4; n++){
+N					//ocr[n] = SPI_RW(0xFF);
+N					while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+X					while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N					}
+N					SPI1_D = 0xff;
+X					((((SPI_Type *)(0x40077000u)))->D) = 0xff;
+N					while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+X					while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
+N					}
+N					ocr[n] = SPI1_D;
+X					ocr[n] = ((((SPI_Type *)(0x40077000u)))->D);
+N				}
 N				// VDD range of 2.7-3.6V is OK?  
 N				if ((ocr[2] == 0x01) && (ocr[3] == 0xAA)) {
 N					// Wait for leaving idle state (ACMD41 with HCS bit)...
@@ -20099,8 +20125,20 @@ N					// CCS in the OCR?
 N					if ((SPI_Timer_Status() == TRUE)
 N							&& (__SD_Send_Cmd(CMD58, 0) == 0)) {
 X							&& (__SD_Send_Cmd((0x40+58), 0) == 0)) {
-N						for (n = 0; n < 4; n++)
-N							ocr[n] = SPI_RW(0xFF);
+N						for (n = 0; n < 4; n++){
+N	
+N							//ocr[n] = SPI_RW(0xFF);
+N							while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+X							while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N							}
+N							SPI1_D = 0xff;
+X							((((SPI_Type *)(0x40077000u)))->D) = 0xff;
+N							while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+X							while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
+N							}
+N							ocr[n] = SPI1_D;
+X							ocr[n] = ((((SPI_Type *)(0x40077000u)))->D);
+N						}
 N						// SD version 2?
 N						ct = (ocr[0] & 0x40) ? SDCT_SD2 | SDCT_BLOCK : SDCT_SD2;
 X						ct = (ocr[0] & 0x40) ? 0x04 | 0x08 : 0x04;
@@ -20136,8 +20174,8 @@ X				#if 0
 S				DEBUG_START(DBG_5);
 N				#endif
 N				SPI_Timer_Off();
-N				if (SPI_Timer_Status() == FALSE)
-N					ct = 0;
+N				//if (SPI_Timer_Status() == FALSE)
+N					//ct = 0;
 N				if (__SD_Send_Cmd(CMD59, 0))
 X				if (__SD_Send_Cmd((0x40+59), 0))
 N					ct = 0;								// Deactivate CRC check (default)
@@ -20169,8 +20207,8 @@ N#pragma diag_suppress 1441
 NSDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 N									WORD cnt) {
 N	SDRESULTS res;
-N	BYTE tkn, data;
 N	WORD byte_num;
+N	BYTE tkn, data;
 N	volatile uint8_t dummy;
 N	#if DEBUG_ENABLE
 X	#if 0
@@ -20189,19 +20227,47 @@ N	// Convert sector number to byte address (sector * SD_BLK_SIZE)
 N	//    if (__SD_Send_Cmd(CMD17, sector * SD_BLK_SIZE) == 0) { // Only for SDSC
 N	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
 X	if (__SD_Send_Cmd((0x40+17), sector) == 0) {	
-N		SPI_Timer_On(100);
+N		
+N		//SPI_Timer_On(100);
+N		SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
+X		((((SIM_Type *)(0x40047000u)))->SCGC5) |= 0x1u;	
+N		LPTMR0_CSR = 0;								// Reset LPTMR settings
+X		((((LPTMR_Type *)(0x40040000u)))->CSR) = 0;								
+N		LPTMR0_CMR = 100;							// Set compare value (in ms)
+X		((((LPTMR_Type *)(0x40040000u)))->CMR) = 100;							
+N		// Use 1kHz LPO with no prescaler
+N		LPTMR0_PSR = LPTMR_PSR_PCS(1) | LPTMR_PSR_PBYP_MASK;
+X		((((LPTMR_Type *)(0x40040000u)))->PSR) = (((uint32_t)(((uint32_t)(1))<<0))&0x3u) | 0x4u;
+N		// Start the timer and wait for it to reach the compare value
+N		LPTMR0_CSR = LPTMR_CSR_TEN_MASK;
+X		((((LPTMR_Type *)(0x40040000u)))->CSR) = 0x1u;
+N		
 N		do {
 N			#if DEBUG_ENABLE
 X			#if 0
 S			DEBUG_TOGGLE(DBG_2);
 N			#endif
-N			tkn = SPI_RW(0xFF);
+N			
+N			//tkn = SPI_RW(0xFF);
+N			while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N			}
+N			SPI1_D = 0xFF;
+X			((((SPI_Type *)(0x40077000u)))->D) = 0xFF;
+N			while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+X			while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
+N			}
+N			tkn = SPI1_D;
+X			tkn = ((((SPI_Type *)(0x40077000u)))->D);
+N				
 N		} while ((tkn == 0xFF) && SPI_Timer_Status() == TRUE);
 N		#if DEBUG_ENABLE
 X		#if 0
 S		DEBUG_START(DBG_2);
 N		#endif
-N		SPI_Timer_Off();
+N		//SPI_Timer_Off();
+N		LPTMR0_CSR = 0;
+X		((((LPTMR_Type *)(0x40040000u)))->CSR) = 0;
 N		// Token of single block?
 N		if (tkn == 0xFE) {
 N			// AGD: Loop fusion to simplify FSM formation
@@ -20211,7 +20277,19 @@ N				#if DEBUG_ENABLE
 X				#if 0
 S				DEBUG_TOGGLE(DBG_2); 
 N				#endif
-N				data = SPI_RW(0xff);
+N				
+N				//data = SPI_RW(0xff);
+N				while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+X				while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N				}
+N				SPI1_D = 0xff;
+X				((((SPI_Type *)(0x40077000u)))->D) = 0xff;
+N				while (!(SPI1_S & SPI_S_SPRF_MASK)) {
+X				while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
+N				}
+N				data = SPI1_D;
+X				data = ((((SPI_Type *)(0x40077000u)))->D);
+N	
 N				if ((byte_num >= ofs) && (byte_num < ofs + cnt)) {
 N					*(BYTE *) dat = data;
 N					((BYTE *) dat)++;
@@ -20225,7 +20303,8 @@ N			#endif
 N			res = SD_OK;
 N		}
 N	}
-N	SPI_Release();
+N	//SPI_Release();
+N	for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N	dev->debug.read++;
 N	#if DEBUG_ENABLE
 X	#if 0
@@ -20315,7 +20394,7 @@ N
 NSDRESULTS SD_Status(SD_DEV * dev) {
 N	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
 X	return (__SD_Send_Cmd((0x40+0), 0) ? SD_OK : SD_NORESPONSE);
-R "Source\ulibSD\sd_io.c" 464 30 parameter "dev"  was never referenced
+R "Source\ulibSD\sd_io.c" 514 30 parameter "dev"  was never referenced
 N}
 N
 N// «sd_io.c» is part of:

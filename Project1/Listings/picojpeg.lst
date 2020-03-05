@@ -924,12 +924,13 @@ N      if (i == 16)
 N         return 0;
 N
 N      maxCode = pHuffTable->mMaxCode[i];
-N      if ((code <= maxCode) && (maxCode != 0xFFFF))
-N         break;
+N      
 N
 N      i++;
 N      code <<= 1;
 N      code |= getBit();
+N			if ((code <= maxCode) && (maxCode != 0xFFFF))
+N         break;
 N   }
 N
 N   j = pHuffTable->mValPtr[i];
@@ -1010,7 +1011,7 @@ N//-----------------------------------------------------------------------------
 Nstatic uint8 readDHTMarker(void)
 N{
 N   uint8 bits[16];
-N   uint16 left = getBits1(16);
+N   uint16 left = getBits(16,0);
 N
 N   if (left < 2)
 N      return PJPG_BAD_DHT_MARKER;
@@ -1024,7 +1025,7 @@ N      uint8* pHuffVal;
 N      HuffTable* pHuffTable;
 N      uint16 count, totalRead;
 N            
-N      index = (uint8)getBits1(8);
+N      index = (uint8)getBits(8,0);
 N      
 N      if ( ((index & 0xF) > 1) || ((index & 0xF0) > 0x10) )
 N         return PJPG_BAD_DHT_INDEX;
@@ -1039,7 +1040,7 @@ N
 N      count = 0;
 N      for (i = 0; i <= 15; i++)
 N      {
-N         uint8 n = (uint8)getBits1(8);
+N         uint8 n = (uint8)getBits(8,0);
 N         bits[i] = n;
 N         count = (uint16)(count + n);
 N      }
@@ -1048,7 +1049,7 @@ N      if (count > getMaxHuffCodes(tableIndex))
 N         return PJPG_BAD_DHT_COUNTS;
 N
 N      for (i = 0; i < count; i++)
-N         pHuffVal[i] = (uint8)getBits1(8);
+N         pHuffVal[i] = (uint8)getBits(8,0);
 N
 N      totalRead = 1 + 16 + count;
 N
@@ -1067,7 +1068,7 @@ Nstatic void createWinogradQuant(int16* pQuant);
 N
 Nstatic uint8 readDQTMarker(void)
 N{
-N   uint16 left = getBits1(16);
+N   uint16 left = getBits(16,0);
 N
 N   if (left < 2)
 N      return PJPG_BAD_DQT_MARKER;
@@ -1077,7 +1078,7 @@ N
 N   while (left)
 N   {
 N      uint8 i;
-N      uint8 n = (uint8)getBits1(8);
+N      uint8 n = (uint8)getBits(8,0);
 N      uint8 prec = n >> 4;
 N      uint16 totalRead;
 N
@@ -1091,10 +1092,10 @@ N
 N      // read quantization entries, in zag order
 N      for (i = 0; i < 64; i++)
 N      {
-N         uint16 temp = getBits1(8);
+N         uint16 temp = getBits(8,0);
 N
 N         if (prec)
-N            temp = (temp << 8) + getBits1(8);
+N            temp = (temp << 8) + getBits(8,0);
 N
 N         if (n)
 N            gQuant1[i] = (int16)temp;            
@@ -1121,24 +1122,24 @@ N//-----------------------------------------------------------------------------
 Nstatic uint8 readSOFMarker(void)
 N{
 N   uint8 i;
-N   uint16 left = getBits1(16);
+N   uint16 left = getBits(16,0);
 N
-N   if (getBits1(8) != 8)   
+N   if (getBits(8,0) != 8)   
 N      return PJPG_BAD_PRECISION;
 N
-N   gImageYSize = getBits1(16);
+N   gImageYSize = getBits(16,0);
 N
 N   if ((!gImageYSize) || (gImageYSize > PJPG_MAX_HEIGHT))
 X   if ((!gImageYSize) || (gImageYSize > 16384))
 N      return PJPG_BAD_HEIGHT;
 N
-N   gImageXSize = getBits1(16);
+N   gImageXSize = getBits(16,0);
 N
 N   if ((!gImageXSize) || (gImageXSize > PJPG_MAX_WIDTH))
 X   if ((!gImageXSize) || (gImageXSize > 16384))
 N      return PJPG_BAD_WIDTH;
 N
-N   gCompsInFrame = (uint8)getBits1(8);
+N   gCompsInFrame = (uint8)getBits(8,0);
 N
 N   if (gCompsInFrame > 3)
 N      return PJPG_TOO_MANY_COMPONENTS;
@@ -1148,10 +1149,10 @@ N      return PJPG_BAD_SOF_LENGTH;
 N   
 N   for (i = 0; i < gCompsInFrame; i++)
 N   {
-N      gCompIdent[i] = (uint8)getBits1(8);
-N      gCompHSamp[i] = (uint8)getBits1(4);
-N      gCompVSamp[i] = (uint8)getBits1(4);
-N      gCompQuant[i] = (uint8)getBits1(8);
+N      gCompIdent[i] = (uint8)getBits(8,0);
+N      gCompHSamp[i] = (uint8)getBits(4,0);
+N      gCompVSamp[i] = (uint8)getBits(4,0);
+N      gCompQuant[i] = (uint8)getBits(8,0);
 N      
 N      if (gCompQuant[i] > 1)
 N         return PJPG_UNSUPPORTED_QUANT_TABLE;
@@ -1163,7 +1164,7 @@ N//-----------------------------------------------------------------------------
 N// Used to skip unrecognized markers.
 Nstatic uint8 skipVariableMarker(void)
 N{
-N   uint16 left = getBits1(16);
+N   uint16 left = getBits(16,0);
 N
 N   if (left < 2)
 N      return PJPG_BAD_VARIABLE_MARKER;
@@ -1172,7 +1173,7 @@ N   left -= 2;
 N
 N   while (left)
 N   {
-N      getBits1(8);
+N      getBits(8,0);
 N      left--;
 N   }
 N   
@@ -1182,10 +1183,10 @@ N//-----------------------------------------------------------------------------
 N// Read a define restart interval (DRI) marker.
 Nstatic uint8 readDRIMarker(void)
 N{
-N   if (getBits1(16) != 4)
+N   if (getBits(16,0) != 4)
 N      return PJPG_BAD_DRI_LENGTH;
 N
-N   gRestartInterval = getBits1(16);
+N   gRestartInterval = getBits(16,0);
 N   
 N   return 0;
 N}
@@ -1198,10 +1199,10 @@ N// Read a start of scan (SOS) marker.
 Nstatic uint8 readSOSMarker(void)
 N{
 N   uint8 i;
-N   uint16 left = getBits1(16);
+N   uint16 left = getBits(16,0);
 N   uint8 spectral_start, spectral_end, successive_high, successive_low;
 N
-N   gCompsInScan = (uint8)getBits1(8);
+N   gCompsInScan = (uint8)getBits(8,0);
 N
 N   left -= 3;
 N
@@ -1211,8 +1212,8 @@ N      return PJPG_BAD_SOS_LENGTH;
 N   
 N   for (i = 0; i < gCompsInScan; i++)
 N   {
-N      uint8 cc = (uint8)getBits1(8);
-N      uint8 c = (uint8)getBits1(8);
+N      uint8 cc = (uint8)getBits(8,0);
+N      uint8 c = (uint8)getBits(8,0);
 N      uint8 ci;
 N      
 N      left -= 2;
@@ -1229,16 +1230,16 @@ N      gCompDCTab[ci] = (c >> 4) & 15;
 N      gCompACTab[ci] = (c & 15);
 N   }
 N
-N   spectral_start  = (uint8)getBits1(8);
-N   spectral_end    = (uint8)getBits1(8);
-N   successive_high = (uint8)getBits1(4);
-N   successive_low  = (uint8)getBits1(4);
+N   spectral_start  = (uint8)getBits(8,0);
+N   spectral_end    = (uint8)getBits(8,0);
+N   successive_high = (uint8)getBits(4,0);
+N   successive_low  = (uint8)getBits(4,0);
 N
 N   left -= 3;
 N
 N   while (left)                  
 N   {
-N      getBits1(8);
+N      getBits(8,0);
 N      left--;
 N   }
 N   
@@ -1258,13 +1259,13 @@ N      do
 N      {
 N         bytes++;
 N
-N         c = (uint8)getBits1(8);
+N         c = (uint8)getBits(8,0);
 N
 N      } while (c != 0xFF);
 N
 N      do
 N      {
-N         c = (uint8)getBits1(8);
+N         c = (uint8)getBits(8,0);
 N
 N      } while (c == 0xFF);
 N
@@ -1356,9 +1357,9 @@ Nstatic uint8 locateSOIMarker(void)
 N{
 N   uint16 bytesleft;
 N   
-N   uint8 lastchar = (uint8)getBits1(8);
+N   uint8 lastchar = (uint8)getBits(8,0);
 N
-N   uint8 thischar = (uint8)getBits1(8);
+N   uint8 thischar = (uint8)getBits(8,0);
 N
 N   /* ok if it's a normal JPEG file without a special header */
 N
@@ -1374,7 +1375,7 @@ N         return PJPG_NOT_JPEG;
 N
 N      lastchar = thischar;
 N
-N      thischar = (uint8)getBits1(8);
+N      thischar = (uint8)getBits(8,0);
 N
 N      if (lastchar == 0xFF) 
 N      {
@@ -1477,8 +1478,8 @@ N   gInBufLeft = 0;
 N   gBitBuf = 0;
 N   gBitsLeft = 8;
 N
-N   getBits1(8);
-N   getBits1(8);
+N   getBits(8,0);
+N   getBits(8,0);
 N
 N   return 0;
 N}
@@ -1495,8 +1496,8 @@ N
 N   stuffChar((uint8)(gBitBuf >> 8));
 N   
 N   gBitsLeft = 8;
-N   getBits2(8);
-N   getBits2(8);
+N   getBits(8,1);
+N   getBits(8,1);
 N}
 N//------------------------------------------------------------------------------
 N// Restart interval processing.
@@ -1537,8 +1538,8 @@ N
 N   // Get the bit buffer going again
 N
 N   gBitsLeft = 8;
-N   getBits2(8);
-N   getBits2(8);
+N   getBits(8,1);
+N   getBits(8,1);
 N   
 N   return 0;
 N}
@@ -1552,8 +1553,8 @@ N   uint8 status;
 N
 N   // Prime the bit buffer
 N   gBitsLeft = 8;
-N   getBits1(8);
-N   getBits1(8);
+N   getBits(8,0);
+N   getBits(8,0);
 N
 N   // The next marker _should_ be EOI
 N   status = processMarkers(&c);
@@ -2720,7 +2721,7 @@ N
 N      r = 0;
 N      numExtraBits = s & 0xF;
 N      if (numExtraBits)
-N         r = getBits2(numExtraBits);
+N         r = getBits(numExtraBits,1);
 N      dc = huffExtend(r, s);          
 N      dc = dc + gLastDC[componentID];
 N      gLastDC[componentID] = dc;
@@ -2733,7 +2734,7 @@ N         for (k = 1; k < 64; k++) {
 N            s = huffDecode(compACTab ? &gHuffTab3 : &gHuffTab2, compACTab ? gHuffVal3 : gHuffVal2);
 N            numExtraBits = s & 0xF;
 N            if (numExtraBits)
-N               getBits2(numExtraBits);
+N               getBits(numExtraBits,1);
 N            r = s >> 4;
 N            s &= 15;
 N            if (s) {
@@ -2760,7 +2761,7 @@ N            s = huffDecode(compACTab ? &gHuffTab3 : &gHuffTab2, compACTab ? gHu
 N            extraBits = 0;
 N            numExtraBits = s & 0xF;
 N            if (numExtraBits)
-N               extraBits = getBits2(numExtraBits);
+N               extraBits = getBits(numExtraBits,1);
 N
 N            r = s >> 4;
 N            s &= 15;
@@ -2853,4 +2854,6 @@ N   pInfo->m_pMCUBufR = gMCUBufR; pInfo->m_pMCUBufG = gMCUBufG; pInfo->m_pMCUBuf
 N      
 N   return 0;
 N}
-W "Source\LCD\picojpeg.c" 1064 14 function "findEOI"  was declared but never referenced
+W "Source\LCD\picojpeg.c" 329 15 function "getBits1"  was declared but never referenced
+W "Source\LCD\picojpeg.c" 337 15 function "getBits2"  was declared but never referenced
+W "Source\LCD\picojpeg.c" 1065 14 function "findEOI"  was declared but never referenced

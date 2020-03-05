@@ -22,65 +22,69 @@ Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1\LCDs_Profiler.uvprojx
-Project File Date:  03/03/2020
+Project File Date:  03/04/2020
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling region.c...
-compiling touchscreen.c...
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif 
-* __CMSIS_GENERIC */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
-  #else /* #if !defined(MKL25Z4_H_) */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif  /* #if !defined(MKL25Z4_H_) */
-Source\LCD\touchscreen.c(105): warning: #2815-D: empty dependent statement in while-statement
-  			;
-Source\LCD\touchscreen.c(133): warning: #2815-D: empty dependent statement in while-statement
-  			;
-Source\LCD\touchscreen.c(161): warning: #2815-D: empty dependent statement in while-statement
-  		;
-Source\LCD\touchscreen.c(245): warning: #2815-D: empty dependent statement in while-statement
-  			;
-Source\LCD\touchscreen.c(259): warning: #2815-D: empty dependent statement in while-statement
-  		;
-Source\LCD\touchscreen.c(275): warning: #2815-D: empty dependent statement in while-statement
-  			;
-Source\LCD\touchscreen.c(289): warning: #2815-D: empty dependent statement in while-statement
-  		;
-Source\LCD\touchscreen.c(104): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\LCD\touchscreen.c(132): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\LCD\touchscreen.c(160): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(163): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(244): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(274): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(244): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(258): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(274): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-Source\LCD\touchscreen.c(288): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_TS_Read)
-compiling spi_io.c...
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif 
-* __CMSIS_GENERIC */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
-  #else /* #if !defined(MKL25Z4_H_) */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif  /* #if !defined(MKL25Z4_H_) */
-Source\ulibSD\spi_io.c(76): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\spi_io.c(85): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\spi_io.c(98): warning: #2519-D: Unable to determine constant iteration count for this loop
+compiling picojpeg.c...
+.\Include\picojpeg.h(65): warning: #1301-D: padding inserted in struct 'anonymous'
+  {
+Source\LCD\picojpeg.c(329): warning:  #177-D: function "getBits1"  was declared but never referenced
+  static uint16 getBits1(uint8 numBits)
+Source\LCD\picojpeg.c(337): warning:  #177-D: function "getBits2"  was declared but never referenced
+  static uint16 getBits2(uint8 numBits)
+Source\LCD\picojpeg.c(1065): warning:  #177-D: function "findEOI"  was declared but never referenced
+  static uint8 findEOI(void)
+Source\LCD\picojpeg.c(450): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBit)
+Source\LCD\picojpeg.c(468): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\LCD\picojpeg.c(554): warning: #1801-D: Optimization: Function expanded (getHuffTable)
+Source\LCD\picojpeg.c(555): warning: #1801-D: Optimization: Function expanded (getHuffVal)
+Source\LCD\picojpeg.c(567): warning: #1801-D: Optimization: Function expanded (getMaxHuffCodes)
+Source\LCD\picojpeg.c(580): warning: #1801-D: Optimization: Function expanded (huffCreate)
+Source\LCD\picojpeg.c(562): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(571): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(468): warning: #2519-D: Unable to determine constant iteration count for this loop
+Source\LCD\picojpeg.c(547): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(625): warning: #1801-D: Optimization: Function expanded (createWinogradQuant)
+Source\LCD\picojpeg.c(614): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(600): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(1273): warning: #1979-D: Could not optimize: This operation inhibits loop transformation
+Source\LCD\picojpeg.c(1275): warning: #1847-D: Could not optimize: Use of pointer variable (n)
+Source\LCD\picojpeg.c(669): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(693): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(731): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(758): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(778): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(784): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(778): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(801): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (nextMarker)
+Source\LCD\picojpeg.c(894): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getBits)
+Source\LCD\picojpeg.c(1028): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getChar)
+Source\LCD\picojpeg.c(1035): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (getChar)
+Source\LCD\picojpeg.c(1100): warning: #1663-D: Could not optimize: Branches out of the loop prevent translation
+Source\LCD\picojpeg.c(1115): warning: #1663-D: Could not optimize: Branches out of the loop prevent translation
+Source\LCD\picojpeg.c(1271): warning: #2192-D: Optimization: Loop optimized for scalar execution (i)
+Source\LCD\picojpeg.c(1367): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (imul_b5)
+Source\LCD\picojpeg.c(1427): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (clamp)
+Source\LCD\picojpeg.c(1552): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (subAndClamp)
+Source\LCD\picojpeg.c(1589): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (subAndClamp)
+Source\LCD\picojpeg.c(1620): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (subAndClamp)
+Source\LCD\picojpeg.c(1664): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (addAndClamp)
+Source\LCD\picojpeg.c(1701): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (addAndClamp)
+Source\LCD\picojpeg.c(1732): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (addAndClamp)
+Source\LCD\picojpeg.c(1757): warning: #2192-D: Optimization: Loop optimized for scalar execution (i)
+Source\LCD\picojpeg.c(1784): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (subAndClamp)
+Source\LCD\picojpeg.c(1808): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (addAndClamp)
+Source\LCD\picojpeg.c(2219): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (huffDecode)
+Source\LCD\picojpeg.c(2245): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (huffDecode)
+Source\LCD\picojpeg.c(2204): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (huffDecode)
+Source\LCD\picojpeg.c(2258): warning: #2190-D: Optimization: Loop unrolled and optimized (r__41; by 2)
+Source\LCD\picojpeg.c(2269): warning: #2190-D: Optimization: Loop unrolled and optimized (r; by 2)
+Source\LCD\picojpeg.c(2276): warning: #2190-D: Optimization: Loop unrolled and optimized (k__43; by 2)
+Source\LCD\picojpeg.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=18732 RO-data=7276 RW-data=204 ZI-data=8644  
+Program Size: Code=18780 RO-data=7180 RW-data=204 ZI-data=8620  
 After Build - User command #1: Scripts\update_regions_MDK.bat .\Objects\LCDs_Profiler.axf
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegions.exe .\Objects\LCDs_Profiler.axf -c -s -x__ -x_ -xQ_ -xPIT_ -oSource\Profiler\region.c 
 GetRegions.exe completed without errors
@@ -90,7 +94,7 @@ C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegi
 GetRegions.exe completed without errors
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>sort /R .\Objects\function_sizes.txt /O .\Objects\sorted_function_sizes.txt 
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>exit /b 0  
-".\Objects\LCDs_Profiler.axf" - 0 Error(s), 30 Warning(s).
+".\Objects\LCDs_Profiler.axf" - 0 Error(s), 50 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -118,9 +122,9 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:2.5.0
       Source file:   Device\Source\system_MKL25Z4.c
-      Source file:   Device\Source\ARM\startup_MKL25Z4.s
       Include file:  Device\Source\system_MKL25Z4.h
-Build Time Elapsed:  00:00:05
+      Source file:   Device\Source\ARM\startup_MKL25Z4.s
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

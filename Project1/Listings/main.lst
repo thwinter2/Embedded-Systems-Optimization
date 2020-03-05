@@ -47540,7 +47540,10 @@ N#ifdef PROFILER_SERIAL_SUPPORT
 S	Init_UART0(115200);
 S	printf("Hello 2019!\n\r");
 N#endif
-N	Init_Debug_Signals();
+N#if DEBUG_ENABLE
+X#if 0
+S	Init_Debug_Signals();
+N#endif
 N
 N#ifdef PROFILER_LCD_SUPPORT
 N	LCD_Init();
@@ -47555,7 +47558,7 @@ N	rc = pf_mount(&fatfs);
 N	if (rc) {
 N		LCD_Text_PrintStr_RC(2, 0, "pf_mount failed");
 N		Control_RGB_LEDs(1, 0, 0);
-R "Source\main.c" 194 12 empty dependent statement in while-statement
+R "Source\main.c" 196 12 empty dependent statement in while-statement
 N		while (1);
 N	}
 N	LCD_Text_PrintStr_RC(2, 0, "Mounted uSD card");
@@ -47573,7 +47576,7 @@ N		if (error != 0) {
 N			sprintf(buf, "LCD_JPEG failure %d", error);
 N			LCD_Text_PrintStr_RC(0, 0, buf); 
 N			while (1)
-R "Source\main.c" 211 5 empty dependent statement in while-statement
+R "Source\main.c" 213 5 empty dependent statement in while-statement
 N				;
 N		}
 N		Sort_Profile_Regions();

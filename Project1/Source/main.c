@@ -176,7 +176,9 @@ int main(void) {
 	Init_UART0(115200);
 	printf("Hello 2019!\n\r");
 #endif
+#if DEBUG_ENABLE
 	Init_Debug_Signals();
+#endif
 
 #ifdef PROFILER_LCD_SUPPORT
 	LCD_Init();
