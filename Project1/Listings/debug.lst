@@ -1173,7 +1173,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1190,7 +1189,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2678,7 +2676,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11267,7 +11264,6 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8145 1 Header file not guarded against multiple inclusion
 L 2 "Source\debug.c" 2
 N#include "debug.h"
 L 1 ".\Include\debug.h" 1
@@ -19431,11 +19427,10 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
-N#define DEBUG_ENABLE 0
+N#define DEBUG_ENABLE 1
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -19462,21 +19457,35 @@ X	((SIM_Type *)(0x40047000u))->SCGC5 |= 0x400u;
 N	
 N	// Make pins GPIO
 N	#if DEBUG_ENABLE
-X	#if 0
-S	PORTB->PCR[DBG_1] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_1] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_2] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_2] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_3] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_3] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_4] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_4] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_5] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_5] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_6] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_6] |= PORT_PCR_MUX(1);          
-S	PORTB->PCR[DBG_7] &= ~PORT_PCR_MUX_MASK;          
-S	PORTB->PCR[DBG_7] |= PORT_PCR_MUX(1);          
+X	#if 1
+N	PORTB->PCR[DBG_1] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[1] &= ~0x700u;          
+N	PORTB->PCR[DBG_1] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[1] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_2] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[2] &= ~0x700u;          
+N	PORTB->PCR[DBG_2] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[2] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_3] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[3] &= ~0x700u;          
+N	PORTB->PCR[DBG_3] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[3] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_4] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[8] &= ~0x700u;          
+N	PORTB->PCR[DBG_4] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[8] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_5] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[9] &= ~0x700u;          
+N	PORTB->PCR[DBG_5] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[9] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_6] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[10] &= ~0x700u;          
+N	PORTB->PCR[DBG_6] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[10] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
+N	PORTB->PCR[DBG_7] &= ~PORT_PCR_MUX_MASK;          
+X	((PORT_Type *)(0x4004A000u))->PCR[11] &= ~0x700u;          
+N	PORTB->PCR[DBG_7] |= PORT_PCR_MUX(1);          
+X	((PORT_Type *)(0x4004A000u))->PCR[11] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);          
 N	#endif
 N	
 N	// Set ports to outputs

@@ -117,7 +117,6 @@ N   // It is up to the caller to copy or blit these pixels from these buffers in
 N   unsigned char *m_pMCUBufR;
 N   unsigned char *m_pMCUBufG;
 N   unsigned char *m_pMCUBufB;
-R ".\Include\picojpeg.h" 65 1 padding inserted in struct 'anonymous'
 N} pjpeg_image_info_t;
 N
 Ntypedef unsigned char (*pjpeg_need_bytes_callback_t)(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data);
@@ -134,7 +133,7 @@ N// Not thread safe.
 Nunsigned char pjpeg_decode_mcu(void);
 N
 N// AD Opt
-N#define LESS_INLINING 1 // 0 to re-enable inlining
+N#define LESS_INLINING 0 // 0 to re-enable inlining
 N
 N#ifdef __cplusplus
 S}
@@ -759,8 +758,8 @@ N   return c;
 N}
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
-Nstatic uint16 getBits(uint8 numBits, uint8 FFCheck) __attribute__((noinline));
+X#if 0
+Sstatic uint16 getBits(uint8 numBits, uint8 FFCheck) __attribute__((noinline));
 N#endif
 Nstatic uint16 getBits(uint8 numBits, uint8 FFCheck)
 N{
@@ -799,8 +798,7 @@ N
 N   return ret >> (16 - origBits);
 N}
 N//------------------------------------------------------------------------------
-N#if LESS_INLINING
-X#if 1
+N/*#if LESS_INLINING
 Nstatic uint16 getBits1(uint8 numBits) __attribute__((noinline));
 N#endif
 Nstatic uint16 getBits1(uint8 numBits)
@@ -809,13 +807,12 @@ N   return getBits(numBits, 0);
 N}
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
 Nstatic uint16 getBits2(uint8 numBits) __attribute__((noinline));
 N#endif
 Nstatic uint16 getBits2(uint8 numBits)
 N{
 N   return getBits(numBits, 1);
-N}
+N}*/
 N//------------------------------------------------------------------------------
 Nstatic PJPG_INLINE uint8 getBit(void)
 Xstatic  uint8 getBit(void)
@@ -890,8 +887,8 @@ N   }
 N}
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
-Nstatic int16 huffExtend(uint16 x, uint8 s) __attribute__((noinline));
+X#if 0
+Sstatic int16 huffExtend(uint16 x, uint8 s) __attribute__((noinline));
 N#endif
 Nstatic int16 huffExtend(uint16 x, uint8 s)
 N{
@@ -899,8 +896,8 @@ N   return ((x < getExtendTest(s)) ? ((int16)x + getExtendOffset(s)) : (int16)x)
 N}
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
-Nstatic uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal) __attribute__((noinline));
+X#if 0
+Sstatic uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal) __attribute__((noinline));
 N#endif
 Nstatic uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal)
 N{
@@ -1823,8 +1820,8 @@ N   return (uint8)s;
 N}
 N
 N#if LESS_INLINING
-X#if 1
-Nstatic void idctRows(void) __attribute__((noinline));
+X#if 0
+Sstatic void idctRows(void) __attribute__((noinline));
 N#endif
 Nstatic void idctRows(void)
 N{
@@ -1901,8 +1898,8 @@ N      pSrc += 8;
 N   }      
 N}
 N#if LESS_INLINING
-X#if 1
-Nstatic void idctCols(void) __attribute__((noinline));
+X#if 0
+Sstatic void idctCols(void) __attribute__((noinline));
 N#endif
 Nstatic void idctCols(void)
 N{
@@ -2038,8 +2035,8 @@ N//B = Y + 1.772 (Cb-128)
 N/*----------------------------------------------------------------------------*/
 N// Cb upsample and accumulate, 4x4 to 8x8
 N#if LESS_INLINING
-X#if 1
-Nstatic void upsampleCb(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
+X#if 0
+Sstatic void upsampleCb(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
 N#endif
 Nstatic void upsampleCb(uint8 srcOfs, uint8 dstOfs)
 N{
@@ -2151,8 +2148,8 @@ N//B = Y + 1.772 (Cb-128)
 N/*----------------------------------------------------------------------------*/
 N// Cr upsample and accumulate, 4x4 to 8x8
 N#if LESS_INLINING
-X#if 1
-Nstatic void upsampleCr(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
+X#if 0
+Sstatic void upsampleCr(uint8 srcOfs, uint8 dstOfs) __attribute__((noinline));
 N#endif
 Nstatic void upsampleCr(uint8 srcOfs, uint8 dstOfs) 
 N{
@@ -2274,8 +2271,8 @@ N}
 N/*----------------------------------------------------------------------------*/
 N// Cb convert to RGB and accumulate
 N#if LESS_INLINING
-X#if 1
-Nstatic void convertCb(uint8 dstOfs) __attribute__((noinline));
+X#if 0
+Sstatic void convertCb(uint8 dstOfs) __attribute__((noinline));
 N#endif
 Nstatic void convertCb(uint8 dstOfs)
 N{
@@ -2299,8 +2296,8 @@ N}
 N/*----------------------------------------------------------------------------*/
 N// Cr convert to RGB and accumulate
 N#if LESS_INLINING
-X#if 1
-Nstatic void convertCr(uint8 dstOfs) __attribute__((noinline));
+X#if 0
+Sstatic void convertCr(uint8 dstOfs) __attribute__((noinline));
 N#endif
 Nstatic void convertCr(uint8 dstOfs)
 N{
@@ -2323,8 +2320,8 @@ N   }
 N}
 N/*----------------------------------------------------------------------------*/
 N#if LESS_INLINING
-X#if 1
-Nstatic void transformBlock(uint8 mcuBlock) __attribute__((noinline));
+X#if 0
+Sstatic void transformBlock(uint8 mcuBlock) __attribute__((noinline));
 N#endif
 Nstatic void transformBlock(uint8 mcuBlock)
 N{
@@ -2474,8 +2471,8 @@ N   }
 N}
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
-Nstatic void transformBlockReduce(uint8 mcuBlock) __attribute__((noinline));
+X#if 0
+Sstatic void transformBlockReduce(uint8 mcuBlock) __attribute__((noinline));
 N#endif
 Nstatic void transformBlockReduce(uint8 mcuBlock)
 N{
@@ -2690,8 +2687,8 @@ N}
 N
 N//------------------------------------------------------------------------------
 N#if LESS_INLINING
-X#if 1
-Nstatic uint8 decodeNextMCU(void) __attribute__((noinline));
+X#if 0
+Sstatic uint8 decodeNextMCU(void) __attribute__((noinline));
 N#endif
 N
 Nstatic uint8 decodeNextMCU(void)
@@ -2853,6 +2850,4 @@ N   pInfo->m_pMCUBufR = gMCUBufR; pInfo->m_pMCUBufG = gMCUBufG; pInfo->m_pMCUBuf
 N      
 N   return 0;
 N}
-W "Source\LCD\picojpeg.c" 329 15 function "getBits1"  was declared but never referenced
-W "Source\LCD\picojpeg.c" 337 15 function "getBits2"  was declared but never referenced
 W "Source\LCD\picojpeg.c" 1064 14 function "findEOI"  was declared but never referenced

@@ -123,11 +123,11 @@
 
 #if 1 // New connections
 #define PIN_DATA_PORT					PORTC
-#define PIN_DATA_PT						PTC
+#define PIN_DATA_PT						FPTC
 #define PIN_DATA_SHIFT				( 3 )
 
 #define PIN_CONTROL_PORT			PORTC
-#define PIN_CONTROL_PT				PTC
+#define PIN_CONTROL_PT				FPTC
 #define PIN_CD_SHIFT					( 12 )
 #define PIN_CD           			( 1 << PIN_CD_SHIFT)
 
@@ -146,11 +146,11 @@
 #else // Old connections
 
 #define PIN_DATA_PORT					PORTC
-#define PIN_DATA_PT						PTC
+#define PIN_DATA_PT						FPTC
 #define PIN_DATA_SHIFT				( 0 )
 
 #define PIN_CONTROL_PORT			PORTC
-#define PIN_CONTROL_PT				PTC
+#define PIN_CONTROL_PT				FPTC
 #define PIN_CD_SHIFT					( 8 )
 #define PIN_CD           			( 1 << PIN_CD_SHIFT)
 

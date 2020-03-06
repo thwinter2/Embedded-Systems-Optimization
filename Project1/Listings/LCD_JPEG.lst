@@ -117,7 +117,6 @@ N   // It is up to the caller to copy or blit these pixels from these buffers in
 N   unsigned char *m_pMCUBufR;
 N   unsigned char *m_pMCUBufG;
 N   unsigned char *m_pMCUBufB;
-R ".\Include\picojpeg.h" 65 1 padding inserted in struct 'anonymous'
 N} pjpeg_image_info_t;
 N
 Ntypedef unsigned char (*pjpeg_need_bytes_callback_t)(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data);
@@ -134,7 +133,7 @@ N// Not thread safe.
 Nunsigned char pjpeg_decode_mcu(void);
 N
 N// AD Opt
-N#define LESS_INLINING 1 // 0 to re-enable inlining
+N#define LESS_INLINING 0 // 0 to re-enable inlining
 N
 N#ifdef __cplusplus
 S}
@@ -700,7 +699,6 @@ X	DWORD	org_clust;
 N	CLUST	curr_clust;	/* File current cluster */
 X	DWORD	curr_clust;	 
 N	DWORD	dsect;		/* File current data sector */
-R ".\Source\FS\pff.h" 65 16 padding inserted in struct 'anonymous'
 N} FATFS;
 N
 N
@@ -715,7 +713,6 @@ X	DWORD	sclust;
 N	CLUST	clust;		/* Current cluster */
 X	DWORD	clust;		 
 N	DWORD	sect;		/* Current sector */
-R ".\Source\FS\pff.h" 86 16 padding inserted in struct 'anonymous'
 N} DIR;
 N
 N
@@ -728,7 +725,6 @@ N	WORD	fdate;		/* Last modified date */
 N	WORD	ftime;		/* Last modified time */
 N	BYTE	fattrib;	/* Attribute */
 N	char	fname[13];	/* File name */
-R ".\Source\FS\pff.h" 98 16 padding added to end of struct 'anonymous'
 N} FILINFO;
 N
 N
@@ -1641,7 +1637,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1658,7 +1653,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3146,7 +3140,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11735,11 +11728,10 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
-N#define DEBUG_ENABLE 0
+N#define DEBUG_ENABLE 1
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -16197,7 +16189,7 @@ N// Backlight
 N#define LCD_BL_TPM (TPM1)
 N#define LCD_BL_TPM_CHANNEL (0)
 N#define LCD_BL_TPM_FREQ (20000)
-N#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+N#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 N
 N// Touchscreen Hardware Interface
 N#if (SHIELD_VERSION == 9)
@@ -16212,10 +16204,10 @@ N#define LCD_TS_XL_PORT (PORTC)
 N#define LCD_TS_YU_PORT (PORTE)
 N#define LCD_TS_XR_PORT (PORTE)
 N
-N#define LCD_TS_YD_PT (PTC)
-N#define LCD_TS_XL_PT (PTC)
-N#define LCD_TS_YU_PT (PTE)
-N#define LCD_TS_XR_PT (PTE)
+N#define LCD_TS_YD_PT (FPTC)
+N#define LCD_TS_XL_PT (FPTC)
+N#define LCD_TS_YU_PT (FPTE)
+N#define LCD_TS_XR_PT (FPTE)
 N
 N#define LCD_TS_YD_BIT (0)
 N#define LCD_TS_XL_BIT (1)
@@ -16234,10 +16226,10 @@ S#define LCD_TS_XL_PORT (PORTE)
 S#define LCD_TS_YU_PORT (PORTE)
 S#define LCD_TS_XR_PORT (PORTE)
 S
-S#define LCD_TS_YD_PT (PTE)
-S#define LCD_TS_XL_PT (PTE)
-S#define LCD_TS_YU_PT (PTE)
-S#define LCD_TS_XR_PT (PTE)
+S#define LCD_TS_YD_PT (FPTE)
+S#define LCD_TS_XL_PT (FPTE)
+S#define LCD_TS_YU_PT (FPTE)
+S#define LCD_TS_XR_PT (FPTE)
 S
 S#define LCD_TS_YD_BIT (20)
 S#define LCD_TS_XL_BIT (21)
@@ -16255,9 +16247,9 @@ N#define TS_DELAY (1)
 N#define TS_CALIB_SAMPLES (10)
 N
 N/**************************************************************/
-N#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-N#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-N#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+N#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+N#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+N#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 N/**************************************************************/
 N
 N#define LCD_CTRL_INIT_SEQ_END 0
@@ -16304,7 +16296,6 @@ N	*pBytes_actually_read = (unsigned char) (br);
 N	g_nInFileOfs += br;
 N
 N	return 0;
-R "Source\LCD\LCD_JPEG.c" 38 27 parameter "pCallback_data"  was never referenced
 N}
 N
 N//------------------------------------------------------------------------------
@@ -16368,8 +16359,6 @@ N
 N	row_blocks_per_mcu = image_info.m_MCUWidth >> 3;
 N	col_blocks_per_mcu = image_info.m_MCUHeight >> 3;
 N	for (;;) {
-R "Source\LCD\LCD_JPEG.c" 114 7 declaration hides parameter "y"  (declared at line 64)
-R "Source\LCD\LCD_JPEG.c" 114 10 declaration hides parameter "x"  (declared at line 63)
 N		int y, x;
 N		uint8 *pDst_row;
 N		status = pjpeg_decode_mcu();
@@ -16397,8 +16386,6 @@ N					row_pitch + mcu_x * row_blocks_per_mcu * image_info.m_comps;
 N			if (image_info.m_scanType == PJPG_GRAYSCALE) {
 N				*pDst_row = image_info.m_pMCUBufR[0];
 N			} else {
-R "Source\LCD\LCD_JPEG.c" 141 10 declaration hides variable "y"  (declared at line 114)
-R "Source\LCD\LCD_JPEG.c" 141 13 declaration hides variable "x"  (declared at line 114)
 N				uint y, x;
 N				for (y = 0; y < col_blocks_per_mcu; y++) {
 N					uint src_ofs = (y * 128U);
@@ -16517,7 +16504,6 @@ N					if (result != 0) {
 N						LCD_Text_PrintStr_RC(0, 0, "pjpeg_load_from_file ");
 N						LCD_Text_PrintStr_RC(1, 0, "failed");
 N						while (1)
-R "Source\LCD\LCD_JPEG.c" 256 8 empty dependent statement in while-statement
 N							;
 N					} else {
 N						image_count++;
@@ -16531,7 +16517,6 @@ N		} else {
 N			LCD_Text_PrintStr_RC(0, 0, "Couldn't open");
 N			LCD_Text_PrintStr_RC(0, 0, "root directory");
 N			while (1)
-R "Source\LCD\LCD_JPEG.c" 269 5 empty dependent statement in while-statement
 N				;
 N		}
 N#if ENABLE_PIXEL_HASH

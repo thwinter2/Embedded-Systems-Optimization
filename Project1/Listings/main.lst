@@ -1175,7 +1175,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1192,7 +1191,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2680,7 +2678,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11269,7 +11266,6 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8145 1 Header file not guarded against multiple inclusion
 L 4 "Source\main.c" 2
 N#include <stdio.h>
 L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h" 1
@@ -20747,7 +20743,6 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -28939,7 +28934,6 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H" 8152 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\UART.h" 2
 N#include "queue.h"
 L 1 ".\Include\queue.h" 1
@@ -37105,7 +37099,6 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 6 ".\Include\queue.h" 2
 N
 N#define Q_MAX_SIZE (256)
@@ -45312,11 +45305,10 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
-N#define DEBUG_ENABLE 0
+N#define DEBUG_ENABLE 1
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -45562,7 +45554,6 @@ X	DWORD	org_clust;
 N	CLUST	curr_clust;	/* File current cluster */
 X	DWORD	curr_clust;	 
 N	DWORD	dsect;		/* File current data sector */
-R ".\Source\FS\pff.h" 65 16 padding inserted in struct 'anonymous'
 N} FATFS;
 N
 N
@@ -45577,7 +45568,6 @@ X	DWORD	sclust;
 N	CLUST	clust;		/* Current cluster */
 X	DWORD	clust;		 
 N	DWORD	sect;		/* Current sector */
-R ".\Source\FS\pff.h" 86 16 padding inserted in struct 'anonymous'
 N} DIR;
 N
 N
@@ -45590,7 +45580,6 @@ N	WORD	fdate;		/* Last modified date */
 N	WORD	ftime;		/* Last modified time */
 N	BYTE	fattrib;	/* Attribute */
 N	char	fname[13];	/* File name */
-R ".\Source\FS\pff.h" 98 16 padding added to end of struct 'anonymous'
 N} FILINFO;
 N
 N
@@ -45686,7 +45675,6 @@ Nuint8_t i2c_repeated_read(uint8_t);
 N	
 Nuint8_t i2c_read_byte(uint8_t dev, uint8_t address);
 Nvoid i2c_write_byte(uint8_t dev, uint8_t address, uint8_t data);
-R ".\Include\I2C.h" 26 64 Header file not guarded against multiple inclusion
 L 18 "Source\main.c" 2
 N#include "mma8451.h"
 L 1 ".\Include\mma8451.h" 1
@@ -47380,7 +47368,6 @@ N		) {
 N//  printf("Failed with rc=%u.\n", rc);
 N	Control_RGB_LEDs(1, 0, 0);
 N	for (;;);
-R "Source\main.c" 30 14 parameter "rc"  was never referenced
 N}
 N
 N
@@ -47541,8 +47528,8 @@ S	Init_UART0(115200);
 S	printf("Hello 2019!\n\r");
 N#endif
 N#if DEBUG_ENABLE
-X#if 0
-S	Init_Debug_Signals();
+X#if 1
+N	Init_Debug_Signals();
 N#endif
 N
 N#ifdef PROFILER_LCD_SUPPORT
@@ -47558,7 +47545,6 @@ N	rc = pf_mount(&fatfs);
 N	if (rc) {
 N		LCD_Text_PrintStr_RC(2, 0, "pf_mount failed");
 N		Control_RGB_LEDs(1, 0, 0);
-R "Source\main.c" 196 12 empty dependent statement in while-statement
 N		while (1);
 N	}
 N	LCD_Text_PrintStr_RC(2, 0, "Mounted uSD card");
@@ -47568,15 +47554,14 @@ N	while (1) {
 N		Init_Profiling();
 N		LCD_Erase();
 N		Control_RGB_LEDs(1, 0, 1);	// Magenta: running
-N		Enable_Profiling();
+N		profiling_enabled = 1;
 N		error = LCD_JPEG();
-N		Disable_Profiling();
+N		profiling_enabled = 0;
 N		Control_RGB_LEDs(error, 1-error, 0);	// Green: ok. Red: bad.
 N		if (error != 0) {
 N			sprintf(buf, "LCD_JPEG failure %d", error);
 N			LCD_Text_PrintStr_RC(0, 0, buf); 
 N			while (1)
-R "Source\main.c" 213 5 empty dependent statement in while-statement
 N				;
 N		}
 N		Sort_Profile_Regions();

@@ -2289,7 +2289,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2306,7 +2305,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3794,7 +3792,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -12383,7 +12380,6 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 6 "Source\LCD\touchscreen.c" 2
 N
 N#include "LCD.h"
@@ -12533,7 +12529,7 @@ N// Backlight
 N#define LCD_BL_TPM (TPM1)
 N#define LCD_BL_TPM_CHANNEL (0)
 N#define LCD_BL_TPM_FREQ (20000)
-N#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+N#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 N
 N// Touchscreen Hardware Interface
 N#if (SHIELD_VERSION == 9)
@@ -12548,10 +12544,10 @@ N#define LCD_TS_XL_PORT (PORTC)
 N#define LCD_TS_YU_PORT (PORTE)
 N#define LCD_TS_XR_PORT (PORTE)
 N
-N#define LCD_TS_YD_PT (PTC)
-N#define LCD_TS_XL_PT (PTC)
-N#define LCD_TS_YU_PT (PTE)
-N#define LCD_TS_XR_PT (PTE)
+N#define LCD_TS_YD_PT (FPTC)
+N#define LCD_TS_XL_PT (FPTC)
+N#define LCD_TS_YU_PT (FPTE)
+N#define LCD_TS_XR_PT (FPTE)
 N
 N#define LCD_TS_YD_BIT (0)
 N#define LCD_TS_XL_BIT (1)
@@ -12570,10 +12566,10 @@ S#define LCD_TS_XL_PORT (PORTE)
 S#define LCD_TS_YU_PORT (PORTE)
 S#define LCD_TS_XR_PORT (PORTE)
 S
-S#define LCD_TS_YD_PT (PTE)
-S#define LCD_TS_XL_PT (PTE)
-S#define LCD_TS_YU_PT (PTE)
-S#define LCD_TS_XR_PT (PTE)
+S#define LCD_TS_YD_PT (FPTE)
+S#define LCD_TS_XL_PT (FPTE)
+S#define LCD_TS_YU_PT (FPTE)
+S#define LCD_TS_XR_PT (FPTE)
 S
 S#define LCD_TS_YD_BIT (20)
 S#define LCD_TS_XL_BIT (21)
@@ -12591,9 +12587,9 @@ N#define TS_DELAY (1)
 N#define TS_CALIB_SAMPLES (10)
 N
 N/**************************************************************/
-N#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-N#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-N#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+N#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+N#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+N#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 N/**************************************************************/
 N
 N#define LCD_CTRL_INIT_SEQ_END 0
@@ -12771,11 +12767,11 @@ S																																				*/
 S
 S#if 1 // New connections
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 3 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 12 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -12794,11 +12790,11 @@ S
 S#else // Old connections
 S
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 0 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 8 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -21173,7 +21169,6 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -21245,9 +21240,9 @@ X	(((PORT_Type *)(0x4004D000u)))->PCR[(22)] &= ~0x700u;
 N	LCD_TS_YU_PORT->PCR[LCD_TS_YU_BIT] |= PORT_PCR_MUX(1);
 X	(((PORT_Type *)(0x4004D000u)))->PCR[(22)] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
 N	LCD_TS_YU_PT->PDDR |= MASK(LCD_TS_YU_BIT);
-X	(((GPIO_Type *)(0x400FF100u)))->PDDR |= (1UL << ((22)));
+X	(((FGPIO_Type *)(0xF80FF100u)))->PDDR |= (1UL << ((22)));
 N	LCD_TS_YU_PT->PCOR = MASK(LCD_TS_YU_BIT); // Clear YU to 0
-X	(((GPIO_Type *)(0x400FF100u)))->PCOR = (1UL << ((22))); 
+X	(((FGPIO_Type *)(0xF80FF100u)))->PCOR = (1UL << ((22))); 
 N
 N	// Set YD + XL to open
 N	// Set YD as ADC input
@@ -21262,7 +21257,7 @@ X	(((PORT_Type *)(0x4004B000u)))->PCR[(1)] &= ~0x700u;
 N	LCD_TS_XL_PORT->PCR[LCD_TS_XL_BIT] |= PORT_PCR_MUX(1);
 X	(((PORT_Type *)(0x4004B000u)))->PCR[(1)] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
 N	LCD_TS_XL_PT->PDDR &= ~MASK(LCD_TS_XL_BIT); // Input
-X	(((GPIO_Type *)(0x400FF080u)))->PDDR &= ~(1UL << ((1))); 
+X	(((FGPIO_Type *)(0xF80FF080u)))->PDDR &= ~(1UL << ((1))); 
 N	
 N	// Set XR as digital input with pull-up
 N	LCD_TS_XR_PORT->PCR[LCD_TS_XR_BIT] &= ~PORT_PCR_MUX_MASK;
@@ -21272,7 +21267,7 @@ X	(((PORT_Type *)(0x4004D000u)))->PCR[(23)] |= (((uint32_t)(((uint32_t)(1))<<8))
 N	LCD_TS_XR_PORT->PCR[LCD_TS_XR_BIT] |= PORT_PCR_PE_MASK; // Enable pull-up
 X	(((PORT_Type *)(0x4004D000u)))->PCR[(23)] |= 0x2u; 
 N	LCD_TS_XR_PT->PDDR &= ~MASK(LCD_TS_XR_BIT); // Input
-X	(((GPIO_Type *)(0x400FF100u)))->PDDR &= ~(1UL << ((23))); 
+X	(((FGPIO_Type *)(0xF80FF100u)))->PDDR &= ~(1UL << ((23))); 
 N		
 N	// Wait for the inputs to settle
 N	Delay(TS_DELAY);
@@ -21280,7 +21275,7 @@ X	Delay((1));
 N	// Read XR input via digital
 N	// if XR is 0, then screen is pressed
 N	b = (LCD_TS_XR_PT->PDIR) & MASK(LCD_TS_XR_BIT);
-X	b = ((((GPIO_Type *)(0x400FF100u)))->PDIR) & (1UL << ((23)));
+X	b = ((((FGPIO_Type *)(0xF80FF100u)))->PDIR) & (1UL << ((23)));
 N	
 N	if (b>0) {
 N		// Screen not pressed
@@ -21308,13 +21303,13 @@ X		(((PORT_Type *)(0x4004D000u)))->PCR[(23)] &= ~0x700u;
 N		LCD_TS_XR_PORT->PCR[LCD_TS_XR_BIT] |= PORT_PCR_MUX(1);
 X		(((PORT_Type *)(0x4004D000u)))->PCR[(23)] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
 N		LCD_TS_XL_PT->PDDR |= MASK(LCD_TS_XL_BIT); 
-X		(((GPIO_Type *)(0x400FF080u)))->PDDR |= (1UL << ((1))); 
+X		(((FGPIO_Type *)(0xF80FF080u)))->PDDR |= (1UL << ((1))); 
 N		LCD_TS_XR_PT->PDDR |= MASK(LCD_TS_XR_BIT);
-X		(((GPIO_Type *)(0x400FF100u)))->PDDR |= (1UL << ((23)));
+X		(((FGPIO_Type *)(0xF80FF100u)))->PDDR |= (1UL << ((23)));
 N		LCD_TS_XR_PT->PSOR = MASK(LCD_TS_XR_BIT); // Set XR to 1
-X		(((GPIO_Type *)(0x400FF100u)))->PSOR = (1UL << ((23))); 
+X		(((FGPIO_Type *)(0xF80FF100u)))->PSOR = (1UL << ((23))); 
 N		LCD_TS_XL_PT->PCOR = MASK(LCD_TS_XL_BIT); // Clear XL to 0
-X		(((GPIO_Type *)(0x400FF080u)))->PCOR = (1UL << ((1))); 
+X		(((FGPIO_Type *)(0xF80FF080u)))->PCOR = (1UL << ((1))); 
 N		// Wait for inputs to settle
 N		Delay(TS_DELAY);
 X		Delay((1));
@@ -21324,7 +21319,6 @@ N		ADC0->SC1[0] = LCD_TS_YU_CHANNEL; // start conversion on channel YU
 X		((ADC_Type *)(0x4003B000u))->SC1[0] = (3); 
 N		while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
 X		while (!(((ADC_Type *)(0x4003B000u))->SC1[0] & 0x80u))
-R "Source\LCD\touchscreen.c" 105 4 empty dependent statement in while-statement
 N			;
 N		yu = ADC0->R[0];
 X		yu = ((ADC_Type *)(0x4003B000u))->R[0];
@@ -21354,13 +21348,13 @@ X		(((PORT_Type *)(0x4004B000u)))->PCR[(0)] &= ~0x700u;
 N		LCD_TS_YD_PORT->PCR[LCD_TS_YD_BIT] |= PORT_PCR_MUX(1);
 X		(((PORT_Type *)(0x4004B000u)))->PCR[(0)] |= (((uint32_t)(((uint32_t)(1))<<8))&0x700u);
 N		LCD_TS_YU_PT->PDDR |= MASK(LCD_TS_YU_BIT);
-X		(((GPIO_Type *)(0x400FF100u)))->PDDR |= (1UL << ((22)));
+X		(((FGPIO_Type *)(0xF80FF100u)))->PDDR |= (1UL << ((22)));
 N		LCD_TS_YD_PT->PDDR |= MASK(LCD_TS_YD_BIT);
-X		(((GPIO_Type *)(0x400FF080u)))->PDDR |= (1UL << ((0)));
+X		(((FGPIO_Type *)(0xF80FF080u)))->PDDR |= (1UL << ((0)));
 N		LCD_TS_YD_PT->PSOR = MASK(LCD_TS_YD_BIT); // Set YD to 1
-X		(((GPIO_Type *)(0x400FF080u)))->PSOR = (1UL << ((0))); 
+X		(((FGPIO_Type *)(0xF80FF080u)))->PSOR = (1UL << ((0))); 
 N		LCD_TS_YU_PT->PCOR = MASK(LCD_TS_YU_BIT); // Clear YU to 0
-X		(((GPIO_Type *)(0x400FF100u)))->PCOR = (1UL << ((22))); 
+X		(((FGPIO_Type *)(0xF80FF100u)))->PCOR = (1UL << ((22))); 
 N		// Wait for the inputs to settle
 N		Delay(TS_DELAY);
 X		Delay((1));
@@ -21370,7 +21364,6 @@ N		ADC0->SC1[0] = LCD_TS_XL_CHANNEL; // start conversion on channel XL
 X		((ADC_Type *)(0x4003B000u))->SC1[0] = (15); 
 N		while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
 X		while (!(((ADC_Type *)(0x4003B000u))->SC1[0] & 0x80u))
-R "Source\LCD\touchscreen.c" 133 4 empty dependent statement in while-statement
 N			;
 N		xl = ADC0->R[0];
 X		xl = ((ADC_Type *)(0x4003B000u))->R[0];
@@ -21400,7 +21393,6 @@ Nvoid LCD_TS_Blocking_Read(PT_T * position) {
 N	PT_T temp;
 N	// Wait for screen press
 N	while (LCD_TS_Read(&temp) == 0)
-R "Source\LCD\touchscreen.c" 161 3 empty dependent statement in while-statement
 N		;
 N	// Wait for screen release
 N	while (LCD_TS_Read(&temp) == 1) {
@@ -21492,7 +21484,6 @@ N	p_bound.Y = 0xffff;
 N	for (i=0; i<TS_CALIB_SAMPLES; i++){
 X	for (i=0; i<(10); i++){
 N		while (!LCD_TS_Read(&p))
-R "Source\LCD\touchscreen.c" 245 4 empty dependent statement in while-statement
 N			;
 N		if (p.X < p_bound.X)
 N			p_bound.X = p.X;
@@ -21507,7 +21498,6 @@ N	TS_Min = p_bound;
 N	
 N	// Wait for release
 N	while (LCD_TS_Read(&p))
-R "Source\LCD\touchscreen.c" 259 3 empty dependent statement in while-statement
 N		;
 N	
 N	LCD_Erase();
@@ -21527,7 +21517,6 @@ N	p_bound.Y = 0;
 N	for (i=0; i<TS_CALIB_SAMPLES; i++){
 X	for (i=0; i<(10); i++){
 N		while (!LCD_TS_Read(&p))
-R "Source\LCD\touchscreen.c" 275 4 empty dependent statement in while-statement
 N			;
 N		if (p.X > p_bound.X)
 N			p_bound.X = p.X;
@@ -21544,7 +21533,6 @@ X	LCD_TS_Y_Scale = (p_bound.Y-LCD_TS_Y_Offset)/(320);
 N
 N	// Wait for release
 N	while (LCD_TS_Read(&p))
-R "Source\LCD\touchscreen.c" 289 3 empty dependent statement in while-statement
 N		;
 N	
 N	LCD_TS_Calibrated = 1;

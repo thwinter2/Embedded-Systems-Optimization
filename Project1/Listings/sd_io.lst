@@ -602,7 +602,6 @@ N    BOOL mount;
 N    BYTE cardtype;
 N    DWORD last_sector;
 N    DBG_COUNT debug;
-R "Source\ulibSD\sd_io.h" 69 16 padding inserted in struct _SD_DEV
 N} SD_DEV;
 N
 N/*******************************************************************************
@@ -1520,7 +1519,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -1537,7 +1535,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3025,7 +3022,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -11614,7 +11610,6 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 17 "Source\ulibSD\sd_io.c" 2
 N#include "debug.h"
 L 1 ".\Include\debug.h" 1
@@ -19778,11 +19773,10 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
-N#define DEBUG_ENABLE 0
+N#define DEBUG_ENABLE 1
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -19895,8 +19889,9 @@ N
 NBYTE __SD_Send_Cmd(BYTE cmd, DWORD arg) {
 N	BYTE crc, res;
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_START(DBG_4);
+X	#if 1
+N	DEBUG_START(DBG_4);
+X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (8));};
 N	#endif
 N
 N	// ACMD«n» is the command sequense of CMD55-CMD«n»
@@ -19906,8 +19901,9 @@ N		res = __SD_Send_Cmd(CMD55, 0);
 X		res = __SD_Send_Cmd((0x40+55), 0);
 N		if (res > 1) {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_STOP(DBG_4);
+X			#if 1
+N			DEBUG_STOP(DBG_4);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (8)); };
 N			#endif
 N			return (res);
 N
@@ -19954,22 +19950,25 @@ X	((((LPTMR_Type *)(0x40040000u)))->CSR) = 0x1u;
 N	
 N	do {
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_TOGGLE(DBG_4);
+X		#if 1
+N		DEBUG_TOGGLE(DBG_4);
+X		{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (8)); };
 N		#endif
 N		res = SPI_RW(0xFF);
 N	} while ((res & 0x80) && (SPI_Timer_Status() == TRUE));
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_START(DBG_4);
+X	#if 1
+N	DEBUG_START(DBG_4);
+X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (8));};
 N	#endif
 N	LPTMR0_CSR = 0;
 X	((((LPTMR_Type *)(0x40040000u)))->CSR) = 0;
 N
 N	// Return with the response value
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_STOP(DBG_4)
+X	#if 1
+N	DEBUG_STOP(DBG_4)
+X	{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (8)); }
 N	#endif
 N			return (res);
 N}
@@ -19984,7 +19983,6 @@ N	BYTE READ_BL_LEN = 0;
 N	if (__SD_Send_Cmd(CMD9, 0) == 0) {
 X	if (__SD_Send_Cmd((0x40+9), 0) == 0) {
 N		// Wait for response
-R "Source\ulibSD\sd_io.c" 177 31 empty dependent statement in while-statement
 N		while (SPI_RW(0xFF) == 0xFF);
 N		for (idx = 0; idx != 16; idx++){
 N			//csd[idx] = SPI_RW(0xFF);
@@ -20002,7 +20000,6 @@ N		}
 N		// Dummy CRC
 N		SPI_RW(0xFF);
 N		SPI_RW(0xFF);
-R "Source\ulibSD\sd_io.c" 190 13 declaration hides variable "idx"  (declared at line 170)
 N		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N		if (dev->cardtype & SDCT_SD1) {
 X		if (dev->cardtype & 0x02) {
@@ -20049,8 +20046,9 @@ N	BYTE n, cmd, ct, ocr[4];
 N	BYTE idx;
 N	BYTE init_trys;
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_START(DBG_5);
+X	#if 1
+N	DEBUG_START(DBG_5);
+X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (9));};
 N	#endif
 N	ct = 0;
 N	for (init_trys = 0; ((init_trys != SD_INIT_TRYS) && (!ct));
@@ -20070,13 +20068,15 @@ N		}
 N		SPI_Timer_On(500);
 N		while (SPI_Timer_Status() == TRUE) {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_TOGGLE(DBG_5)
+X			#if 1
+N			DEBUG_TOGGLE(DBG_5)
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (9)); }
 N			#endif
 N		}
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_START(DBG_5);
+X		#if 1
+N		DEBUG_START(DBG_5);
+X		{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (9));};
 N		#endif
 N		SPI_Timer_Off();
 N
@@ -20086,13 +20086,15 @@ N		while ((__SD_Send_Cmd(CMD0, 0) != 1)
 X		while ((__SD_Send_Cmd((0x40+0), 0) != 1)
 N					 && (SPI_Timer_Status() == TRUE)) {
 N						#if DEBUG_ENABLE
-X						#if 0
-S						DEBUG_TOGGLE(DBG_5);
+X						#if 1
+N						DEBUG_TOGGLE(DBG_5);
+X						{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (9)); };
 N						#endif
 N		}
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_START(DBG_5);
+X		#if 1
+N		DEBUG_START(DBG_5);
+X		{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (9));};
 N		#endif
 N		SPI_Timer_Off();
 N		// Idle state
@@ -20103,17 +20105,13 @@ N			if (__SD_Send_Cmd(CMD8, 0x1AA) == 1) {
 X			if (__SD_Send_Cmd((0x40+8), 0x1AA) == 1) {
 N				// Get trailing return value of R7 resp
 N				for (n = 0; n < 4; n++){
-N					//ocr[n] = SPI_RW(0xFF);
-N					while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-X					while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N					ocr[n] = SPI_RW(0xFF);
+N					/*while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 N					}
 N					SPI1_D = 0xff;
-X					((((SPI_Type *)(0x40077000u)))->D) = 0xff;
 N					while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-X					while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
 N					}
-N					ocr[n] = SPI1_D;
-X					ocr[n] = ((((SPI_Type *)(0x40077000u)))->D);
+N					ocr[n] = SPI1_D;*/
 N				}
 N				// VDD range of 2.7-3.6V is OK?  
 N				if ((ocr[2] == 0x01) && (ocr[3] == 0xAA)) {
@@ -20123,13 +20121,15 @@ N					while ((SPI_Timer_Status() == TRUE)
 N								 && (__SD_Send_Cmd(ACMD41, 1UL << 30))) {
 X								 && (__SD_Send_Cmd((0xC0+41), 1UL << 30))) {
 N						#if DEBUG_ENABLE
-X						#if 0
-S						DEBUG_TOGGLE(DBG_5);
+X						#if 1
+N						DEBUG_TOGGLE(DBG_5);
+X						{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (9)); };
 N						#endif
 N					}
 N					#if DEBUG_ENABLE
-X					#if 0
-S					DEBUG_START(DBG_5);
+X					#if 1
+N					DEBUG_START(DBG_5);
+X					{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (9));};
 N					#endif
 N					SPI_Timer_Off();
 N					// CCS in the OCR? 
@@ -20138,17 +20138,13 @@ N							&& (__SD_Send_Cmd(CMD58, 0) == 0)) {
 X							&& (__SD_Send_Cmd((0x40+58), 0) == 0)) {
 N						for (n = 0; n < 4; n++){
 N	
-N							//ocr[n] = SPI_RW(0xFF);
-N							while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
-X							while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x20u)) {
+N							ocr[n] = SPI_RW(0xFF);
+N							/*while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 N							}
 N							SPI1_D = 0xff;
-X							((((SPI_Type *)(0x40077000u)))->D) = 0xff;
 N							while (!(SPI1_S & SPI_S_SPRF_MASK)) {
-X							while (!(((((SPI_Type *)(0x40077000u)))->S) & 0x80u)) {
 N							}
-N							ocr[n] = SPI1_D;
-X							ocr[n] = ((((SPI_Type *)(0x40077000u)))->D);
+N							ocr[n] = SPI1_D;*/
 N						}
 N						// SD version 2?
 N						ct = (ocr[0] & 0x40) ? SDCT_SD2 | SDCT_BLOCK : SDCT_SD2;
@@ -20176,13 +20172,15 @@ N				SPI_Timer_On(250);
 N				while ((SPI_Timer_Status() == TRUE)
 N							 && (__SD_Send_Cmd(cmd, 0))) {
 N					#if DEBUG_ENABLE
-X					#if 0
-S					DEBUG_TOGGLE(DBG_5);
+X					#if 1
+N					DEBUG_TOGGLE(DBG_5);
+X					{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (9)); };
 N					#endif								 
 N				}
 N				#if DEBUG_ENABLE
-X				#if 0
-S				DEBUG_START(DBG_5);
+X				#if 1
+N				DEBUG_START(DBG_5);
+X				{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (9));};
 N				#endif
 N				SPI_Timer_Off();
 N				//if (SPI_Timer_Status() == FALSE)
@@ -20206,8 +20204,9 @@ N		__SD_Speed_Transfer(HIGH);	// High speed transfer
 N	}
 N	SPI_Release();
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_STOP(DBG_5);
+X	#if 1
+N	DEBUG_STOP(DBG_5);
+X	{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (9)); };
 N	#endif
 N	return (ct ? SD_OK : SD_NOINIT);
 N}
@@ -20222,15 +20221,17 @@ N	WORD byte_num;
 N	BYTE tkn, data;
 N	volatile uint8_t dummy;
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_START(DBG_2);
+X	#if 1
+N	DEBUG_START(DBG_2);
+X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (2));};
 N	#endif
 N
 N	res = SD_ERROR;
 N	if ((sector > dev->last_sector) || (cnt == 0)) {
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_STOP(DBG_2);
+X		#if 1
+N		DEBUG_STOP(DBG_2);
+X		{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (2)); };
 N		#endif
 N		return (SD_PARERR);
 N	}
@@ -20239,7 +20240,7 @@ N	//    if (__SD_Send_Cmd(CMD17, sector * SD_BLK_SIZE) == 0) { // Only for SDSC
 N	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
 X	if (__SD_Send_Cmd((0x40+17), sector) == 0) {	
 N		
-N		//SPI_Timer_On(100);
+N		SPI_Timer_On(100);
 N		SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
 X		((((SIM_Type *)(0x40047000u)))->SCGC5) |= 0x1u;	
 N		LPTMR0_CSR = 0;								// Reset LPTMR settings
@@ -20255,8 +20256,9 @@ X		((((LPTMR_Type *)(0x40040000u)))->CSR) = 0x1u;
 N		
 N		do {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_TOGGLE(DBG_2);
+X			#if 1
+N			DEBUG_TOGGLE(DBG_2);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (2)); };
 N			#endif
 N			
 N			//tkn = SPI_RW(0xFF);
@@ -20274,8 +20276,9 @@ N
 N		} while ((tkn == 0xFF) && (!(LPTMR0_CSR & LPTMR_CSR_TCF_MASK)));
 X		} while ((tkn == 0xFF) && (!(((((LPTMR_Type *)(0x40040000u)))->CSR) & 0x80u)));
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_START(DBG_2);
+X		#if 1
+N		DEBUG_START(DBG_2);
+X		{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (2));};
 N		#endif
 N		//SPI_Timer_Off();
 N		LPTMR0_CSR = 0;
@@ -20286,8 +20289,9 @@ N			// AGD: Loop fusion to simplify FSM formation
 N			byte_num = 0;
 N			do {
 N				#if DEBUG_ENABLE
-X				#if 0
-S				DEBUG_TOGGLE(DBG_2); 
+X				#if 1
+N				DEBUG_TOGGLE(DBG_2); 
+X				{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (2)); }; 
 N				#endif
 N				
 N				//data = SPI_RW(0xff);
@@ -20309,8 +20313,9 @@ N				}												// else discard bytes before and after data
 N			} while (++byte_num < SD_BLK_SIZE + 2);	// 512 byte block + 2 byte CRC
 X			} while (++byte_num < 512 + 2);	
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_START(DBG_2);
+X			#if 1
+N			DEBUG_START(DBG_2);
+X			{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (2));};
 N			#endif
 N			res = SD_OK;
 N		}
@@ -20319,8 +20324,9 @@ N	//SPI_Release();
 N	for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
 N	dev->debug.read++;
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_STOP(DBG_2);
+X	#if 1
+N	DEBUG_STOP(DBG_2);
+X	{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (2)); };
 N	#endif
 N	return (res);
 N}
@@ -20331,15 +20337,17 @@ NSDRESULTS SD_Write(SD_DEV * dev, void *dat, DWORD sector) {
 N	WORD idx;
 N	BYTE line;
 N	#if DEBUG_ENABLE
-X	#if 0
-S	DEBUG_START(DBG_3);
+X	#if 1
+N	DEBUG_START(DBG_3);
+X	{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (3));};
 N	#endif
 N
 N	// Query invalid?
 N	if (sector > dev->last_sector) {
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_STOP(DBG_3);
+X		#if 1
+N		DEBUG_STOP(DBG_3);
+X		{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (3)); };
 N		#endif
 N		return (SD_PARERR);
 N	}
@@ -20359,8 +20367,9 @@ N		SPI_RW(0xFF);
 N		// If not accepted, returns the reject error
 N		if ((SPI_RW(0xFF) & 0x1F) != 0x05) {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_STOP(DBG_3);
+X			#if 1
+N			DEBUG_STOP(DBG_3);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (3)); };
 N			#endif
 N			return (SD_REJECT);
 N		}
@@ -20369,35 +20378,40 @@ N		SPI_Timer_On(SD_IO_WRITE_TIMEOUT_WAIT);
 X		SPI_Timer_On(250);
 N		do {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_TOGGLE(DBG_3);
+X			#if 1
+N			DEBUG_TOGGLE(DBG_3);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PTOR = (1UL << (3)); };
 N			#endif
 N			line = SPI_RW(0xFF);
 N		} while ((line == 0) && (SPI_Timer_Status() == TRUE));
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_START(DBG_3);
+X		#if 1
+N		DEBUG_START(DBG_3);
+X		{((FGPIO_Type *)(0xF80FF040u))->PSOR = (1UL << (3));};
 N		#endif
 N		SPI_Timer_Off();
 N		dev->debug.write++;
 N
 N		if (line == 0) {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_STOP(DBG_3);
+X			#if 1
+N			DEBUG_STOP(DBG_3);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (3)); };
 N			#endif
 N			return (SD_BUSY);
 N		} else {
 N			#if DEBUG_ENABLE
-X			#if 0
-S			DEBUG_STOP(DBG_3);
+X			#if 1
+N			DEBUG_STOP(DBG_3);
+X			{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (3)); };
 N			#endif
 N			return (SD_OK);
 N		}
 N	} else {
 N		#if DEBUG_ENABLE
-X		#if 0
-S		DEBUG_STOP(DBG_3);
+X		#if 1
+N		DEBUG_STOP(DBG_3);
+X		{ ((FGPIO_Type *)(0xF80FF040u))->PCOR = (1UL << (3)); };
 N		#endif
 N		return (SD_ERROR);
 N	}
@@ -20406,7 +20420,6 @@ N
 NSDRESULTS SD_Status(SD_DEV * dev) {
 N	return (__SD_Send_Cmd(CMD0, 0) ? SD_OK : SD_NORESPONSE);
 X	return (__SD_Send_Cmd((0x40+0), 0) ? SD_OK : SD_NORESPONSE);
-R "Source\ulibSD\sd_io.c" 521 30 parameter "dev"  was never referenced
 N}
 N
 N// «sd_io.c» is part of:

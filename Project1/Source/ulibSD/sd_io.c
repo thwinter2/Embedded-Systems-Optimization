@@ -276,13 +276,13 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 			if (__SD_Send_Cmd(CMD8, 0x1AA) == 1) {
 				// Get trailing return value of R7 resp
 				for (n = 0; n < 4; n++){
-					//ocr[n] = SPI_RW(0xFF);
-					while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+					ocr[n] = SPI_RW(0xFF);
+					/*while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 					}
 					SPI1_D = 0xff;
 					while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 					}
-					ocr[n] = SPI1_D;
+					ocr[n] = SPI1_D;*/
 				}
 				// VDD range of 2.7-3.6V is OK?  
 				if ((ocr[2] == 0x01) && (ocr[3] == 0xAA)) {
@@ -303,13 +303,13 @@ SDRESULTS SD_Init(SD_DEV * dev) {
 							&& (__SD_Send_Cmd(CMD58, 0) == 0)) {
 						for (n = 0; n < 4; n++){
 	
-							//ocr[n] = SPI_RW(0xFF);
-							while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
+							ocr[n] = SPI_RW(0xFF);
+							/*while (!(SPI1_S & SPI_S_SPTEF_MASK)) {
 							}
 							SPI1_D = 0xff;
 							while (!(SPI1_S & SPI_S_SPRF_MASK)) {
 							}
-							ocr[n] = SPI1_D;
+							ocr[n] = SPI1_D;*/
 						}
 						// SD version 2?
 						ct = (ocr[0] & 0x40) ? SDCT_SD2 | SDCT_BLOCK : SDCT_SD2;
@@ -386,7 +386,7 @@ SDRESULTS SD_Read(SD_DEV * dev, void *dat, DWORD sector, WORD ofs,
 	//    if (__SD_Send_Cmd(CMD17, sector * SD_BLK_SIZE) == 0) { // Only for SDSC
 	if (__SD_Send_Cmd(CMD17, sector) == 0) {	// Only for SDHC or SDXC 
 		
-		//SPI_Timer_On(100);
+		SPI_Timer_On(100);
 		SIM_SCGC5 |= SIM_SCGC5_LPTMR_MASK;	// Make sure clock is enabled
 		LPTMR0_CSR = 0;								// Reset LPTMR settings
 		LPTMR0_CMR = 100;							// Set compare value (in ms)

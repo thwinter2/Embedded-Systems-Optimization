@@ -202,9 +202,9 @@ int main(void) {
 		Init_Profiling();
 		LCD_Erase();
 		Control_RGB_LEDs(1, 0, 1);	// Magenta: running
-		Enable_Profiling();
+		profiling_enabled = 1;
 		error = LCD_JPEG();
-		Disable_Profiling();
+		profiling_enabled = 0;
 		Control_RGB_LEDs(error, 1-error, 0);	// Green: ok. Red: bad.
 		if (error != 0) {
 			sprintf(buf, "LCD_JPEG failure %d", error);

@@ -518,7 +518,7 @@ N// Backlight
 N#define LCD_BL_TPM (TPM1)
 N#define LCD_BL_TPM_CHANNEL (0)
 N#define LCD_BL_TPM_FREQ (20000)
-N#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+N#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 N
 N// Touchscreen Hardware Interface
 N#if (SHIELD_VERSION == 9)
@@ -533,10 +533,10 @@ N#define LCD_TS_XL_PORT (PORTC)
 N#define LCD_TS_YU_PORT (PORTE)
 N#define LCD_TS_XR_PORT (PORTE)
 N
-N#define LCD_TS_YD_PT (PTC)
-N#define LCD_TS_XL_PT (PTC)
-N#define LCD_TS_YU_PT (PTE)
-N#define LCD_TS_XR_PT (PTE)
+N#define LCD_TS_YD_PT (FPTC)
+N#define LCD_TS_XL_PT (FPTC)
+N#define LCD_TS_YU_PT (FPTE)
+N#define LCD_TS_XR_PT (FPTE)
 N
 N#define LCD_TS_YD_BIT (0)
 N#define LCD_TS_XL_BIT (1)
@@ -555,10 +555,10 @@ S#define LCD_TS_XL_PORT (PORTE)
 S#define LCD_TS_YU_PORT (PORTE)
 S#define LCD_TS_XR_PORT (PORTE)
 S
-S#define LCD_TS_YD_PT (PTE)
-S#define LCD_TS_XL_PT (PTE)
-S#define LCD_TS_YU_PT (PTE)
-S#define LCD_TS_XR_PT (PTE)
+S#define LCD_TS_YD_PT (FPTE)
+S#define LCD_TS_XL_PT (FPTE)
+S#define LCD_TS_YU_PT (FPTE)
+S#define LCD_TS_XR_PT (FPTE)
 S
 S#define LCD_TS_YD_BIT (20)
 S#define LCD_TS_XL_BIT (21)
@@ -576,9 +576,9 @@ N#define TS_DELAY (1)
 N#define TS_CALIB_SAMPLES (10)
 N
 N/**************************************************************/
-N#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-N#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-N#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+N#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+N#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+N#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 N/**************************************************************/
 N
 N#define LCD_CTRL_INIT_SEQ_END 0
@@ -757,11 +757,11 @@ S																																				*/
 S
 S#if 1 // New connections
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 3 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 12 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -780,11 +780,11 @@ S
 S#else // Old connections
 S
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 0 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 8 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -1026,7 +1026,6 @@ N
 N	bg.R = 0;
 N	bg.G = 0;
 N	bg.B = 0;
-R "Source\LCD\LCD_text.c" 50 28 parameter "font_num"  was never referenced
 N}
 N
 Nuint8_t LCD_Text_GetGlyphWidth(char ch) {
@@ -1242,13 +1241,11 @@ N	for (c = ' '; c <= '~'; c++) {
 N		LCD_Text_PrintChar(&pos, c);
 N		pos.X += CHAR_WIDTH + 2;
 X		pos.X += G_LCD_char_width + 2;
-R "Source\LCD\LCD_text.c" 275 13 comparison between signed and unsigned operands
 N		if (pos.X >= LCD_WIDTH - CHAR_WIDTH) {
 X		if (pos.X >= (240) - G_LCD_char_width) {
 N			pos.X = 0;
 N			pos.Y += CHAR_HEIGHT + 2;
 X			pos.Y += G_LCD_char_height + 2;
-R "Source\LCD\LCD_text.c" 278 14 comparison between signed and unsigned operands
 N			if (pos.Y >= LCD_HEIGHT - CHAR_HEIGHT) {
 X			if (pos.Y >= (320) - G_LCD_char_height) {
 N				pos.Y = 0;

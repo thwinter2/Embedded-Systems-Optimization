@@ -2290,7 +2290,6 @@ X__attribute__((section(".rev16_text"))) static __inline __asm uint32_t __REV16(
 N{
 N  rev16 r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 447 89 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -2307,7 +2306,6 @@ X__attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(i
 N{
 N  revsh r0, r0
 N  bx lr
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h" 462 87 parameter "value"  was never referenced
 N}
 N#endif
 N
@@ -3795,7 +3793,6 @@ N
 N#endif /* __CORE_CM0PLUS_H_DEPENDANT */
 N
 N#endif /* __CMSIS_GENERIC */
-R "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h" 1001 1 Header file not guarded against multiple inclusion
 L 199 "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 2
 N#include "system_MKL25Z4.h"            /* Device specific configuration file */
 L 1 ".\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h" 1
@@ -12384,7 +12381,6 @@ S  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8145 1 Header file not guarded against multiple inclusion
 L 7 "Source\LCD\ST7789.c" 2
 N
 N#include "LCD.h"
@@ -12534,7 +12530,7 @@ N// Backlight
 N#define LCD_BL_TPM (TPM1)
 N#define LCD_BL_TPM_CHANNEL (0)
 N#define LCD_BL_TPM_FREQ (20000)
-N#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+N#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 N
 N// Touchscreen Hardware Interface
 N#if (SHIELD_VERSION == 9)
@@ -12549,10 +12545,10 @@ N#define LCD_TS_XL_PORT (PORTC)
 N#define LCD_TS_YU_PORT (PORTE)
 N#define LCD_TS_XR_PORT (PORTE)
 N
-N#define LCD_TS_YD_PT (PTC)
-N#define LCD_TS_XL_PT (PTC)
-N#define LCD_TS_YU_PT (PTE)
-N#define LCD_TS_XR_PT (PTE)
+N#define LCD_TS_YD_PT (FPTC)
+N#define LCD_TS_XL_PT (FPTC)
+N#define LCD_TS_YU_PT (FPTE)
+N#define LCD_TS_XR_PT (FPTE)
 N
 N#define LCD_TS_YD_BIT (0)
 N#define LCD_TS_XL_BIT (1)
@@ -12571,10 +12567,10 @@ S#define LCD_TS_XL_PORT (PORTE)
 S#define LCD_TS_YU_PORT (PORTE)
 S#define LCD_TS_XR_PORT (PORTE)
 S
-S#define LCD_TS_YD_PT (PTE)
-S#define LCD_TS_XL_PT (PTE)
-S#define LCD_TS_YU_PT (PTE)
-S#define LCD_TS_XR_PT (PTE)
+S#define LCD_TS_YD_PT (FPTE)
+S#define LCD_TS_XL_PT (FPTE)
+S#define LCD_TS_YU_PT (FPTE)
+S#define LCD_TS_XR_PT (FPTE)
 S
 S#define LCD_TS_YD_BIT (20)
 S#define LCD_TS_XL_BIT (21)
@@ -12592,9 +12588,9 @@ N#define TS_DELAY (1)
 N#define TS_CALIB_SAMPLES (10)
 N
 N/**************************************************************/
-N#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-N#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-N#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+N#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+N#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+N#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 N/**************************************************************/
 N
 N#define LCD_CTRL_INIT_SEQ_END 0
@@ -20811,11 +20807,10 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\debug.h" 2
 N
 N#define MASK(x) (1UL << (x))
-N#define DEBUG_ENABLE 0
+N#define DEBUG_ENABLE 1
 N
 N// Debug Signals on port B
 N#define DBG_1 1 	// SPI_RW
@@ -29012,7 +29007,6 @@ N  #endif /* (MCU_MEM_MAP_VERSION != 0x0200u) */
 N#endif  /* #if !defined(MKL25Z4_H_) */
 N
 N/* MKL25Z4.h, eof. */
-R "C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h" 8152 1 Header file not guarded against multiple inclusion
 L 4 ".\Include\timers.h" 2
 N
 N#define USE_PIT (0)
@@ -29313,9 +29307,9 @@ N	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
 X	((SIM_Type *)(0x40047000u))->SCGC5 |= 0x200u;
 N
 N	PWM_Init(LCD_BL_TPM, LCD_BL_TPM_CHANNEL, LCD_BL_PERIOD,
-X	PWM_Init((((TPM_Type *)(0x40039000u))), (0), ((SystemCoreClock)/(2*((20000)))),
+X	PWM_Init((((TPM_Type *)(0x40039000u))), (0), ((SystemCoreClock)/(4*((20000)))),
 N					 3 * LCD_BL_PERIOD / 4);
-X					 3 * ((SystemCoreClock)/(2*((20000)))) / 4);
+X					 3 * ((SystemCoreClock)/(4*((20000)))) / 4);
 N	//set multiplexer to connect TPM1 Ch 0 to PTA12
 N	PORTA->PCR[12] &= PORT_PCR_MUX_MASK;
 X	((PORT_Type *)(0x40049000u))->PCR[12] &= 0x700u;
@@ -29330,49 +29324,49 @@ N		brightness_percent = 100;
 N	PWM_Set_Value(LCD_BL_TPM, LCD_BL_TPM_CHANNEL,
 X	PWM_Set_Value((((TPM_Type *)(0x40039000u))), (0),
 N								(brightness_percent * LCD_BL_PERIOD) / 100);
-X								(brightness_percent * ((SystemCoreClock)/(2*((20000))))) / 100);
+X								(brightness_percent * ((SystemCoreClock)/(4*((20000))))) / 100);
 N}
 N
 N/* Write one byte as a command to the TFT LCD controller. */
 Nstatic void LCD_24S_Write_Command(uint8_t command) {
 N	GPIO_ResetBit(LCD_D_NC_POS);	// Default is sending data, so instead assert command
-X	(((GPIO_Type *)(0x400FF080u))->PCOR = (1UL << ((12))));	
+X	(((FGPIO_Type *)(0xF80FF080u))->PCOR = (1UL << ((12))));	
 N	GPIO_Write(command);
-X	{((GPIO_Type *)(0x400FF080u))->PCOR = (((unsigned )0x0ff) << (3)); ((GPIO_Type *)(0x400FF080u))->PSOR = (command & 0xff) << (3);};
+X	{((FGPIO_Type *)(0xF80FF080u))->PCOR = (((unsigned )0x0ff) << (3)); ((FGPIO_Type *)(0xF80FF080u))->PSOR = (command & 0xff) << (3);};
 N	GPIO_ResetBit(LCD_NWR_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PCOR = (1UL << ((13))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PCOR = (1UL << ((13))));
 N	GPIO_SetBit(LCD_NWR_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((13))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((13))));
 N	GPIO_SetBit(LCD_D_NC_POS);		// Default to sending data, not command
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((12))));		
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((12))));		
 N}
 N
 N/* Write one byte as data to the TFT LCD Controller. */
 Nstatic void LCD_24S_Write_Data(uint8_t data) {
 N//  GPIO_SetBit(LCD_D_NC_POS); // By default data is sent, not command
 N	GPIO_Write(data);
-X	{((GPIO_Type *)(0x400FF080u))->PCOR = (((unsigned )0x0ff) << (3)); ((GPIO_Type *)(0x400FF080u))->PSOR = (data & 0xff) << (3);};
+X	{((FGPIO_Type *)(0xF80FF080u))->PCOR = (((unsigned )0x0ff) << (3)); ((FGPIO_Type *)(0xF80FF080u))->PSOR = (data & 0xff) << (3);};
 N	GPIO_ResetBit(LCD_NWR_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PCOR = (1UL << ((13))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PCOR = (1UL << ((13))));
 N	GPIO_SetBit(LCD_NWR_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((13))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((13))));
 N}
 N
 Nvoid LCD_Controller_Init(const LCD_CTLR_INIT_SEQ_T init_seq[]) {
 N	unsigned i = 0, done = 0;
 N
 N	GPIO_SetBit(LCD_NRD_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((16))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((16))));
 N	GPIO_ResetBit(LCD_NWR_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PCOR = (1UL << ((13))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PCOR = (1UL << ((13))));
 N	GPIO_ResetBit(LCD_NRST_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PCOR = (1UL << ((17))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PCOR = (1UL << ((17))));
 N	Delay(100);
 N	GPIO_SetBit(LCD_NRST_POS);
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((17))));
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((17))));
 N	Delay(100);
 N	GPIO_SetBit(LCD_D_NC_POS);		// AD: by default select data, not command
-X	(((GPIO_Type *)(0x400FF080u))->PSOR = (1UL << ((12))));		
+X	(((FGPIO_Type *)(0xF80FF080u))->PSOR = (1UL << ((12))));		
 N
 N	while (!done) {
 N		switch (init_seq[i].Type) {
@@ -29710,7 +29704,6 @@ N		B = (B & 0xf8f8f8f8) >> 3;
 N
 N		W1 = R | GH;
 N		W2 = GL | B;
-R "Source\LCD\ST7789.c" 509 5 zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
 N#if DEBUG_LCD_OPS
 S		FPTB->PSOR = MASK(DBG_LCD_WR_PIXELS_POS);
 N#endif
@@ -29733,7 +29726,6 @@ N#endif
 N			W1 >>= 8;
 N			W2 >>= 8;
 N		}
-R "Source\LCD\ST7789.c" 530 5 zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
 N#if DEBUG_LCD_OPS
 S		FPTB->PCOR = MASK(DBG_LCD_WR_PIXELS_POS);
 N#endif

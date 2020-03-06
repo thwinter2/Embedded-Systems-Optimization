@@ -22,83 +22,21 @@ Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1\LCDs_Profiler.uvprojx
-Project File Date:  03/04/2020
+Project File Date:  03/05/2020
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling region.c...
-compiling sd_io.c...
-Source\ulibSD\sd_io.h(69): warning: #1301-D: padding inserted in struct _SD_DEV
-  typedef struct _SD_DEV {
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif 
-* __CMSIS_GENERIC */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
-  #else /* #if !defined(MKL25Z4_H_) */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif  /* #if !defined(MKL25Z4_H_) */
-Source\ulibSD\sd_io.c(177): warning: #2815-D: empty dependent statement in while-statement
-  		while (SPI_RW(0xFF) == 0xFF);
-Source\ulibSD\sd_io.c(190): warning: #1517-D: declaration hides variable "idx"  (declared at line 170)
-  		for (WORD idx = 512; idx && (SPI_RW(0xFF) != 0xFF); idx--);
-Source\ulibSD\sd_io.c(521): warning: #826-D: parameter "dev"  was never referenced
-  SDRESULTS SD_Status(SD_DEV * dev) {
-Source\ulibSD\sd_io.c(82): warning: #2190-D: Optimization: Loop unrolled and optimized (idx; by 2)
-Source\ulibSD\sd_io.c(154): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_RW)
-Source\ulibSD\sd_io.c(180): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(183): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(177): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_RW)
-Source\ulibSD\sd_io.c(190): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(280): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(283): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(307): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(310): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(248): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_RW)
-Source\ulibSD\sd_io.c(251): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_Timer_Status)
-Source\ulibSD\sd_io.c(263): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_Timer_Status)
-Source\ulibSD\sd_io.c(291): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (__SD_Send_Cmd)
-Source\ulibSD\sd_io.c(331): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (__SD_Send_Cmd)
-Source\ulibSD\sd_io.c(240): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_Init)
-Source\ulibSD\sd_io.c(405): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(407): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(428): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(430): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(446): warning: #2519-D: Unable to determine constant iteration count for this loop
-Source\ulibSD\sd_io.c(477): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_RW)
-Source\ulibSD\sd_io.c(494): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (SPI_RW)
+compiling LCD_JPEG.c...
 compiling ST7789.c...
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(447): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h(462): warning: #826-D: parameter "value"  was never referenced
-  __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
-C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h(1001): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif 
-* __CMSIS_GENERIC */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8145): warning: #1297-D: Header file not guarded against multiple inclusion
-  #else /* #if !defined(MKL25Z4_H_) */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif  /* #if !defined(MKL25Z4_H_) */
-C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h(8152): warning: #1297-D: Header file not guarded against multiple inclusion
-  #endif  /* #if !defined(MKL25Z4_H_) */
-Source\LCD\ST7789.c(509): warning: #193-D: zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
-  #if DEBUG_LCD_OPS
-Source\LCD\ST7789.c(530): warning: #193-D: zero used for undefined preprocessing identifier "DEBUG_LCD_OPS"
-  #if DEBUG_LCD_OPS
-Source\LCD\ST7789.c(116): warning: #1771-D: Could not optimize: Volatile items prevent analysis (PCR)
-Source\LCD\ST7789.c(118): warning: #2091-D: Optimization: Loop unrolled (i; by 8)
-Source\LCD\ST7789.c(198): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Command)
-Source\LCD\ST7789.c(293): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Data)
-Source\LCD\ST7789.c(347): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Data)
-Source\LCD\ST7789.c(410): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Data)
-Source\LCD\ST7789.c(465): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Data)
-Source\LCD\ST7789.c(515): warning: #1596-D: Could not optimize: Function reference prevents high-level loop optimization (LCD_24S_Write_Data)
+compiling debug.c...
+compiling main.c...
+compiling sd_io.c...
+compiling pff.c...
+compiling spi_io.c...
 linking...
-Program Size: Code=18784 RO-data=7180 RW-data=204 ZI-data=8620  
+Program Size: Code=19284 RO-data=6892 RW-data=204 ZI-data=8548  
 After Build - User command #1: Scripts\update_regions_MDK.bat .\Objects\LCDs_Profiler.axf
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegions.exe .\Objects\LCDs_Profiler.axf -c -s -x__ -x_ -xQ_ -xPIT_ -oSource\Profiler\region.c 
 GetRegions.exe completed without errors
@@ -108,7 +46,7 @@ C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>GetRegi
 GetRegions.exe completed without errors
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>sort /R .\Objects\function_sizes.txt /O .\Objects\sorted_function_sizes.txt 
 C:\Users\twinter\OneDrive - HUBBELL INC\Documents\GitHub\ESO-20\Project1>exit /b 0  
-".\Objects\LCDs_Profiler.axf" - 0 Error(s), 48 Warning(s).
+".\Objects\LCDs_Profiler.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -138,7 +76,7 @@ Package Vendor: Keil
       Source file:   Device\Source\system_MKL25Z4.c
       Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\ARM\startup_MKL25Z4.s
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:09
 </pre>
 </body>
 </html>

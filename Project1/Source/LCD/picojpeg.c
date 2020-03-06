@@ -323,7 +323,7 @@ static uint16 getBits(uint8 numBits, uint8 FFCheck)
    return ret >> (16 - origBits);
 }
 //------------------------------------------------------------------------------
-#if LESS_INLINING
+/*#if LESS_INLINING
 static uint16 getBits1(uint8 numBits) __attribute__((noinline));
 #endif
 static uint16 getBits1(uint8 numBits)
@@ -337,7 +337,7 @@ static uint16 getBits2(uint8 numBits) __attribute__((noinline));
 static uint16 getBits2(uint8 numBits)
 {
    return getBits(numBits, 1);
-}
+}*/
 //------------------------------------------------------------------------------
 static PJPG_INLINE uint8 getBit(void)
 {

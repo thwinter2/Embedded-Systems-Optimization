@@ -17,7 +17,7 @@
 #define LCD_BL_TPM (TPM1)
 #define LCD_BL_TPM_CHANNEL (0)
 #define LCD_BL_TPM_FREQ (20000)
-#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 
 // Touchscreen Hardware Interface
 #if (SHIELD_VERSION == 9)
@@ -31,10 +31,10 @@
 #define LCD_TS_YU_PORT (PORTE)
 #define LCD_TS_XR_PORT (PORTE)
 
-#define LCD_TS_YD_PT (PTC)
-#define LCD_TS_XL_PT (PTC)
-#define LCD_TS_YU_PT (PTE)
-#define LCD_TS_XR_PT (PTE)
+#define LCD_TS_YD_PT (FPTC)
+#define LCD_TS_XL_PT (FPTC)
+#define LCD_TS_YU_PT (FPTE)
+#define LCD_TS_XR_PT (FPTE)
 
 #define LCD_TS_YD_BIT (0)
 #define LCD_TS_XL_BIT (1)
@@ -53,10 +53,10 @@
 #define LCD_TS_YU_PORT (PORTE)
 #define LCD_TS_XR_PORT (PORTE)
 
-#define LCD_TS_YD_PT (PTE)
-#define LCD_TS_XL_PT (PTE)
-#define LCD_TS_YU_PT (PTE)
-#define LCD_TS_XR_PT (PTE)
+#define LCD_TS_YD_PT (FPTE)
+#define LCD_TS_XL_PT (FPTE)
+#define LCD_TS_YU_PT (FPTE)
+#define LCD_TS_XR_PT (FPTE)
 
 #define LCD_TS_YD_BIT (20)
 #define LCD_TS_XL_BIT (21)
@@ -74,9 +74,9 @@
 #define TS_CALIB_SAMPLES (10)
 
 /**************************************************************/
-#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 /**************************************************************/
 
 #define LCD_CTRL_INIT_SEQ_END 0

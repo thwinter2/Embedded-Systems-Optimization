@@ -1,4 +1,4 @@
---c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O3 --apcs=interwork --split_sections --asm --interleave --asm_dir ".\\Listings\\" -I .\Include -I .\Source\Profiler -I .\Source\LCD -I .\Source\FS -I .\Source\ulibSD --fpmode=fast
+--c99 -c --cpu Cortex-M0+ -g -O3 --apcs=interwork --split_sections --asm --interleave --asm_dir ".\\Listings\\" -I .\Include -I .\Source\Profiler -I .\Source\LCD -I .\Source\FS -I .\Source\ulibSD --fpmode=fast
 -I.\RTE\Device\MKL25Z128xxx4
 -I.\RTE\_Target_1
 -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include

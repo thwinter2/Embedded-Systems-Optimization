@@ -477,7 +477,7 @@ N// Backlight
 N#define LCD_BL_TPM (TPM1)
 N#define LCD_BL_TPM_CHANNEL (0)
 N#define LCD_BL_TPM_FREQ (20000)
-N#define LCD_BL_PERIOD ((SystemCoreClock)/(2*(LCD_BL_TPM_FREQ)))
+N#define LCD_BL_PERIOD ((SystemCoreClock)/(4*(LCD_BL_TPM_FREQ)))
 N
 N// Touchscreen Hardware Interface
 N#if (SHIELD_VERSION == 9)
@@ -492,10 +492,10 @@ N#define LCD_TS_XL_PORT (PORTC)
 N#define LCD_TS_YU_PORT (PORTE)
 N#define LCD_TS_XR_PORT (PORTE)
 N
-N#define LCD_TS_YD_PT (PTC)
-N#define LCD_TS_XL_PT (PTC)
-N#define LCD_TS_YU_PT (PTE)
-N#define LCD_TS_XR_PT (PTE)
+N#define LCD_TS_YD_PT (FPTC)
+N#define LCD_TS_XL_PT (FPTC)
+N#define LCD_TS_YU_PT (FPTE)
+N#define LCD_TS_XR_PT (FPTE)
 N
 N#define LCD_TS_YD_BIT (0)
 N#define LCD_TS_XL_BIT (1)
@@ -514,10 +514,10 @@ S#define LCD_TS_XL_PORT (PORTE)
 S#define LCD_TS_YU_PORT (PORTE)
 S#define LCD_TS_XR_PORT (PORTE)
 S
-S#define LCD_TS_YD_PT (PTE)
-S#define LCD_TS_XL_PT (PTE)
-S#define LCD_TS_YU_PT (PTE)
-S#define LCD_TS_XR_PT (PTE)
+S#define LCD_TS_YD_PT (FPTE)
+S#define LCD_TS_XL_PT (FPTE)
+S#define LCD_TS_YU_PT (FPTE)
+S#define LCD_TS_XR_PT (FPTE)
 S
 S#define LCD_TS_YD_BIT (20)
 S#define LCD_TS_XL_BIT (21)
@@ -535,9 +535,9 @@ N#define TS_DELAY (1)
 N#define TS_CALIB_SAMPLES (10)
 N
 N/**************************************************************/
-N#define	GPIO_ResetBit(pos)	(PTC->PCOR = MASK(pos))
-N#define	GPIO_SetBit(pos) 		(PTC->PSOR = MASK(pos))
-N#define GPIO_Write(cmd) 		{PTC->PCOR = LCD_DATA_MASK; PTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
+N#define	GPIO_ResetBit(pos)	(FPTC->PCOR = MASK(pos))
+N#define	GPIO_SetBit(pos) 		(FPTC->PSOR = MASK(pos))
+N#define GPIO_Write(cmd) 		{FPTC->PCOR = LCD_DATA_MASK; FPTC->PSOR = (cmd & 0xff) << LCD_DB8_POS;}
 N/**************************************************************/
 N
 N#define LCD_CTRL_INIT_SEQ_END 0
@@ -716,11 +716,11 @@ S																																				*/
 S
 S#if 1 // New connections
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 3 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 12 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -739,11 +739,11 @@ S
 S#else // Old connections
 S
 S#define PIN_DATA_PORT					PORTC
-S#define PIN_DATA_PT						PTC
+S#define PIN_DATA_PT						FPTC
 S#define PIN_DATA_SHIFT				( 0 )
 S
 S#define PIN_CONTROL_PORT			PORTC
-S#define PIN_CONTROL_PT				PTC
+S#define PIN_CONTROL_PT				FPTC
 S#define PIN_CD_SHIFT					( 8 )
 S#define PIN_CD           			( 1 << PIN_CD_SHIFT)
 S
@@ -1012,7 +1012,6 @@ N   // It is up to the caller to copy or blit these pixels from these buffers in
 N   unsigned char *m_pMCUBufR;
 N   unsigned char *m_pMCUBufG;
 N   unsigned char *m_pMCUBufB;
-R ".\Include\picojpeg.h" 65 1 padding inserted in struct 'anonymous'
 N} pjpeg_image_info_t;
 N
 Ntypedef unsigned char (*pjpeg_need_bytes_callback_t)(unsigned char* pBuf, unsigned char buf_size, unsigned char *pBytes_actually_read, void *pCallback_data);
@@ -1029,7 +1028,7 @@ N// Not thread safe.
 Nunsigned char pjpeg_decode_mcu(void);
 N
 N// AD Opt
-N#define LESS_INLINING 1 // 0 to re-enable inlining
+N#define LESS_INLINING 0 // 0 to re-enable inlining
 N
 N#ifdef __cplusplus
 S}

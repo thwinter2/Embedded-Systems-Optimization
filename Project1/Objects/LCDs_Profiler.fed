@@ -1,6 +1,7 @@
-;#<FEEDBACK># ARM Linker, 5060422: Last Updated: Wed Mar 04 15:37:50 2020
+;#<FEEDBACK># ARM Linker, 5060422: Last Updated: Fri Mar 06 09:45:25 2020
 ;VERSION 0.2
 ;FILE debug.o
+Init_Debug_Signals <= USED 0
 __asm___7_debug_c_ebb4e44d____REV16 <= USED 0
 __asm___7_debug_c_ebb4e44d____REVSH <= USED 0
 ;FILE delay.o
@@ -29,6 +30,7 @@ __asm___10_LCD_JPEG_c_733496a3____REV16 <= USED 0
 __asm___10_LCD_JPEG_c_733496a3____REVSH <= USED 0
 ;FILE lcd_text.o
 Bit_Reverse_Byte <= USED 0
+LCD_Text_GetGlyphWidth <= USED 0
 LCD_Text_Test <= USED 0
 ;FILE leds.o
 __asm___6_LEDs_c_19292f37____REV16 <= USED 0
@@ -69,6 +71,8 @@ __asm___7_queue_c_Q_Init____REVSH <= USED 0
 ;FILE sd_io.o
 SD_Status <= USED 0
 SD_Write <= USED 0
+__SD_Power_Of_Two <= USED 0
+__SD_Speed_Transfer <= USED 0
 __asm___7_sd_io_c_timeout____REV16 <= USED 0
 __asm___7_sd_io_c_timeout____REVSH <= USED 0
 ;FILE spi_io.o
@@ -98,6 +102,7 @@ TPM0_Start <= USED 0
 __asm___8_timers_c_PWM_Init____REV16 <= USED 0
 __asm___8_timers_c_PWM_Init____REVSH <= USED 0
 ;FILE touchscreen.o
+Init_ADC <= USED 0
 LCD_TS_Calibrate <= USED 0
 __asm___13_touchscreen_c_bd69c1ad____REV16 <= USED 0
 __asm___13_touchscreen_c_bd69c1ad____REVSH <= USED 0

@@ -124,7 +124,7 @@ unsigned char pjpeg_decode_init(pjpeg_image_info_t *pInfo, pjpeg_need_bytes_call
 unsigned char pjpeg_decode_mcu(void);
 
 // AD Opt
-#define LESS_INLINING 1 // 0 to re-enable inlining
+#define LESS_INLINING 0 // 0 to re-enable inlining
 
 #ifdef __cplusplus
 }
