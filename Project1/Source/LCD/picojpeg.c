@@ -425,7 +425,7 @@ static uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal)
 {
    uint8 i = 0;
    uint8 j;
-	
+   uint16 maxCode;
    uint16 code = getBit();
 
    // This func only reads a bit at a time, which on modern CPU's is not terribly efficient.
@@ -433,27 +433,17 @@ static uint8 huffDecode(const HuffTable* pHuffTable, const uint8* pHuffVal)
    // more reasonable approach.
    for ( ; ; )
    {
-      uint16 maxCode;
-
-		 	// AD Opt
-			huffDecode_ctr++;
-
-		 
       if (i == 16)
          return 0;
-
       maxCode = pHuffTable->mMaxCode[i];
       if ((code <= maxCode) && (maxCode != 0xFFFF))
          break;
-
       i++;
       code <<= 1;
       code |= getBit();
    }
-
    j = pHuffTable->mValPtr[i];
    j = (uint8)(j + (code - pHuffTable->mMinCode[i]));
-
    return pHuffVal[j];
 }
 //------------------------------------------------------------------------------
